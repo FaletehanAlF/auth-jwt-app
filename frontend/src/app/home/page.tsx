@@ -265,7 +265,7 @@ export default function HomePage() {
         <main className="home-scroll-safe mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col justify-center px-4 sm:px-6">
           <section className="grid grid-cols-1 items-center gap-3 lg:grid-cols-2 lg:gap-10">
             <div className="min-w-0">
-              <h1 className="font-display text-[26px] font-semibold leading-[1.08] tracking-tight sm:text-4xl lg:text-4xl">
+              <h1 className="font-display text-[26px] font-semibold leading-[1.08] tracking-tight sm:text-4xl lg:text-3xl">
                 YOUR CAREER,
                 <br />
                 ORGANIZED.
@@ -293,7 +293,7 @@ export default function HomePage() {
                 {pipelineStages.map((stage) => (
                   <li
                     key={stage.name}
-                      className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-1 lg:py-2"
+                      className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-1 lg:py-1.5"
                   >
                     <span
                       aria-hidden="true"
@@ -322,12 +322,12 @@ export default function HomePage() {
               {features.map((feature) => (
                 <div
                   key={feature.title}
-                  className="rounded-lg border border-white/10 bg-neutral-950 p-2 sm:p-5 lg:p-4"
+                  className="rounded-lg border border-white/10 bg-neutral-950 p-2 sm:p-5 lg:p-3"
                 >
                   <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-teal-400/15 text-teal-300 sm:h-10 sm:w-10 [&>svg]:h-4 [&>svg]:w-4 sm:[&>svg]:h-5 sm:[&>svg]:w-5">
                     {feature.icon}
                   </span>
-                  <p className="mt-1.5 text-[11px] font-semibold leading-snug tracking-tight text-white sm:mt-4 sm:text-[15px]">
+                  <p className="mt-1.5 text-[11px] font-semibold leading-snug tracking-tight text-white sm:mt-4 sm:text-[15px] lg:mt-3">
                     {feature.title}
                   </p>
                   <p className="mt-1 hidden text-sm leading-relaxed text-white/70 sm:block lg:mt-1.5 lg:text-[13px]">
@@ -341,7 +341,7 @@ export default function HomePage() {
           <section className="mt-2.5 lg:mt-4">
             <div className="rounded-lg border border-white/10 bg-neutral-950 p-2.5 sm:p-4 lg:p-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 text-sm font-semibold text-white ring-1 ring-white/20 sm:h-14 sm:w-14 sm:text-base lg:h-12 lg:w-12">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 text-sm font-semibold text-white ring-1 ring-white/20 sm:h-14 sm:w-14 sm:text-base lg:h-10 lg:w-10">
                   {profileImageUrl ? (
                     <Image
                       src={profileImageUrl}
@@ -368,7 +368,7 @@ export default function HomePage() {
                     disabled={isUploading}
                     className="mt-1.5 block w-full max-w-44 cursor-pointer rounded-lg border border-white/15 text-[11px] text-white/80 file:mr-2 file:border-0 file:border-r file:border-white/15 file:bg-white/10 file:px-3 file:py-1.5 file:text-[11px] file:font-medium file:text-white hover:border-white/30 disabled:cursor-not-allowed disabled:opacity-60 sm:max-w-xs sm:text-xs"
                   />
-                  <p className="mt-1 hidden text-[11px] text-white/50 sm:block">
+                  <p className="mt-1 hidden text-[11px] text-white/50 xl:block">
                     JPG, PNG, atau WebP. Maksimal 5 MB.
                   </p>
 
@@ -393,7 +393,7 @@ export default function HomePage() {
           </section>
 
           <section className="mt-2.5 lg:mt-4">
-            <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-neutral-950 px-4 py-2 sm:px-6 lg:px-6 lg:py-3">
+            <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-neutral-950 px-4 py-2 sm:px-6 lg:px-6 lg:py-2.5">
               <h2 className="min-w-0 flex-1 font-display text-[13px] font-semibold tracking-tight text-white sm:text-xl lg:text-lg">
                 Stay organized. Keep moving forward.
               </h2>
