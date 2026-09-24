@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ShapeGrid from "../../components/ShapeGrid";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -103,8 +104,19 @@ export default function RegisterPage() {
   const inputError = "border-red-400 focus:border-red-500 focus:ring-red-500/15";
 
   return (
-    <main className="flex h-dvh items-center justify-center overflow-hidden bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 p-4 text-slate-900 sm:p-6 lg:p-8">
-      <div className="flex max-h-full w-full max-w-4xl flex-col overflow-x-hidden overflow-y-auto rounded-2xl bg-white shadow-2xl shadow-black/30 lg:min-h-[min(520px,100%)] lg:flex-row">
+    <main className="relative flex h-dvh items-center justify-center overflow-hidden bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 p-4 text-slate-900 sm:p-6 lg:p-8">
+      <div aria-hidden="true" className="absolute inset-0">
+        <ShapeGrid
+          direction="diagonal"
+          speed={0.5}
+          squareSize={40}
+          borderColor="rgba(94, 234, 212, 0.22)"
+          hoverFillColor="rgba(45, 212, 191, 0.35)"
+          shape="square"
+          hoverTrailAmount={5}
+        />
+      </div>
+      <div className="relative flex max-h-full w-full max-w-4xl flex-col overflow-x-hidden overflow-y-auto rounded-2xl bg-white shadow-2xl shadow-black/30 lg:min-h-[min(520px,100%)] lg:flex-row">
         <aside className="relative z-10 hidden min-w-0 flex-col overflow-hidden rounded-2xl bg-neutral-950 p-8 text-white lg:-mr-6 lg:flex lg:w-[44%]">
           <svg
             viewBox="0 0 400 600"

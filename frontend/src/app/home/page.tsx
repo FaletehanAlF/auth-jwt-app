@@ -4,6 +4,7 @@ import type { ChangeEvent } from "react";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ShapeGrid from "../../components/ShapeGrid";
 
 const CLOUDINARY_CLOUD_NAME = "bsu3p6yn";
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -110,7 +111,19 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="relative min-h-screen bg-slate-50 text-slate-900">
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0">
+        <ShapeGrid
+          direction="diagonal"
+          speed={0.4}
+          squareSize={44}
+          borderColor="rgba(15, 23, 42, 0.1)"
+          hoverFillColor="rgba(13, 148, 136, 0.25)"
+          shape="square"
+          hoverTrailAmount={5}
+        />
+      </div>
+      <div className="relative">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex h-16 w-full max-w-5xl items-center gap-3 px-4 sm:px-6">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-[13px] font-semibold tracking-tight text-white">
@@ -271,6 +284,7 @@ export default function HomePage() {
           tidak diubah.
         </p>
       </main>
+      </div>
     </div>
   );
 }
