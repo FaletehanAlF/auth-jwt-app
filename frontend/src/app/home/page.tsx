@@ -81,7 +81,8 @@ export default function HomePage() {
 
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
           {/* Hero — image full sampai atas, navbar kapsul melayang di atas hero */}
-          <section className="relative w-full max-w-full overflow-hidden">
+          {/* min-h fixed agar tetap panjang walau isi sudah dihapus */}
+          <section className="relative flex min-h-[86svh] w-full max-w-full overflow-hidden">
             {/* Background network image khusus hero */}
             <div aria-hidden="true" className="absolute inset-0">
               <img
@@ -95,7 +96,7 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-teal-950/40 to-neutral-950" />
             </div>
 
-            <div className="relative mx-auto w-full max-w-5xl px-4 pb-12 pt-32 text-center sm:px-6 sm:pt-40 lg:pb-16">
+            <div className="relative m-auto w-full max-w-5xl px-4 py-28 text-center sm:px-6 sm:py-36 lg:py-40">
               <h1 className="mx-auto mt-0 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
                 Tracking that flows
                 <br />
