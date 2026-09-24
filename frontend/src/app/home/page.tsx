@@ -80,9 +80,9 @@ const pipelineStages = [
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen w-full max-w-full overflow-x-clip bg-neutral-950 text-white">
-      <div className="relative w-full max-w-full overflow-x-clip">
-        <main className="w-full max-w-full overflow-x-clip">
+    <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
+      <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
+        <main className="w-full max-w-full overflow-x-clip overscroll-none">
           {/* Hero — image full sampai atas, navbar kapsul melayang di atas hero */}
           <section className="relative w-full max-w-full overflow-hidden">
             {/* Background network image khusus hero */}
