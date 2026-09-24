@@ -18,19 +18,27 @@
   overflow: hidden;
 }
 
-/* Header NAVBAR: full selebar layar dari awal (seperti referensi),
-   logo kiri + tombol Menu kanan. Tidak berubah saat menu dibuka. */
+/* Header NAVBAR KAPSUL: kapsul panjang hampir selebar layar,
+   logo + ikon JobTrack di kiri, tombol Menu di kanan.
+   Isi selalu di dalam kapsul, tidak ada yang melebihi. */
 .staggered-menu-header {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
+  top: 16px;
+  left: 24px;
+  right: 24px;
+  margin: 0 auto;
+  max-width: 90rem;
+  width: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2em;
-  background: transparent;
+  padding: 0.8em 1.5em;
+  background: rgba(9, 9, 11, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
   pointer-events: none;
   z-index: 20;
 }
