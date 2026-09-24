@@ -12,14 +12,14 @@ interface AuthCardProps {
 // Background tetap JobTrack, isi form berbeda per halaman.
 export default function AuthCard({ title, subtitle, children, footer }: AuthCardProps) {
   return (
-    <main className="relative flex h-dvh items-center justify-center overflow-hidden overscroll-none bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 p-4 text-slate-900 sm:p-6">
+    <main className="relative flex h-dvh items-center justify-center overflow-hidden overscroll-none bg-neutral-950 p-4 text-slate-900 sm:p-6">
       <div aria-hidden="true" className="absolute inset-0">
         <ShapeGrid
           direction="diagonal"
           speed={0.5}
           squareSize={40}
-          borderColor="rgba(94, 234, 212, 0.22)"
-          hoverFillColor="rgba(45, 212, 191, 0.35)"
+          borderColor="rgba(255, 255, 255, 0.09)"
+          hoverFillColor="rgba(255, 255, 255, 0.14)"
           shape="square"
           hoverTrailAmount={5}
         />
@@ -89,7 +89,7 @@ export function AuthField({
   right?: ReactNode;
 }) {
   return (
-    <div className="flex h-11 items-center gap-2.5 rounded-xl bg-slate-100 px-3.5 transition-colors duration-150 focus-within:bg-slate-200/70 focus-within:ring-2 focus-within:ring-teal-600">
+    <div className="flex h-11 items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-100 px-3.5 transition-colors duration-150 focus-within:border-teal-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-teal-500/25">
       <span aria-hidden="true" className="shrink-0 text-slate-400">
         {icon}
       </span>
