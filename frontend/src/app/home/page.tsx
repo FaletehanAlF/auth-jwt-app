@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import Navbar from "../../components/Navbar";
+import SiteMenu from "../../components/SiteMenu";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
@@ -93,8 +93,8 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
-        {/* Navbar kapsul fixed — tetap stay di atas saat scroll */}
-        <Navbar activePage="home" floating />
+        {/* Navbar StaggeredMenu (Home, About Us, Profile) — tetap stay di atas saat scroll */}
+        <SiteMenu />
 
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
           {/* Hero — image full sampai atas, navbar kapsul melayang di atas hero */}
@@ -126,7 +126,7 @@ export default function HomePage() {
             </p>
 
             <Link
-              href="/applications"
+              href="/profile"
               className="mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-teal-200 px-6 text-sm font-medium text-neutral-950 transition-colors duration-150 hover:bg-teal-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-200 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
             >
               Start Tracking
@@ -191,7 +191,7 @@ export default function HomePage() {
                 Keep moving forward.
               </h2>
               <Link
-                href="/applications"
+                href="/profile"
                 className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-white px-6 text-sm font-medium text-neutral-900 transition-colors duration-150 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
               >
                 Start Tracking
