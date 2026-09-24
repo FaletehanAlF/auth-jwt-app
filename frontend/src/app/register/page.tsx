@@ -104,7 +104,7 @@ export default function RegisterPage() {
   const inputError = "border-red-400 focus:border-red-500 focus:ring-red-500/15";
 
   return (
-    <main className="relative flex h-dvh items-center justify-center overflow-hidden bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 p-4 text-slate-900 sm:p-6 lg:p-8">
+    <main className="relative flex h-dvh items-center justify-center overflow-hidden overscroll-none bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 p-4 text-slate-900 sm:p-6 lg:p-8">
       <div aria-hidden="true" className="absolute inset-0">
         <ShapeGrid
           direction="diagonal"
@@ -232,9 +232,9 @@ export default function RegisterPage() {
           </div>
         </aside>
 
-        <div className="flex min-w-0 flex-1 flex-col justify-center rounded-2xl bg-white px-6 py-8 sm:px-8 lg:py-8 lg:pl-12 lg:pr-10">
+        <div className="flex min-w-0 flex-1 flex-col justify-center rounded-2xl bg-white px-6 py-6 sm:px-8 lg:py-8 lg:pl-12 lg:pr-10">
           <div className="mx-auto w-full max-w-sm">
-            <div className="mb-6 flex items-center justify-center gap-2 lg:hidden">
+            <div className="mb-5 flex items-center justify-center gap-2 lg:mb-6 lg:hidden">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900">
                 <svg
                   viewBox="0 0 24 24"
@@ -271,7 +271,7 @@ export default function RegisterPage() {
               Organize your applications, interviews, and career progress in one place.
             </p>
 
-            <form onSubmit={handleRegister} noValidate className="mt-6 space-y-4">
+            <form onSubmit={handleRegister} noValidate className="mt-5 space-y-4 lg:mt-6">
               {errors.general && (
                 <div
                   role="alert"
@@ -393,7 +393,7 @@ export default function RegisterPage() {
               </button>
             </form>
 
-            <p className="mt-5 text-center text-sm text-slate-600">
+            <p className="mt-4 text-center text-sm text-slate-600 lg:mt-5">
               Already have an account?{" "}
               <Link
                 href="/login"
