@@ -42,12 +42,26 @@
   transition:
     background 0.3s ease,
     border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease,
+    top 0.3s ease,
+    left 0.3s ease,
+    right 0.3s ease,
+    max-width 0.3s ease,
+    border-radius 0.3s ease,
+    padding 0.3s ease;
 }
 
-/* Saat menu terbuka: kapsul jadi transparan agar TIDAK menimpa panel putih.
-   Logo ikut jadi gelap agar tetap terbaca (tombol Close sudah gelap via GSAP). */
+/* Saat menu terbuka: navbar memanjang full selebar layar (seperti referensi)
+   sehingga tombol Close di pojok kanan tetap berada DI DALAM navbar,
+   tidak ada konten yang melebihi navbar. */
 .staggered-menu-wrapper[data-open] .staggered-menu-header {
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  max-width: none;
+  border-radius: 0;
+  padding: 2em;
   background: transparent;
   border-color: transparent;
   box-shadow: none;
@@ -62,14 +76,6 @@
 .staggered-menu-wrapper[data-open] .sm-logo-badge {
   background: rgba(94, 234, 212, 0.15);
   border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Saat menu terbuka: tombol Close pindah ke pojok kanan atas layar
-   (di atas panel putih) dengan margin lega, tidak mepet tepi. */
-.staggered-menu-wrapper[data-open] .sm-toggle {
-  position: fixed;
-  top: 2em;
-  right: 2em;
 }
 
 .staggered-menu-header > * {
