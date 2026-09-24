@@ -237,24 +237,24 @@ export default function HomePage() {
             </div>
           </div>
 
-          <nav aria-label="Primary" className="border-t border-slate-100 sm:hidden">
+          <nav aria-label="Primary" className="border-t border-white/10 sm:hidden">
             <div className="mx-auto flex w-full max-w-5xl items-center gap-1 px-4 py-2">
               <Link
                 href="/home"
                 aria-current="page"
-                className="flex-1 rounded-lg bg-slate-100 px-3 py-2 text-center text-sm font-medium text-slate-900"
+                className="flex-1 rounded-lg bg-white/10 px-3 py-2 text-center text-sm font-medium text-white"
               >
                 Home
               </Link>
               <Link
                 href="/applications"
-                className="flex-1 rounded-lg px-3 py-2 text-center text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                className="flex-1 rounded-lg px-3 py-2 text-center text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white"
               >
                 Applications
               </Link>
               <Link
                 href="/profile"
-                className="flex-1 rounded-lg px-3 py-2 text-center text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                className="flex-1 rounded-lg px-3 py-2 text-center text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white"
               >
                 Profile
               </Link>
@@ -271,46 +271,46 @@ export default function HomePage() {
                   <br />
                   ORGANIZED.
                 </h1>
-                <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-600 sm:text-base">
+                <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70 sm:text-base">
                   Keep your job applications, interviews, and career progress
                   organized in one place.
                 </p>
                 <Link
                   href="/applications"
-                  className="mt-7 inline-flex h-11 items-center justify-center rounded-lg bg-neutral-900 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+                  className="mt-7 inline-flex h-11 items-center justify-center rounded-lg bg-teal-400 px-6 text-sm font-medium text-neutral-950 transition-colors duration-150 hover:bg-teal-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
                 >
                   Start Tracking
                 </Link>
               </div>
 
-              <div className="min-w-0 rounded-lg border border-slate-200 bg-white p-5 sm:p-6">
+              <div className="min-w-0 rounded-lg border border-white/10 bg-neutral-950 p-5 sm:p-6">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold tracking-tight">
+                  <p className="text-sm font-semibold tracking-tight text-white">
                     Application pipeline
                   </p>
-                  <p className="text-xs text-slate-500">All stages in one view</p>
+                  <p className="text-xs text-white/60">All stages in one view</p>
                 </div>
                 <ul className="mt-5 space-y-3">
                   {pipelineStages.map((stage) => (
                     <li
                       key={stage.name}
-                      className="flex items-center gap-3 rounded-lg border border-slate-100 px-3.5 py-3"
+                      className="flex items-center gap-3 rounded-lg border border-white/10 px-3.5 py-3"
                     >
                       <span
                         aria-hidden="true"
                         className={`h-2.5 w-2.5 shrink-0 rounded-full ${stage.dot}`}
                       />
-                      <span className="text-sm font-medium">{stage.name}</span>
-                      <span className="ml-auto text-xs text-slate-500">
+                      <span className="text-sm font-medium text-white">{stage.name}</span>
+                      <span className="ml-auto text-xs text-white/60">
                         {stage.note}
                       </span>
                     </li>
                   ))}
                 </ul>
                 <div aria-hidden="true" className="mt-5 flex gap-1.5">
-                  <span className="h-1.5 flex-1 rounded-full bg-teal-500" />
+                  <span className="h-1.5 flex-1 rounded-full bg-teal-400" />
                   <span className="h-1.5 flex-1 rounded-full bg-cyan-400" />
-                  <span className="h-1.5 flex-1 rounded-full bg-slate-200" />
+                  <span className="h-1.5 flex-1 rounded-full bg-white/20" />
                 </div>
               </div>
             </div>
@@ -324,15 +324,15 @@ export default function HomePage() {
               {features.map((feature) => (
                 <div
                   key={feature.title}
-                  className="rounded-lg border border-slate-200 bg-white p-5 sm:p-6"
+                  className="rounded-lg border border-white/10 bg-neutral-950 p-5 sm:p-6"
                 >
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-teal-700/10 text-teal-700">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-teal-400/15 text-teal-300">
                     {feature.icon}
                   </span>
-                  <p className="mt-4 text-[15px] font-semibold tracking-tight">
+                  <p className="mt-4 text-[15px] font-semibold tracking-tight text-white">
                     {feature.title}
                   </p>
-                  <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
+                  <p className="mt-1.5 text-sm leading-relaxed text-white/70">
                     {feature.desc}
                   </p>
                 </div>
