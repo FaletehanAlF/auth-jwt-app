@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import SiteMenu from "../../components/SiteMenu";
+import Navbar from "../../components/Navbar";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
@@ -93,8 +93,8 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
-        {/* Navbar StaggeredMenu (Home, About Us, Profile) — tetap stay di atas saat scroll */}
-        <SiteMenu />
+        {/* Navbar hybrid kapsul — tetap stay di atas saat scroll */}
+        <Navbar />
 
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
           {/* Hero — image full sampai atas, navbar kapsul melayang di atas hero */}

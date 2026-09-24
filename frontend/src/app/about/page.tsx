@@ -1,14 +1,14 @@
-// Halaman About Us — tujuan menu "About Us" di StaggeredMenu.
+// Halaman About Us — tujuan menu "About Us" di navbar.
 import Link from "next/link";
-import SiteMenu from "../../components/SiteMenu";
+import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
 export default function AboutPage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
-        {/* Navbar StaggeredMenu (Home, About Us, Profile) */}
-        <SiteMenu />
+        {/* Navbar hybrid kapsul */}
+        <Navbar />
 
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
           {/* Hero About */}
