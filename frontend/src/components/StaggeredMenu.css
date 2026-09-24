@@ -22,9 +22,11 @@
 .staggered-menu-header {
   position: absolute;
   top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(calc(100% - 32px), 64rem);
+  left: 16px;
+  right: 16px;
+  margin: 0 auto;
+  max-width: 64rem;
+  width: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,12 +56,20 @@
 }
 
 .staggered-menu-wrapper[data-open] .sm-logo-text {
-  color: #111;
+  color: #fff;
 }
 
 .staggered-menu-wrapper[data-open] .sm-logo-badge {
-  background: rgba(20, 184, 166, 0.12);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: rgba(94, 234, 212, 0.15);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Saat menu terbuka: tombol Close pindah ke pojok kanan atas layar
+   (di atas panel putih) dengan margin lega, tidak mepet tepi. */
+.staggered-menu-wrapper[data-open] .sm-toggle {
+  position: fixed;
+  top: 2em;
+  right: 2em;
 }
 
 .staggered-menu-header > * {
@@ -393,6 +403,16 @@
 
   .staggered-menu-wrapper[data-open] .sm-logo-img {
     filter: invert(100%);
+  }
+
+  /* Panel menutupi seluruh layar, logo ikut jadi gelap agar terbaca */
+  .staggered-menu-wrapper[data-open] .sm-logo-text {
+    color: #111;
+  }
+
+  .staggered-menu-wrapper[data-open] .sm-logo-badge {
+    background: rgba(20, 184, 166, 0.12);
+    border-color: rgba(0, 0, 0, 0.1);
   }
 }
 
