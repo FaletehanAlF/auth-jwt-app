@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import ShapeGrid from "../../components/ShapeGrid";
 import Navbar from "../../components/Navbar";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
@@ -74,79 +73,89 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 ];
 
 const pipelineStages = [
-  { name: "Applied", note: "Submitted", dot: "bg-teal-500" },
-  { name: "Interview", note: "Scheduled", dot: "bg-cyan-500" },
-  { name: "Offer", note: "Pending", dot: "bg-slate-400" },
+  { name: "Applied", note: "Submitted", dot: "bg-teal-400" },
+  { name: "Interview", note: "Scheduled", dot: "bg-cyan-300" },
+  { name: "Offer", note: "Pending", dot: "bg-white/40" },
 ];
 
 export default function HomePage() {
   return (
     <div className="relative min-h-screen bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 text-white">
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0">
-        <ShapeGrid
-          direction="diagonal"
-          speed={0.4}
-          squareSize={44}
-          borderColor="rgba(94, 234, 212, 0.22)"
-          hoverFillColor="rgba(45, 212, 191, 0.35)"
-          shape="square"
-          hoverTrailAmount={5}
-        />
-      </div>
       <div className="relative">
         <Navbar activePage="home" />
 
         <main>
-          <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-10 sm:px-6 sm:pt-14 lg:pb-16">
-            <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
-              <div className="min-w-0">
-                <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
-                  YOUR CAREER,
-                  <br />
-                  ORGANIZED.
-                </h1>
-                <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70 sm:text-base">
-                  Keep your job applications, interviews, and career progress
-                  organized in one place.
-                </p>
-                <Link
-                  href="/applications"
-                  className="mt-7 inline-flex h-11 items-center justify-center rounded-lg bg-teal-400 px-6 text-sm font-medium text-neutral-950 transition-colors duration-150 hover:bg-teal-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
-                >
-                  Start Tracking
-                </Link>
-              </div>
+          {/* Hero — centered seperti referensi, tanpa animasi background */}
+          <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-14 text-center sm:px-6 sm:pt-20 lg:pb-16">
+            <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[11px] font-medium tracking-[0.18em] text-teal-200">
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-300"
+              />
+              <span className="truncate">CAREER TRACKING MADE SIMPLE</span>
+            </p>
 
-              <div className="min-w-0 rounded-lg border border-white/10 bg-neutral-950 p-5 sm:p-6">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold tracking-tight text-white">
-                    Application pipeline
-                  </p>
-                  <p className="text-xs text-white/60">All stages in one view</p>
+            <h1 className="mx-auto mt-6 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
+              Tracking that flows
+              <br />
+              with your career.
+            </h1>
+
+            <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base">
+              JobTrack brings your job applications, interviews, and career
+              progress into one place — beautifully and effortlessly.
+            </p>
+
+            <Link
+              href="/applications"
+              className="mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-teal-200 px-6 text-sm font-medium text-neutral-950 transition-colors duration-150 hover:bg-teal-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-200 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+            >
+              Start Tracking
+              <span aria-hidden="true">→</span>
+            </Link>
+
+            <div className="mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3">
+              {features.map((feature) => (
+                <div
+                  key={feature.title}
+                  className="flex items-start gap-3 text-left sm:justify-center"
+                >
+                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 text-teal-200 ring-1 ring-white/15">
+                    {feature.icon}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[11px] font-semibold tracking-[0.14em] text-white">
+                      {feature.title.toUpperCase()}
+                    </span>
+                    <span className="mt-1 block text-xs leading-relaxed text-white/60">
+                      {feature.desc}
+                    </span>
+                  </span>
                 </div>
-                <ul className="mt-5 space-y-3">
-                  {pipelineStages.map((stage) => (
-                    <li
-                      key={stage.name}
-                      className="flex items-center gap-3 rounded-lg border border-white/10 px-3.5 py-3"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className={`h-2.5 w-2.5 shrink-0 rounded-full ${stage.dot}`}
-                      />
-                      <span className="text-sm font-medium text-white">{stage.name}</span>
-                      <span className="ml-auto text-xs text-white/60">
-                        {stage.note}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <div aria-hidden="true" className="mt-5 flex gap-1.5">
-                  <span className="h-1.5 flex-1 rounded-full bg-teal-400" />
-                  <span className="h-1.5 flex-1 rounded-full bg-cyan-400" />
-                  <span className="h-1.5 flex-1 rounded-full bg-white/20" />
-                </div>
-              </div>
+              ))}
+            </div>
+
+            <div className="mx-auto mt-12 max-w-3xl border-t border-white/10 pt-6">
+              <p className="text-[11px] font-medium tracking-[0.2em] text-white/50">
+                APPLICATION PIPELINE
+              </p>
+              <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+                {pipelineStages.map((stage) => (
+                  <li
+                    key={stage.name}
+                    className="flex min-w-0 items-center gap-2.5"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`h-2 w-2 shrink-0 rounded-full ${stage.dot}`}
+                    />
+                    <span className="text-sm font-medium text-white">
+                      {stage.name}
+                    </span>
+                    <span className="text-xs text-white/55">{stage.note}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </section>
 
