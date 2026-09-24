@@ -3,6 +3,7 @@ import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
+import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
 
 const features: { title: string; desc: string; icon: ReactNode }[] = [
   {
@@ -72,6 +73,22 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
   },
 ];
 
+// ============================================================
+// FOTO GALLERY — GANTI DI SINI (img network bebas)
+// Caranya: ganti `image` dengan URL foto apapun,
+// ganti `text` dengan label di bawah tiap foto.
+// ============================================================
+const GALLERY_ITEMS: GalleryItem[] = [
+  { image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop", text: "Teamwork" },
+  { image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop", text: "Collaboration" },
+  { image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop", text: "Meeting" },
+  { image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop", text: "Workspace" },
+  { image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=800&auto=format&fit=crop", text: "Interview" },
+  { image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop", text: "Presentation" },
+  { image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800&auto=format&fit=crop", text: "Discussion" },
+  { image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop", text: "Career" },
+];
+
 export default function HomePage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
@@ -121,6 +138,30 @@ export default function HomePage() {
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0">
               <div className="h-px w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               <div className="h-6 w-full bg-gradient-to-b from-white/10 to-transparent" />
+            </div>
+          </section>
+
+          {/* Gallery tepat di bawah hero — scroll / drag untuk geser */}
+          <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
+            <div className="mx-auto w-full max-w-5xl px-4 pt-12 text-center sm:px-6">
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                Moments from our community
+              </h2>
+              <p className="mx-auto mt-2 max-w-xl text-sm text-white/60">
+                Drag, scroll, atau pakai tombol panah kiri / kanan untuk menjelajah.
+              </p>
+            </div>
+            {/* Wadah gallery: tinggi wajib ada, kalau tidak canvas tingginya 0 */}
+            <div style={{ height: "600px", position: "relative" }}>
+              <CircularGallery
+                items={GALLERY_ITEMS}
+                bend={3}
+                textColor="#ffffff"
+                borderRadius={0.05}
+                scrollEase={0.02}
+                scrollSpeed={2}
+                font="bold 30px Poppins"
+              />
             </div>
           </section>
 
