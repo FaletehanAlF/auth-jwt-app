@@ -104,7 +104,7 @@ export default function RegisterPage() {
 
   return (
     <main className="flex h-dvh items-center justify-center overflow-hidden bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 p-4 text-slate-900 sm:p-6 lg:p-8">
-      <div className="flex max-h-full w-full max-w-4xl flex-col overflow-x-hidden overflow-y-auto rounded-2xl bg-white shadow-2xl shadow-black/30 lg:min-h-[520px] lg:flex-row">
+      <div className="flex max-h-full w-full max-w-4xl flex-col overflow-x-hidden overflow-y-auto rounded-2xl bg-white shadow-2xl shadow-black/30 lg:min-h-[min(520px,100%)] lg:flex-row">
         <aside className="relative z-10 hidden min-w-0 flex-col overflow-hidden rounded-2xl bg-neutral-950 p-8 text-white lg:-mr-6 lg:flex lg:w-[44%]">
           <svg
             viewBox="0 0 400 600"
