@@ -4,7 +4,7 @@ import type { ChangeEvent } from "react";
 import { useState } from "react";
 import Image from "next/image";
 import ShapeGrid from "../../components/ShapeGrid";
-import Navbar from "../../components/Navbar";
+import SiteMenu from "../../components/SiteMenu";
 import Footer from "../../components/Footer";
 
 const CLOUDINARY_CLOUD_NAME = "bsu3p6yn";
@@ -92,7 +92,7 @@ export default function ProfilePage() {
         />
       </div>
       <div className="relative">
-        <Navbar />
+        <SiteMenu />
 
         <main>
           <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-10 sm:px-6 sm:pt-14">
