@@ -12,12 +12,6 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{
-    name?: string;
-    email?: string;
-    password?: string;
-    general?: string;
-  }>({});
   const [toast, setToast] = useState<ToastData | null>(null);
 
   const notify = (kind: ToastKind, message: string) => {
@@ -35,24 +29,18 @@ export default function RegisterPage() {
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Reset error sebelumnya sebelum submit
-    setErrors({});
-
-    // Validasi frontend dasar: field kosong, jangan fetch
-    const clientErrors: {
-      name?: string;
-      email?: string;
-      password?: string;
-    } = {};
-    if (!name.trim()) clientErrors.name = "Nama wajib diisi";
-    if (!email.trim()) clientErrors.email = "Email wajib diisi";
-    if (!password) clientErrors.password = "Password wajib diisi";
-    if (Object.keys(clientErrors).length > 0) {
-      setErrors(clientErrors);
-      notify(
-        "error",
-        clientErrors.name ?? clientErrors.email ?? clientErrors.password ?? "Mohon lengkapi form terlebih dahulu.",
-      );
+    // Validasi frontend dasar: field kosong, jangan fetch.
+    // Notifikasi hanya lewat toast agar layout input tidak bergeser.
+    if (!name.trim()) {
+      notify("error", "Nama wajib diisi");
+      return;
+    }
+    if (!email.trim()) {
+      notify("error", "Email wajib diisi");
+      return;
+    }
+    if (!password) {
+      notify("error", "Password wajib diisi");
       return;
     }
 
@@ -78,58 +66,27 @@ export default function RegisterPage() {
       }
 
       // Validasi gagal: jangan redirect, jangan simpan token.
-      // Baca response error Zod dari backend.
-      const fieldErrors: {
-        name?: string;
-        email?: string;
-        password?: string;
-        general?: string;
-      } = {};
+      // Baca response error Zod dari backend, tampilkan via toast saja.
+      const firstFieldError =
+        (Array.isArray(data.errors?.name) && data.errors.name[0]) ||
+        (Array.isArray(data.errors?.email) && data.errors.email[0]) ||
+        (Array.isArray(data.errors?.password) && data.errors.password[0]) ||
+        null;
 
-      if (data.errors) {
-        if (Array.isArray(data.errors.name) && data.errors.name.length > 0) {
-          fieldErrors.name = data.errors.name[0];
-        }
-        if (Array.isArray(data.errors.email) && data.errors.email.length > 0) {
-          fieldErrors.email = data.errors.email[0];
-        }
-        if (
-          Array.isArray(data.errors.password) &&
-          data.errors.password.length > 0
-        ) {
-          fieldErrors.password = data.errors.password[0];
-        }
-      }
-
-      if (
-        !fieldErrors.name &&
-        !fieldErrors.email &&
-        !fieldErrors.password &&
-        data.message
-      ) {
-        fieldErrors.general = data.message;
-      }
-
-      setErrors(fieldErrors);
       notify(
         "error",
-        fieldErrors.general ??
-          fieldErrors.name ??
-          fieldErrors.email ??
-          fieldErrors.password ??
+        firstFieldError ??
+          data.message ??
           "Registrasi gagal. Periksa kembali data Anda.",
       );
     } catch (error) {
       console.error("Gagal menghubungi server:", error);
-      setErrors({ general: "Gagal menghubungi server. Coba lagi." });
       notify("error", "Gagal menghubungi server. Coba lagi.");
     }
   };
 
-  const inputBase =
-    "h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-slate-900 outline-none transition-colors duration-150 placeholder:text-slate-400 focus:ring-2";
-  const inputIdle = "border-slate-200 focus:border-teal-600 focus:ring-teal-600";
-  const inputError = "border-red-400 focus:border-red-500 focus:ring-red-500/15";
+  const inputClass =
+    "h-11 w-full rounded-lg border border-slate-200 bg-white px-3.5 text-sm text-slate-900 outline-none transition-colors duration-150 placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600";
 
   return (
     <main className="relative flex h-dvh items-center justify-center overflow-hidden overscroll-none bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 p-4 text-slate-900 sm:p-6 lg:p-8">
@@ -300,30 +257,6 @@ export default function RegisterPage() {
             </p>
 
             <form onSubmit={handleRegister} noValidate className="mt-5 space-y-4 lg:mt-6">
-              {errors.general && (
-                <div
-                  role="alert"
-                  className="flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 text-sm leading-snug text-red-700"
-                >
-                  <svg
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    aria-hidden="true"
-                    className="mt-0.5 h-4 w-4 shrink-0"
-                  >
-                    <circle cx="10" cy="10" r="8.2" stroke="currentColor" strokeWidth="1.5" />
-                    <path
-                      d="M10 6.5v4.2"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                    <circle cx="10" cy="13.4" r="1" fill="currentColor" />
-                  </svg>
-                  <span>{errors.general}</span>
-                </div>
-              )}
-
               <div>
                 <label
                   htmlFor="name"
@@ -336,17 +269,10 @@ export default function RegisterPage() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  aria-invalid={Boolean(errors.name)}
-                  aria-describedby={errors.name ? "register-name-error" : undefined}
-                  className={`${inputBase} ${errors.name ? inputError : inputIdle}`}
+                  className={inputClass}
                   placeholder="Your full name"
                   autoComplete="name"
                 />
-                {errors.name && (
-                  <p id="register-name-error" className="mt-1.5 text-sm leading-snug text-red-600">
-                    {errors.name}
-                  </p>
-                )}
               </div>
 
               <div>
@@ -361,17 +287,10 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  aria-invalid={Boolean(errors.email)}
-                  aria-describedby={errors.email ? "register-email-error" : undefined}
-                  className={`${inputBase} ${errors.email ? inputError : inputIdle}`}
+                  className={inputClass}
                   placeholder="you@example.com"
                   autoComplete="email"
                 />
-                {errors.email && (
-                  <p id="register-email-error" className="mt-1.5 text-sm leading-snug text-red-600">
-                    {errors.email}
-                  </p>
-                )}
               </div>
 
               <div>
@@ -386,17 +305,10 @@ export default function RegisterPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  aria-invalid={Boolean(errors.password)}
-                  aria-describedby={errors.password ? "register-password-error" : undefined}
-                  className={`${inputBase} ${errors.password ? inputError : inputIdle}`}
+                  className={inputClass}
                   placeholder="Create a password"
                   autoComplete="new-password"
                 />
-                {errors.password && (
-                  <p id="register-password-error" className="mt-1.5 text-sm leading-snug text-red-600">
-                    {errors.password}
-                  </p>
-                )}
               </div>
 
               <button
