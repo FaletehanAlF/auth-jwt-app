@@ -341,9 +341,9 @@ export default function HomePage() {
           </section>
 
           <section className="mx-auto w-full max-w-5xl px-4 pb-12 sm:px-6 lg:pb-16">
-            <div className="rounded-lg border border-slate-200 bg-white p-5 sm:p-6">
+            <div className="rounded-lg border border-white/10 bg-neutral-950 p-5 sm:p-6">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-                <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-neutral-900 text-xl font-semibold text-white">
+                <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 text-xl font-semibold text-white ring-1 ring-white/20">
                   {profileImageUrl ? (
                     <Image
                       src={profileImageUrl}
@@ -359,10 +359,10 @@ export default function HomePage() {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-sm font-semibold tracking-tight">
+                  <h2 className="text-sm font-semibold tracking-tight text-white">
                     Profile picture
                   </h2>
-                  <p className="mt-0.5 text-[13px] leading-relaxed text-slate-500">
+                  <p className="mt-0.5 text-[13px] leading-relaxed text-white/60">
                     Upload gambar ke Cloudinary. URL hasil upload hanya disimpan di
                     state frontend.
                   </p>
@@ -372,24 +372,24 @@ export default function HomePage() {
                     accept="image/jpeg,image/png,image/webp"
                     onChange={handleProfilePictureUpload}
                     disabled={isUploading}
-                    className="mt-4 block w-full max-w-sm cursor-pointer rounded-lg border border-slate-200 text-sm text-slate-600 file:mr-4 file:border-0 file:border-r file:border-slate-200 file:bg-slate-50 file:px-4 file:py-2.5 file:text-sm file:font-medium file:text-slate-700 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="mt-4 block w-full max-w-sm cursor-pointer rounded-lg border border-white/15 text-sm text-white/80 file:mr-4 file:border-0 file:border-r file:border-white/15 file:bg-white/10 file:px-4 file:py-2.5 file:text-sm file:font-medium file:text-white hover:border-white/30 disabled:cursor-not-allowed disabled:opacity-60"
                   />
-                  <p className="mt-2 text-xs text-slate-500">
+                  <p className="mt-2 text-xs text-white/50">
                     JPG, PNG, atau WebP. Maksimal 5 MB.
                   </p>
 
                   {isUploading && (
                     <p
                       role="status"
-                      className="mt-3 flex items-center gap-2 text-sm text-slate-600"
+                      className="mt-3 flex items-center gap-2 text-sm text-white/70"
                     >
-                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-700" />
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-teal-300" />
                       Mengunggah gambar...
                     </p>
                   )}
 
                   {uploadError && (
-                    <p role="alert" className="mt-3 text-sm text-red-600">
+                    <p role="alert" className="mt-3 text-sm text-red-400">
                       {uploadError}
                     </p>
                   )}
@@ -399,7 +399,7 @@ export default function HomePage() {
           </section>
 
           <section className="mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6">
-            <div className="rounded-lg bg-neutral-950 px-6 py-10 text-center sm:px-10 sm:py-12">
+            <div className="rounded-lg border border-white/10 bg-neutral-950 px-6 py-10 text-center sm:px-10 sm:py-12">
               <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                 Stay organized.
                 <br />
@@ -415,12 +415,12 @@ export default function HomePage() {
           </section>
         </main>
 
-        <footer className="border-t border-slate-200 bg-white">
+        <footer className="border-t border-white/10">
           <div className="mx-auto flex w-full max-w-5xl flex-col gap-1 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <p className="font-display text-sm font-semibold tracking-tight">
+            <p className="font-display text-sm font-semibold tracking-tight text-white">
               JobTrack
             </p>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-white/60">
               Career &amp; Job Application Tracker
             </p>
           </div>
