@@ -26,6 +26,15 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Lock scroll kesamping (horizontal) tapi tetap bisa scroll ke bawah.
+   Sama perilaku seperti halaman login/register yang ke-lock. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
 @keyframes jobtrack-splash-out {
   0% {
     opacity: 1;

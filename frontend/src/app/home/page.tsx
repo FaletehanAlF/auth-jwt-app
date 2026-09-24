@@ -80,26 +80,32 @@ const pipelineStages = [
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 text-white">
-      <div className="relative">
+    <div className="relative min-h-screen w-full max-w-full overflow-x-clip bg-neutral-950 text-white">
+      <div className="relative w-full max-w-full overflow-x-clip">
         <Navbar activePage="home" />
 
-        <main>
-          {/* Hero — centered seperti referensi, tanpa animasi background */}
-          <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-14 text-center sm:px-6 sm:pt-20 lg:pb-16">
-            <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[11px] font-medium tracking-[0.18em] text-teal-200">
-              <span
-                aria-hidden="true"
-                className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-300"
+        <main className="w-full max-w-full overflow-x-clip">
+          {/* Hero — pakai img network, bawah ada pembatas. Konten bawah tidak pakai img. */}
+          <section className="relative w-full max-w-full overflow-hidden">
+            {/* Background network image khusus hero */}
+            <div aria-hidden="true" className="absolute inset-0">
+              <img
+                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1920&auto=format&fit=crop"
+                alt=""
+                className="h-full w-full object-cover"
+                loading="eager"
               />
-              <span className="truncate">CAREER TRACKING MADE SIMPLE</span>
-            </p>
+              {/* Overlay supaya teks tetap terbaca */}
+              <div className="absolute inset-0 bg-neutral-950/70" />
+              <div className="absolute inset-0 bg-gradient-to-b from-teal-950/60 via-teal-950/40 to-neutral-950" />
+            </div>
 
-            <h1 className="mx-auto mt-6 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
-              Tracking that flows
-              <br />
-              with your career.
-            </h1>
+            <div className="relative mx-auto w-full max-w-5xl px-4 pb-12 pt-14 text-center sm:px-6 sm:pt-20 lg:pb-16">
+              <h1 className="mx-auto mt-0 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
+                Tracking that flows
+                <br />
+                with your career.
+              </h1>
 
             <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base">
               JobTrack brings your job applications, interviews, and career
@@ -157,9 +163,18 @@ export default function HomePage() {
                 ))}
               </ul>
             </div>
+            </div>
+
+            {/* Pembatas hero */}
+            <div aria-hidden="true" className="absolute inset-x-0 bottom-0">
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+              <div className="h-6 w-full bg-gradient-to-b from-white/10 to-transparent" />
+            </div>
           </section>
 
-          <section className="mx-auto w-full max-w-5xl px-4 pb-12 sm:px-6 lg:pb-16">
+          {/* Konten bawah — tanpa img network, background solid */}
+          <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-teal-950 to-neutral-950">
+            <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-12 sm:px-6 lg:pb-16">
             <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight sm:text-3xl">
               Everything you need to manage your job search
             </h2>
@@ -190,6 +205,7 @@ export default function HomePage() {
               </Link>
             </div>
           </section>
+          </div>
         </main>
 
         <Footer />
