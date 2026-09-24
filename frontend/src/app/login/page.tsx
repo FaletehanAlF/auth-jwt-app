@@ -1,9 +1,10 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ShapeGrid from "../../components/ShapeGrid";
+import Toast, { ToastData, ToastKind } from "../../components/Toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,6 +16,19 @@ export default function LoginPage() {
     password?: string;
     general?: string;
   }>({});
+  const [toast, setToast] = useState<ToastData | null>(null);
+
+  const notify = (kind: ToastKind, message: string) => {
+    setToast({ id: Date.now(), kind, message });
+  };
+
+  useEffect(() => {
+    if (!toast) {
+      return;
+    }
+    const timer = setTimeout(() => setToast(null), 3500);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -28,6 +42,7 @@ export default function LoginPage() {
     if (!password) clientErrors.password = "Password wajib diisi";
     if (Object.keys(clientErrors).length > 0) {
       setErrors(clientErrors);
+      notify("error", clientErrors.email ?? clientErrors.password ?? "Mohon lengkapi form terlebih dahulu.");
       return;
     }
 
@@ -47,7 +62,8 @@ export default function LoginPage() {
 
       if (data.success === true) {
         localStorage.setItem("token", data.token);
-        router.push("/home");
+        notify("success", "Login berhasil! Mengalihkan ke Home…");
+        setTimeout(() => router.push("/home"), 800);
         return;
       }
 
@@ -75,9 +91,17 @@ export default function LoginPage() {
       }
 
       setErrors(fieldErrors);
+      notify(
+        "error",
+        fieldErrors.general ??
+          fieldErrors.email ??
+          fieldErrors.password ??
+          "Login gagal. Periksa kembali data Anda.",
+      );
     } catch (error) {
       console.error("Gagal menghubungi server:", error);
       setErrors({ general: "Gagal menghubungi server. Coba lagi." });
+      notify("error", "Gagal menghubungi server. Coba lagi.");
     }
   };
 
@@ -363,6 +387,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <Toast toast={toast} />
     </main>
   );
 }

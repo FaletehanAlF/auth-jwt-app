@@ -59,9 +59,25 @@ body {
   animation: jobtrack-page-in 0.5s ease-out;
 }
 
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.25s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-jobtrack-splash,
-  .animate-jobtrack-page {
+  .animate-jobtrack-page,
+  .animate-toast-in {
     animation: none;
   }
 }
