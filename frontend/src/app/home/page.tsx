@@ -82,10 +82,8 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip bg-neutral-950 text-white">
       <div className="relative w-full max-w-full overflow-x-clip">
-        <Navbar activePage="home" />
-
         <main className="w-full max-w-full overflow-x-clip">
-          {/* Hero — pakai img network, bawah ada pembatas. Konten bawah tidak pakai img. */}
+          {/* Hero — image full sampai atas, navbar kapsul melayang di atas hero */}
           <section className="relative w-full max-w-full overflow-hidden">
             {/* Background network image khusus hero */}
             <div aria-hidden="true" className="absolute inset-0">
@@ -97,10 +95,12 @@ export default function HomePage() {
               />
               {/* Overlay supaya teks tetap terbaca */}
               <div className="absolute inset-0 bg-neutral-950/70" />
-              <div className="absolute inset-0 bg-gradient-to-b from-teal-950/60 via-teal-950/40 to-neutral-950" />
+              <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-teal-950/40 to-neutral-950" />
             </div>
 
-            <div className="relative mx-auto w-full max-w-5xl px-4 pb-12 pt-14 text-center sm:px-6 sm:pt-20 lg:pb-16">
+            <Navbar activePage="home" floating />
+
+            <div className="relative mx-auto w-full max-w-5xl px-4 pb-12 pt-32 text-center sm:px-6 sm:pt-40 lg:pb-16">
               <h1 className="mx-auto mt-0 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
                 Tracking that flows
                 <br />
