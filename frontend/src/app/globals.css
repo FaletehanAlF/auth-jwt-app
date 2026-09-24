@@ -72,3 +72,9 @@ body {
   border: none;
   display: block;
 }
+
+.home-scroll-safe {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  justify-content: safe center;
+}
