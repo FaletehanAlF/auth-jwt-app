@@ -82,6 +82,9 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
+        {/* Navbar kapsul fixed — tetap stay di atas saat scroll */}
+        <Navbar activePage="home" floating />
+
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
           {/* Hero — image full sampai atas, navbar kapsul melayang di atas hero */}
           <section className="relative w-full max-w-full overflow-hidden">
@@ -97,8 +100,6 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-neutral-950/70" />
               <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-teal-950/40 to-neutral-950" />
             </div>
-
-            <Navbar activePage="home" floating />
 
             <div className="relative mx-auto w-full max-w-5xl px-4 pb-12 pt-32 text-center sm:px-6 sm:pt-40 lg:pb-16">
               <h1 className="mx-auto mt-0 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">

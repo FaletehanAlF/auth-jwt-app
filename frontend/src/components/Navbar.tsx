@@ -26,7 +26,7 @@ export default function Navbar({
 
   if (floating) {
     return (
-      <header className="absolute inset-x-0 top-3 z-30 px-4 sm:top-5 sm:px-6">
+      <header className="fixed inset-x-0 top-3 z-50 px-4 sm:top-5 sm:px-6">
         <div className="mx-auto w-full max-w-5xl rounded-3xl border border-white/15 bg-neutral-950/60 shadow-2xl shadow-black/40 backdrop-blur-xl sm:rounded-full">
           <div className="flex h-16 w-full items-center gap-3 px-4 sm:px-5">
             <Link href="/home" className="flex min-w-0 items-center gap-2.5">
