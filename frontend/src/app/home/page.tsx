@@ -72,12 +72,6 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
   },
 ];
 
-const pipelineStages = [
-  { name: "Applied", note: "Submitted", dot: "bg-teal-400" },
-  { name: "Interview", note: "Scheduled", dot: "bg-cyan-300" },
-  { name: "Offer", note: "Pending", dot: "bg-white/40" },
-];
-
 export default function HomePage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
@@ -120,50 +114,6 @@ export default function HomePage() {
               Start Tracking
               <span aria-hidden="true">→</span>
             </Link>
-
-            <div className="mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3">
-              {features.map((feature) => (
-                <div
-                  key={feature.title}
-                  className="flex items-start gap-3 text-left sm:justify-center"
-                >
-                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 text-teal-200 ring-1 ring-white/15">
-                    {feature.icon}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block text-[11px] font-semibold tracking-[0.14em] text-white">
-                      {feature.title.toUpperCase()}
-                    </span>
-                    <span className="mt-1 block text-xs leading-relaxed text-white/60">
-                      {feature.desc}
-                    </span>
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="mx-auto mt-12 max-w-3xl border-t border-white/10 pt-6">
-              <p className="text-[11px] font-medium tracking-[0.2em] text-white/50">
-                APPLICATION PIPELINE
-              </p>
-              <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-                {pipelineStages.map((stage) => (
-                  <li
-                    key={stage.name}
-                    className="flex min-w-0 items-center gap-2.5"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={`h-2 w-2 shrink-0 rounded-full ${stage.dot}`}
-                    />
-                    <span className="text-sm font-medium text-white">
-                      {stage.name}
-                    </span>
-                    <span className="text-xs text-white/55">{stage.note}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
             </div>
 
             {/* Pembatas hero */}
