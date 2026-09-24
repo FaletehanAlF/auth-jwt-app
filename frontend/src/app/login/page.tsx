@@ -77,21 +77,21 @@ export default function LoginPage() {
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
-            className="rounded font-medium text-teal-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600"
+            className="rounded font-medium text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
           >
-            Create an account
+            Sign up
           </Link>
         </>
       }
     >
-      <form onSubmit={handleLogin} noValidate className="space-y-3">
+      <form onSubmit={handleLogin} noValidate autoComplete="off" className="space-y-3">
         <AuthField
           id="email"
           type="email"
           value={email}
           onChange={setEmail}
           placeholder="Email"
-          autoComplete="email"
+          autoComplete="off"
           icon={
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-4 w-4">
               <rect x="2" y="3.5" width="12" height="9" rx="2" stroke="currentColor" strokeWidth="1.4" />
@@ -106,7 +106,7 @@ export default function LoginPage() {
           value={password}
           onChange={setPassword}
           placeholder="Password"
-          autoComplete="current-password"
+          autoComplete="new-password"
           icon={
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-4 w-4">
               <rect x="3" y="7" width="10" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.4" />

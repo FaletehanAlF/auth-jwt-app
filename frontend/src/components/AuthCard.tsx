@@ -89,7 +89,7 @@ export function AuthField({
   right?: ReactNode;
 }) {
   return (
-    <div className="flex h-11 items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-100 px-3.5 transition-colors duration-150 focus-within:border-teal-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-teal-500/25">
+    <div className="flex h-11 items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-100 px-3.5 transition-colors duration-150 focus-within:border-blue-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/25">
       <span aria-hidden="true" className="shrink-0 text-slate-400">
         {icon}
       </span>
