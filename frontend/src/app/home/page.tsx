@@ -314,7 +314,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="mt-2.5 lg:mt-3">
+          <section className="mt-2.5">
             <h2 className="font-display text-lg font-semibold tracking-tight text-white sm:text-2xl lg:text-2xl">
               Everything you need to manage your job search
             </h2>
@@ -338,7 +338,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="mt-2.5 lg:mt-3">
+          <section className="mt-2.5">
             <div className="rounded-lg border border-white/10 bg-neutral-950 p-2.5 sm:p-4 lg:p-3">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 text-sm font-semibold text-white ring-1 ring-white/20 sm:h-14 sm:w-14 sm:text-base lg:h-10 lg:w-10">
@@ -392,8 +392,8 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="mt-2.5 lg:mt-3">
-            <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-neutral-950 px-4 py-2 sm:px-6 lg:px-6 lg:py-2.5">
+          <section className="mt-2.5">
+            <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-neutral-950 px-4 py-2 sm:px-6 lg:px-6 lg:py-2">
               <h2 className="min-w-0 flex-1 font-display text-[13px] font-semibold tracking-tight text-white sm:text-xl lg:text-lg">
                 Stay organized. Keep moving forward.
               </h2>
@@ -408,7 +408,7 @@ export default function HomePage() {
         </main>
 
         <footer className="hidden shrink-0 border-t border-white/10 sm:block">
-          <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-2 sm:px-6">
+          <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-1.5 sm:px-6">
             <p className="font-display text-xs font-semibold tracking-tight text-white">
               JobTrack
             </p>
