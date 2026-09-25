@@ -82,7 +82,7 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 // Logo tampil abu-abu, berwarna asli saat di-hover (CSS).
 // ============================================================
 const TRUSTED_LOGOS = [
-  { src: "https://i.pinimg.com/736x/ad/a1/7c/ada17c578743c123f075eddc7ea0d449.jpg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
+  { src: "https://i.pinimg.com/736x/29/fe/f9/29fef91506c1750b02a2541b3f73f8d2.jpg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
   { src: "https://logo.clearbit.com/google.com?size=128", alt: "Google", href: "https://google.com", title: "Google" },
   { src: "https://logo.clearbit.com/nvidia.com?size=128", alt: "NVIDIA", href: "https://nvidia.com", title: "NVIDIA" },
   { src: "https://logo.clearbit.com/amazon.com?size=128", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
@@ -174,9 +174,8 @@ export default function HomePage() {
                   speed={60}
                   direction="left"
                   logoHeight={96}
-                  gap={28}
+                  gap={72}
                   hoverSpeed={0}
-                  scaleOnHover
                   fadeOut
                   fadeOutColor="#0a0a0a"
                   ariaLabel="Perusahaan yang mempercayai kami"
