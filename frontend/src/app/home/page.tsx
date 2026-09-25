@@ -4,15 +4,7 @@ import SiteMenu from "../../components/SiteMenu";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
 import LogoLoop from "../../components/LogoLoop";
-import {
-  SiAmazon,
-  SiApple,
-  SiGoogle,
-  SiLinkedin,
-  SiMicrosoft,
-  SiNvidia,
-  SiTesla,
-} from "react-icons/si";
+import { SiNvidia } from "react-icons/si";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
 
 const features: { title: string; desc: string; icon: ReactNode }[] = [
@@ -85,20 +77,26 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 
 // ============================================================
 // LOGO PERUSAHAAN — GANTI DI SINI
-// Ikon SVG transparan (tanpa background putih). Warna = warna
-// asli tiap brand; tampil abu-abu, berwarna saat di-hover (CSS).
-// Mau pakai gambar sendiri? Ganti salah satu item dengan:
-// { src: "/logos/perusahaan-saya.png", alt: "Nama", href: "https://..." }
-// (pakai PNG transparan agar menyatu dengan background gelap)
+// Logo ASLI transparan (tanpa background putih) dari
+// public/logos/*.svg — file lokal, tanpa request network,
+// jadi tidak bisa broken/404.
+// - Google, LinkedIn, Amazon, Microsoft, Apple, Tesla: img src
+// - NVIDIA: ikon SVG (Wikimedia sedang rate-limit, file
+//   menyusul — tinggal taruh public/logos/nvidia.svg lalu
+//   ganti item di bawah dengan src seperti lainnya)
+// Tampil abu-abu, berwarna asli saat di-hover (CSS).
+// Custom: tambah file ke public/logos/, tambah item src.
+// (Pakai SVG/PNG transparan agar menyatu background gelap.
+//  JPG selalu membawa background kotak — tidak disarankan.)
 // ============================================================
 const TRUSTED_LOGOS = [
-  { node: <SiLinkedin color="#0A66C2" />, title: "LinkedIn", href: "https://linkedin.com" },
-  { node: <SiGoogle color="#4285F4" />, title: "Google", href: "https://google.com" },
+  { src: "/logos/linkedin.svg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
+  { src: "/logos/google.svg", alt: "Google", href: "https://google.com", title: "Google" },
   { node: <SiNvidia color="#76B900" />, title: "NVIDIA", href: "https://nvidia.com" },
-  { node: <SiAmazon color="#FF9900" />, title: "Amazon", href: "https://amazon.com" },
-  { node: <SiMicrosoft color="#5D6C7A" />, title: "Microsoft", href: "https://microsoft.com" },
-  { node: <SiApple color="#FFFFFF" />, title: "Apple Inc", href: "https://apple.com" },
-  { node: <SiTesla color="#CC0000" />, title: "Tesla Inc", href: "https://tesla.com" },
+  { src: "/logos/amazon.svg", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
+  { src: "/logos/microsoft.svg", alt: "Microsoft", href: "https://microsoft.com", title: "Microsoft" },
+  { src: "/logos/apple.svg", alt: "Apple Inc", href: "https://apple.com", title: "Apple Inc" },
+  { src: "/logos/tesla.svg", alt: "Tesla Inc", href: "https://tesla.com", title: "Tesla Inc" },
 ];
 
 // ============================================================
