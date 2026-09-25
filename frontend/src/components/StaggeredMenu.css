@@ -76,6 +76,14 @@
   object-fit: contain;
 }
 
+.sm-logo-custom-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .sm-logo-text {
   display: flex;
   align-items: center;

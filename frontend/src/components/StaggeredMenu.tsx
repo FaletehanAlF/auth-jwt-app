@@ -20,7 +20,12 @@ export type StaggeredMenuProps = {
   displaySocials?: boolean;
   displayItemNumbering?: boolean;
   className?: string;
+  /** Path gambar custom, contoh "/logo.png". File harus ada di frontend/public/. Kosongkan untuk pakai logo bawaan. */
   logoUrl?: string;
+  /** Teks di samping logo, default "JobTrack". */
+  logoText?: string;
+  /** Alt untuk gambar logo custom. */
+  logoImageAlt?: string;
   menuButtonColor?: string;
   openMenuButtonColor?: string;
   accentColor?: string;
@@ -40,6 +45,8 @@ export function StaggeredMenu({
   displayItemNumbering = true,
   className,
   logoUrl,
+  logoText = "JobTrack",
+  logoImageAlt,
   menuButtonColor = "#fff",
   openMenuButtonColor = "#fff",
   accentColor = "#5227FF",
@@ -292,20 +299,27 @@ export function StaggeredMenu({
       {}
       <header className="staggered-menu-header" aria-label="Main navigation header">
         <div className="sm-logo" aria-label="Logo">
-          {logoUrl ? (
-            <img src={logoUrl} alt="Logo" className="sm-logo-img" draggable={false} width={110} height={24} />
-          ) : (
-            <Link href="/home" className="sm-logo-text" aria-label="JobTrack home">
+          <Link href="/home" className="sm-logo-text" aria-label={`${logoText} home`}>
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt={logoImageAlt || `${logoText} logo`}
+                className="sm-logo-img sm-logo-custom-img"
+                draggable={false}
+                width={32}
+                height={32}
+              />
+            ) : (
               <span className="sm-logo-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
-                  <rect x="3" y="7.5" width="18" height="12.5" rx="2.5" stroke="#5eead4" strokeWidth="1.8" />
-                  <path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5" stroke="#5eead4" strokeWidth="1.8" />
-                  <path d="M3 12.5h18" stroke="#5eead4" strokeWidth="1.8" />
+                  <rect x="3" y="7.5" width="18" height="12.5" rx="2.5" stroke="#60a5fa" strokeWidth="1.8" />
+                  <path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5" stroke="#60a5fa" strokeWidth="1.8" />
+                  <path d="M3 12.5h18" stroke="#60a5fa" strokeWidth="1.8" />
                 </svg>
               </span>
-              JobTrack
-            </Link>
-          )}
+            )}
+            <span>{logoText}</span>
+          </Link>
         </div>
         {}
         <button

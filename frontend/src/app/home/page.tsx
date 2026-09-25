@@ -105,9 +105,8 @@ export default function HomePage() {
                 className="h-full w-full object-cover"
                 loading="eager"
               />
-              {}
+              {/* Overlay flat hitam tanpa gradient agar teks tetap terbaca */}
               <div className="absolute inset-0 bg-neutral-950/70" />
-              <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-blue-950/40 to-neutral-950" />
             </div>
 
             <div className="relative m-auto w-full max-w-5xl px-4 py-40 text-center sm:px-6 sm:py-48 lg:py-56">
@@ -131,10 +130,9 @@ export default function HomePage() {
             </Link>
             </div>
 
-            {}
+            {/* Pembatas solid tanpa gradient */}
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0">
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-              <div className="h-6 w-full bg-gradient-to-b from-white/10 to-transparent" />
+              <div className="h-px w-full bg-white/10" />
             </div>
           </section>
 

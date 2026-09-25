@@ -20,8 +20,8 @@ export default function AboutPage() {
                 className="h-full w-full object-cover"
                 loading="eager"
               />
+              {/* Overlay flat hitam tanpa gradient agar teks tetap terbaca */}
               <div className="absolute inset-0 bg-neutral-950/70" />
-              <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-blue-950/40 to-neutral-950" />
             </div>
 
             <div className="relative m-auto w-full max-w-5xl px-4 py-28 text-center sm:px-6 sm:py-36">
