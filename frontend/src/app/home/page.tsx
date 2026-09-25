@@ -145,6 +145,7 @@ export default function HomePage() {
                     dashLength={4}
                     dashGap={2}
                     specks={15}
+                    sweep={false}
                   />
                 </div>
                 <div style={{ width: "100%", height: "clamp(72px, 12vw, 150px)", position: "relative" }}>
@@ -159,6 +160,7 @@ export default function HomePage() {
                     dashLength={4}
                     dashGap={2}
                     specks={15}
+                    sweep={false}
                   />
                 </div>
               </div>
