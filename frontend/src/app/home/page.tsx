@@ -100,14 +100,14 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
-        {/* Navbar StaggeredMenu kapsul — tetap stay di atas saat scroll */}
+        {}
         <SiteMenu />
 
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
-          {/* Hero — image full sampai atas, navbar kapsul melayang di atas hero */}
-          {/* min-h fixed agar tetap panjang walau isi sudah dihapus */}
+          {}
+          {}
           <section className="relative flex min-h-[110svh] w-full max-w-full overflow-hidden">
-            {/* Background network image khusus hero */}
+            {}
             <div aria-hidden="true" className="absolute inset-0">
               <img
                 src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1920&auto=format&fit=crop"
@@ -115,7 +115,7 @@ export default function HomePage() {
                 className="h-full w-full object-cover"
                 loading="eager"
               />
-              {/* Overlay supaya teks tetap terbaca */}
+              {}
               <div className="absolute inset-0 bg-neutral-950/70" />
               <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-teal-950/40 to-neutral-950" />
             </div>
@@ -141,21 +141,21 @@ export default function HomePage() {
             </Link>
             </div>
 
-            {/* Pembatas hero */}
+            {}
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0">
               <div className="h-px w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               <div className="h-6 w-full bg-gradient-to-b from-white/10 to-transparent" />
             </div>
           </section>
 
-          {/* Trusted-by tepat di bawah hero — logo loop perusahaan */}
+          {}
           <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
             <div className="mx-auto w-full max-w-5xl px-4 pt-8 text-center sm:px-6">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/50">
                 Telah dipercayai oleh
               </p>
             </div>
-            {/* Wadah logo loop full-width: tinggi wajib ada agar ResizeObserver dapat ukuran */}
+            {}
             <div className="w-full max-w-full pb-10 pt-8">
               <div style={{ height: "130px", position: "relative", overflow: "hidden" }}>
                 <LogoLoop
@@ -174,7 +174,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Gallery tepat di bawah hero — scroll / drag untuk geser */}
+          {}
           <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
             <div className="mx-auto w-full max-w-5xl px-4 pt-12 text-center sm:px-6">
               <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
@@ -184,7 +184,7 @@ export default function HomePage() {
                 Drag, scroll, atau pakai tombol panah kiri / kanan untuk menjelajah.
               </p>
             </div>
-            {/* Wadah gallery: tinggi wajib ada, kalau tidak canvas tingginya 0 */}
+            {}
             <div style={{ height: "600px", position: "relative" }}>
               <CircularGallery
                 items={GALLERY_ITEMS}
@@ -198,7 +198,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Konten bawah — tanpa img network, background solid */}
+          {}
           <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-teal-950 to-neutral-950">
             <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-12 sm:px-6 lg:pb-16">
             <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight sm:text-3xl">

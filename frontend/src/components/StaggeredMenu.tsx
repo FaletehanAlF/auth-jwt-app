@@ -279,7 +279,7 @@ export function StaggeredMenu({
       data-position={position}
       data-open={open || undefined}
     >
-      {/* Lapisan warna di belakang panel (efek stagger) */}
+      {}
       <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
         {(() => {
           const raw = colors?.length ? colors.slice(0, 4) : ["#1e1e22", "#35353c"];
@@ -289,7 +289,7 @@ export function StaggeredMenu({
         })()}
       </div>
 
-      {/* Header KAPSUL: logo JobTrack + tombol Menu */}
+      {}
       <header className="staggered-menu-header" aria-label="Main navigation header">
         <div className="sm-logo" aria-label="Logo">
           {logoUrl ? (
@@ -307,7 +307,7 @@ export function StaggeredMenu({
             </Link>
           )}
         </div>
-        {/* Tombol buka/tutup */}
+        {}
         <button
           ref={toggleBtnRef}
           className="sm-toggle"
@@ -331,10 +331,10 @@ export function StaggeredMenu({
         </button>
       </header>
 
-      {/* Panel menu geser ala referensi */}
+      {}
       <aside id="staggered-menu-panel" ref={panelRef as React.Ref<HTMLElement>} className="staggered-menu-panel" aria-hidden={!open}>
         <div className="sm-panel-inner">
-          {/* Daftar menu utama pakai Next Link (tanpa reload), klik langsung tutup */}
+          {}
           <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
             {items?.length ? (
               items.map((it, idx) => (
@@ -350,7 +350,7 @@ export function StaggeredMenu({
               </li>
             )}
           </ul>
-          {/* Blok sosial (opsional) */}
+          {}
           {displaySocials && socialItems?.length > 0 && (
             <div className="sm-socials" aria-label="Social links">
               <h3 className="sm-socials-title">Socials</h3>

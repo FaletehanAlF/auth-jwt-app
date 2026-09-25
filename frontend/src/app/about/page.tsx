@@ -6,13 +6,13 @@ export default function AboutPage() {
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
-        {/* Navbar StaggeredMenu kapsul */}
+        {}
         <SiteMenu />
 
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
-          {/* Hero About */}
+          {}
           <section className="relative flex min-h-[70svh] w-full max-w-full overflow-hidden">
-            {/* Background network image khusus About */}
+            {}
             <div aria-hidden="true" className="absolute inset-0">
               <img
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1920&auto=format&fit=crop"
@@ -42,7 +42,7 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* Konten bawah */}
+          {}
           <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-teal-950 to-neutral-950">
             <section className="mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 lg:py-16">
               <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight sm:text-3xl">
