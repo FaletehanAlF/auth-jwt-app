@@ -37,7 +37,7 @@ export default function RegisterPage() {
       return;
     }
     if (!password) {
-      notify("error", "Password wajib diisi");
+      notify("error", "Kata sandi wajib diisi");
       return;
     }
 
@@ -74,16 +74,16 @@ export default function RegisterPage() {
 
   return (
     <AuthCard
-      title="Create your account"
-      subtitle="Organize your applications, interviews, and career progress in one place."
+      title="Buat akun kamu"
+      subtitle="Atur lamaran, wawancara, dan progres kariermu dalam satu tempat."
       footer={
         <>
-          Already have an account?{" "}
+          Sudah punya akun?{" "}
           <Link
             href="/login"
             className="rounded font-medium text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
           >
-            Sign in
+            Masuk
           </Link>
         </>
       }
@@ -94,7 +94,7 @@ export default function RegisterPage() {
           type="text"
           value={name}
           onChange={setName}
-          placeholder="Name"
+          placeholder="Nama"
           autoComplete="off"
           icon={
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-4 w-4">
@@ -124,7 +124,7 @@ export default function RegisterPage() {
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={setPassword}
-          placeholder="Password"
+          placeholder="Kata sandi"
           autoComplete="new-password"
           icon={
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-4 w-4">
@@ -136,7 +136,7 @@ export default function RegisterPage() {
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+              aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
               className="shrink-0 rounded text-slate-400 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
             >
               {showPassword ? (
@@ -158,7 +158,7 @@ export default function RegisterPage() {
           type="submit"
           className="h-11 w-full rounded-xl bg-neutral-900 text-sm font-medium text-white transition-colors duration-150 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 active:bg-neutral-950"
         >
-          Create account
+          Buat akun
         </button>
       </form>
       <Toast toast={toast} />

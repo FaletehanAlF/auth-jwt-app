@@ -32,7 +32,7 @@ export default function LoginPage() {
       return;
     }
     if (!password) {
-      notify("error", "Password wajib diisi");
+      notify("error", "Kata sandi wajib diisi");
       return;
     }
 
@@ -47,7 +47,7 @@ export default function LoginPage() {
 
       if (data.success === true) {
         localStorage.setItem("token", data.token);
-        notify("success", "Login berhasil! Mengalihkan ke Home…");
+        notify("success", "Masuk berhasil! Mengalihkan ke Beranda…");
         setTimeout(() => router.push("/home"), 800);
         return;
       }
@@ -59,7 +59,7 @@ export default function LoginPage() {
 
       notify(
         "error",
-        firstFieldError ?? data.message ?? "Login gagal. Periksa kembali data Anda.",
+        firstFieldError ?? data.message ?? "Masuk gagal. Periksa kembali data Anda.",
       );
     } catch (error) {
       console.error("Gagal menghubungi server:", error);
@@ -69,16 +69,16 @@ export default function LoginPage() {
 
   return (
     <AuthCard
-      title="Sign in with email"
-      subtitle="Track your career journey and stay on top of every opportunity."
+      title="Masuk dengan email"
+      subtitle="Pantau perjalanan kariermu dan tetap terdepan di setiap peluang."
       footer={
         <>
-          Don&apos;t have an account?{" "}
+          Belum punya akun?{" "}
           <Link
             href="/register"
             className="rounded font-medium text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
           >
-            Sign up
+            Daftar
           </Link>
         </>
       }
@@ -104,7 +104,7 @@ export default function LoginPage() {
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={setPassword}
-          placeholder="Password"
+          placeholder="Kata sandi"
           autoComplete="new-password"
           icon={
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-4 w-4">
@@ -116,7 +116,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+              aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
               className="shrink-0 rounded text-slate-400 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
             >
               {showPassword ? (
@@ -138,7 +138,7 @@ export default function LoginPage() {
           type="submit"
           className="h-11 w-full rounded-xl bg-neutral-900 text-sm font-medium text-white transition-colors duration-150 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 active:bg-neutral-950"
         >
-          Sign in
+          Masuk
         </button>
       </form>
       <Toast toast={toast} />
