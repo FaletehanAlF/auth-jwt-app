@@ -147,13 +147,13 @@ export default function HomePage() {
             </div>
             {}
             <div className="w-full max-w-full pb-12 pt-10">
-              <div style={{ height: "130px", position: "relative", overflow: "hidden" }}>
+              <div style={{ height: "96px", position: "relative", overflow: "hidden" }}>
                 <LogoLoop
                   logos={TRUSTED_LOGOS}
                   speed={60}
                   direction="left"
-                  logoHeight={96}
-                  gap={120}
+                  logoHeight={64}
+                  gap={80}
                   hoverSpeed={0}
                   fadeOut
                   fadeOutColor="#0a0a0a"
