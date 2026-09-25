@@ -82,7 +82,7 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 // Logo tampil abu-abu, berwarna asli saat di-hover (CSS).
 // ============================================================
 const TRUSTED_LOGOS = [
-  { src: "https://logo.clearbit.com/linkedin.com?size=128", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
+  { src: "https://i.pinimg.com/1200x/5c/ab/96/5cab9657d21f9eddf4abce7bd7be36a1.jpg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
   { src: "https://logo.clearbit.com/google.com?size=128", alt: "Google", href: "https://google.com", title: "Google" },
   { src: "https://logo.clearbit.com/nvidia.com?size=128", alt: "NVIDIA", href: "https://nvidia.com", title: "NVIDIA" },
   { src: "https://logo.clearbit.com/amazon.com?size=128", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
