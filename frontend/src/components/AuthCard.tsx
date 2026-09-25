@@ -8,8 +8,6 @@ interface AuthCardProps {
   footer: ReactNode;
 }
 
-// Layout kartu auth terpusat (dipakai login & register).
-// Background tetap JobTrack, isi form berbeda per halaman.
 export default function AuthCard({ title, subtitle, children, footer }: AuthCardProps) {
   return (
     <main className="relative flex h-dvh items-center justify-center overflow-hidden overscroll-none bg-neutral-950 p-4 text-slate-900 sm:p-6">
@@ -68,7 +66,6 @@ export default function AuthCard({ title, subtitle, children, footer }: AuthCard
   );
 }
 
-// Input auth dengan ikon kiri (seperti referensi: abu muda, rounded).
 export function AuthField({
   id,
   type,

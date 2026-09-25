@@ -190,10 +190,6 @@
   }
 }
 
-/* ============================================================
-   Varian "trusted-by": default abu-abu, hover warna asli.
-   Dipakai di homepage di bawah hero.
-   ============================================================ */
 .logoloop--grayscale .logoloop__item img,
 .logoloop--grayscale .logoloop__item .logoloop__node svg {
   filter: grayscale(1);
@@ -206,13 +202,6 @@
   opacity: 1;
 }
 
-/* Logo tampil langsung tanpa bingkai: ukuran mengikuti
-   prop logoHeight. Efek abu-abu -> warna asli saat hover
-   diatur oleh .logoloop--grayscale di atas. */
-
-/* Slot PERSEGI TETAP: tiap logo dikunci dalam kotak berukuran
-   sama (lebar = tinggi = logoHeight), transparan tanpa card.
-   Gambar di dalamnya contain agar utuh terlihat. */
 .logoloop--square .logoloop__link,
 .logoloop--square .logoloop__item > img,
 .logoloop--square .logoloop__item > .logoloop__node,
@@ -233,7 +222,6 @@
   object-fit: contain;
 }
 
-/* Ikon SVG (react-icons): transparan, 80% dari slot agar clean */
 .logoloop--square .logoloop__node svg {
   width: 80%;
   height: 80%;

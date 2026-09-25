@@ -75,20 +75,6 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
   },
 ];
 
-// ============================================================
-// LOGO PERUSAHAAN — GANTI DI SINI
-// Logo ASLI transparan (tanpa background putih) dari
-// public/logos/*.svg — file lokal, tanpa request network,
-// jadi tidak bisa broken/404.
-// - Google, LinkedIn, Amazon, Microsoft, Apple, Tesla: img src
-// - NVIDIA: ikon SVG (Wikimedia sedang rate-limit, file
-//   menyusul — tinggal taruh public/logos/nvidia.svg lalu
-//   ganti item di bawah dengan src seperti lainnya)
-// Tampil abu-abu, berwarna asli saat di-hover (CSS).
-// Custom: tambah file ke public/logos/, tambah item src.
-// (Pakai SVG/PNG transparan agar menyatu background gelap.
-//  JPG selalu membawa background kotak — tidak disarankan.)
-// ============================================================
 const TRUSTED_LOGOS = [
   { src: "/logos/linkedin.svg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
   { src: "/logos/google.svg", alt: "Google", href: "https://google.com", title: "Google" },
@@ -99,11 +85,6 @@ const TRUSTED_LOGOS = [
   { src: "/logos/tesla.svg", alt: "Tesla Inc", href: "https://tesla.com", title: "Tesla Inc" },
 ];
 
-// ============================================================
-// FOTO GALLERY — GANTI DI SINI (img network bebas)
-// Caranya: ganti `image` dengan URL foto apapun,
-// ganti `text` dengan label di bawah tiap foto.
-// ============================================================
 const GALLERY_ITEMS: GalleryItem[] = [
   { image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop", text: "Teamwork" },
   { image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop", text: "Collaboration" },

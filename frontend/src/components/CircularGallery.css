@@ -1,4 +1,3 @@
-/* Wrapper utama gallery — ukuran diatur dari parent (misal height: 600px) */
 .circular-gallery {
   width: 100%;
   height: 100%;
@@ -6,12 +5,10 @@
   cursor: grab;
 }
 
-/* Saat user menekan / drag gallery */
 .circular-gallery:active {
   cursor: grabbing;
 }
 
-/* Aksesibilitas: fokus keyboard terlihat jelas */
 .circular-gallery:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 4px;

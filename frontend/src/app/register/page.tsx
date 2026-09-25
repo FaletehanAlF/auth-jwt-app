@@ -28,7 +28,6 @@ export default function RegisterPage() {
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Validasi kosong: notifikasi hanya lewat toast.
     if (!name.trim()) {
       notify("error", "Nama wajib diisi");
       return;

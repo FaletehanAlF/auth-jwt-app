@@ -27,7 +27,6 @@ export default function LoginPage() {
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Validasi kosong: notifikasi hanya lewat toast.
     if (!email.trim()) {
       notify("error", "Email wajib diisi");
       return;

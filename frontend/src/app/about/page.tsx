@@ -1,4 +1,3 @@
-// Halaman About Us — tujuan menu "About Us" di navbar.
 import Link from "next/link";
 import SiteMenu from "../../components/SiteMenu";
 import Footer from "../../components/Footer";
