@@ -100,10 +100,10 @@ class Title {
     const { texture, width, height } = createTextTexture(opts.gl, opts.text, opts.font, opts.textColor);
     const geometry = new Plane(opts.gl);
     const program = new Program(opts.gl, {
-      vertex: `attribute vec3 position; attribute vec2 uv; uniform mat4 modelViewMatrix; uniform mat4 projectionMatrix; varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`, // shader posisi standar
-      fragment: `precision highp float; uniform sampler2D tMap; varying vec2 vUv; void main(){ vec4 color=texture2D(tMap,vUv); if(color.a<0.1) discard; gl_FragColor=color; }`, // tampilkan teks, buang piksel transparan
-      uniforms: { tMap: { value: texture } }, // masukkan tekstur teks
-      transparent: true, // background transparan
+      vertex: `attribute vec3 position; attribute vec2 uv; uniform mat4 modelViewMatrix; uniform mat4 projectionMatrix; varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`, 
+      fragment: `precision highp float; uniform sampler2D tMap; varying vec2 vUv; void main(){ vec4 color=texture2D(tMap,vUv); if(color.a<0.1) discard; gl_FragColor=color; }`, 
+      uniforms: { tMap: { value: texture } },
+      transparent: true,
     });
     this.mesh = new Mesh(opts.gl, { geometry, program });
     const textHeight = (opts.plane.scale.y as number) * 0.15;
@@ -145,19 +145,19 @@ class Media {
     this.font = opts.font;
     const texture = new Texture(opts.gl, { generateMipmaps: true });
     this.program = new Program(opts.gl, {
-      depthTest: false, // tidak perlu depth (semua kartu sejajar)
-      depthWrite: false, // tidak tulis depth buffer
-      vertex: `precision highp float; attribute vec3 position; attribute vec2 uv; uniform mat4 modelViewMatrix; uniform mat4 projectionMatrix; uniform float uTime; uniform float uSpeed; varying vec2 vUv; void main(){ vUv=uv; vec3 p=position; p.z=(sin(p.x*4.0+uTime)*1.5+cos(p.y*2.0+uTime)*1.5)*(0.1+uSpeed*0.5); gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0); }`, // efek gelombang halus saat bergerak
-      fragment: `precision highp float; uniform vec2 uImageSizes; uniform vec2 uPlaneSizes; uniform sampler2D tMap; uniform float uBorderRadius; varying vec2 vUv; float roundedBoxSDF(vec2 p, vec2 b, float r){ vec2 d=abs(p)-b; return length(max(d,vec2(0.0)))+min(max(d.x,d.y),0.0)-r; } void main(){ vec2 ratio=vec2(min((uPlaneSizes.x/uPlaneSizes.y)/(uImageSizes.x/uImageSizes.y),1.0), min((uPlaneSizes.y/uPlaneSizes.x)/(uImageSizes.y/uImageSizes.x),1.0)); vec2 uv=vec2(vUv.x*ratio.x+(1.0-ratio.x)*0.5, vUv.y*ratio.y+(1.0-ratio.y)*0.5); vec4 color=texture2D(tMap,uv); float d=roundedBoxSDF(vUv-0.5, vec2(0.5-uBorderRadius), uBorderRadius); gl_FragColor=vec4(color.rgb, 1.0-smoothstep(-0.002,0.002,d)); }`, // cover-crop foto + sudut membulat anti-aliasing
+      depthTest: false,
+      depthWrite: false,
+      vertex: `precision highp float; attribute vec3 position; attribute vec2 uv; uniform mat4 modelViewMatrix; uniform mat4 projectionMatrix; uniform float uTime; uniform float uSpeed; varying vec2 vUv; void main(){ vUv=uv; vec3 p=position; p.z=(sin(p.x*4.0+uTime)*1.5+cos(p.y*2.0+uTime)*1.5)*(0.1+uSpeed*0.5); gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0); }`, 
+      fragment: `precision highp float; uniform vec2 uImageSizes; uniform vec2 uPlaneSizes; uniform sampler2D tMap; uniform float uBorderRadius; varying vec2 vUv; float roundedBoxSDF(vec2 p, vec2 b, float r){ vec2 d=abs(p)-b; return length(max(d,vec2(0.0)))+min(max(d.x,d.y),0.0)-r; } void main(){ vec2 ratio=vec2(min((uPlaneSizes.x/uPlaneSizes.y)/(uImageSizes.x/uImageSizes.y),1.0), min((uPlaneSizes.y/uPlaneSizes.x)/(uImageSizes.y/uImageSizes.x),1.0)); vec2 uv=vec2(vUv.x*ratio.x+(1.0-ratio.x)*0.5, vUv.y*ratio.y+(1.0-ratio.y)*0.5); vec4 color=texture2D(tMap,uv); float d=roundedBoxSDF(vUv-0.5, vec2(0.5-uBorderRadius), uBorderRadius); gl_FragColor=vec4(color.rgb, 1.0-smoothstep(-0.002,0.002,d)); }`, 
       uniforms: {
-        tMap: { value: texture }, // foto
-        uPlaneSizes: { value: [0, 0] }, // ukuran kartu (diisi saat resize)
-        uImageSizes: { value: [0, 0] }, // ukuran asli foto (diisi saat load)
-        uSpeed: { value: 0 }, // kecepatan (untuk goyang)
-        uTime: { value: 100 * Math.random() }, // waktu acak tiap kartu
-        uBorderRadius: { value: this.borderRadius }, // radius sudut
+        tMap: { value: texture },
+        uPlaneSizes: { value: [0, 0] },
+        uImageSizes: { value: [0, 0] },
+        uSpeed: { value: 0 },
+        uTime: { value: 100 * Math.random() },
+        uBorderRadius: { value: this.borderRadius },
       },
-      transparent: true, // sudut bulat butuh transparansi
+      transparent: true,
     });
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -280,7 +280,7 @@ class GalleryApp {
     this.resize();
     this.planeGeometry = new Plane(this.gl, { heightSegments: 50, widthSegments: 100 });
     const doubled = opts.items.concat(opts.items);
-    this.medias = doubled.map((data, index) => new Media({ // buat tiap kartu
+    this.medias = doubled.map((data, index) => new Media({
       geometry: this.planeGeometry, gl: this.gl, image: data.image, index,
       length: doubled.length, scene: this.scene, screen: this.screen,
       text: data.text, viewport: this.viewport, bend: opts.bend,
@@ -351,14 +351,14 @@ const DEFAULT_ITEMS: GalleryItem[] = [
 ];
 
 export default function CircularGallery({
-  items, // daftar foto custom (opsional)
-  bend = 3, // lengkungan default
-  textColor = "#ffffff", // warna teks default putih
-  borderRadius = 0.05, // sudut sedikit bulat
-  font = "bold 30px Poppins", // font default (pakai Poppins yang sudah ada di app)
-  fontUrl, // URL font custom (opsional)
-  scrollSpeed = 2, // kecepatan default
-  scrollEase = 0.05, // kehalusan default
+  items,
+  bend = 3,
+  textColor = "#ffffff",
+  borderRadius = 0.05,
+  font = "bold 30px Poppins",
+  fontUrl,
+  scrollSpeed = 2,
+  scrollEase = 0.05,
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const propsRef = useRef({ items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase });
@@ -371,14 +371,14 @@ export default function CircularGallery({
     const p = propsRef.current;
     resolveFont(p.font, p.fontUrl).then((resolvedFont) => {
       if (!alive || !containerRef.current) return;
-      app = new GalleryApp(containerRef.current!, { // buat gallery WebGL
-        items: p.items?.length ? p.items : DEFAULT_ITEMS, // pakai custom / default
-        bend: p.bend, // teruskan lengkungan
-        textColor: p.textColor, // teruskan warna teks
-        borderRadius: p.borderRadius, // teruskan radius
-        font: resolvedFont, // pakai font yang sudah siap
-        scrollSpeed: p.scrollSpeed, // teruskan kecepatan
-        scrollEase: p.scrollEase, // teruskan kehalusan
+      app = new GalleryApp(containerRef.current!, {
+        items: p.items?.length ? p.items : DEFAULT_ITEMS,
+        bend: p.bend,
+        textColor: p.textColor,
+        borderRadius: p.borderRadius,
+        font: resolvedFont,
+        scrollSpeed: p.scrollSpeed,
+        scrollEase: p.scrollEase,
       });
     });
     return () => {
