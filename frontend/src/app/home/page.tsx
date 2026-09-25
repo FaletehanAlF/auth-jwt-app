@@ -111,21 +111,21 @@ export default function HomePage() {
 
             <div className="relative m-auto w-full max-w-5xl px-4 py-40 text-center sm:px-6 sm:py-48 lg:py-56">
               <h1 className="mx-auto mt-0 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
-                Tracking that flows
+                Pelacakan yang mengalir
                 <br />
-                with your career.
+                bersama kariermu.
               </h1>
 
             <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base">
-              JobTrack brings your job applications, interviews, and career
-              progress into one place — beautifully and effortlessly.
+              JobTrack menghadirkan lamaran kerja, wawancara, dan progres
+              kariermu dalam satu tempat — rapi dan tanpa ribet.
             </p>
 
             <Link
               href="/profile"
               className="mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-blue-600 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
             >
-              Start Tracking
+              Mulai Melacak
               <span aria-hidden="true">→</span>
             </Link>
             </div>
@@ -166,10 +166,10 @@ export default function HomePage() {
           <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
             <div className="mx-auto w-full max-w-5xl px-4 pt-12 text-center sm:px-6">
               <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Moments from our community
+                Momen dari komunitas kami
               </h2>
               <p className="mx-auto mt-2 max-w-xl text-sm text-white/60">
-                Drag, scroll, atau pakai tombol panah kiri / kanan untuk menjelajah.
+                Seret, gulir, atau pakai tombol panah kiri / kanan untuk menjelajah.
               </p>
             </div>
             {}
@@ -190,7 +190,7 @@ export default function HomePage() {
           <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-blue-950 to-neutral-950">
             <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-12 sm:px-6 lg:pb-16">
             <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              Everything you need to manage your job search
+              Semua yang kamu butuhkan untuk mengelola pencarian kerja
             </h2>
             <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {features.map((feature) => (
@@ -207,15 +207,15 @@ export default function HomePage() {
           <section className="mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6">
             <div className="rounded-lg border border-white/10 bg-neutral-950 px-6 py-10 text-center sm:px-10 sm:py-12">
               <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Stay organized.
+                Tetap terorganisir.
                 <br />
-                Keep moving forward.
+                Terus melangkah maju.
               </h2>
               <Link
                 href="/profile"
                 className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-white px-6 text-sm font-medium text-neutral-900 transition-colors duration-150 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
               >
-                Start Tracking
+                Mulai Melacak
               </Link>
             </div>
           </section>

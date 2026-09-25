@@ -5,7 +5,7 @@ export default function Footer() {
         <p className="font-display text-sm font-semibold tracking-tight text-white">
           JobTrack
         </p>
-        <p className="text-xs text-white/60">Career &amp; Job Application Tracker</p>
+        <p className="text-xs text-white/60">Pelacak Karier &amp; Lamaran Kerja</p>
       </div>
     </footer>
   );
