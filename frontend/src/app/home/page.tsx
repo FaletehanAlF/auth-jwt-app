@@ -6,6 +6,7 @@ import Footer from "../../components/Footer";
 import LogoLoop from "../../components/LogoLoop";
 import { TRUSTED_LOGOS } from "../../data/trustedLogos";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
+import TechText from "../../components/TechText";
 
 const features: { title: string; desc: string; icon: ReactNode }[] = [
   {
@@ -128,11 +129,39 @@ export default function HomePage() {
             </div>
 
             <div className="relative m-auto w-full max-w-5xl px-4 py-40 text-center sm:px-6 sm:py-48 lg:py-56">
-              <h1 className="mx-auto mt-0 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
-                Pelacakan yang mengalir
-                <br />
-                bersama kariermu.
+              <h1 className="sr-only">
+                Pelacakan yang mengalir bersama kariermu.
               </h1>
+              <div aria-hidden="true" className="mx-auto w-full max-w-4xl font-display">
+                <div style={{ width: "100%", height: "clamp(72px, 12vw, 150px)", position: "relative" }}>
+                  <TechText
+                    text="Pelacakan yang mengalir"
+                    fontWeight={600}
+                    fontSize={120}
+                    letterSpacing={-0.05}
+                    color="#ffffff"
+                    accentColor="#60a5fa"
+                    reveal="letter"
+                    dashLength={4}
+                    dashGap={2}
+                    specks={15}
+                  />
+                </div>
+                <div style={{ width: "100%", height: "clamp(72px, 12vw, 150px)", position: "relative" }}>
+                  <TechText
+                    text="bersama kariermu."
+                    fontWeight={600}
+                    fontSize={120}
+                    letterSpacing={-0.05}
+                    color="#ffffff"
+                    accentColor="#60a5fa"
+                    reveal="letter"
+                    dashLength={4}
+                    dashGap={2}
+                    specks={15}
+                  />
+                </div>
+              </div>
 
             <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base">
               JobTrack menghadirkan lamaran kerja, wawancara, dan progres
