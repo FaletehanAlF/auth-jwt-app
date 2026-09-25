@@ -161,20 +161,20 @@ export default function HomePage() {
 
           {/* Trusted-by tepat di bawah hero — logo loop perusahaan */}
           <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
-            <div className="mx-auto w-full max-w-5xl px-4 pt-10 text-center sm:px-6">
+            <div className="mx-auto w-full max-w-5xl px-4 pt-8 text-center sm:px-6">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/50">
                 Telah dipercayai oleh
               </p>
             </div>
-            {/* Wadah logo loop: tinggi wajib ada agar ResizeObserver dapat ukuran */}
-            <div className="mx-auto w-full max-w-5xl px-4 pb-10 pt-6 sm:px-6">
-              <div style={{ height: "64px", position: "relative", overflow: "hidden" }}>
+            {/* Wadah logo loop full-width: tinggi wajib ada agar ResizeObserver dapat ukuran */}
+            <div className="w-full max-w-full pb-8 pt-4">
+              <div style={{ height: "56px", position: "relative", overflow: "hidden" }}>
                 <LogoLoop
                   logos={TRUSTED_LOGOS}
                   speed={60}
                   direction="left"
-                  logoHeight={28}
-                  gap={32}
+                  logoHeight={26}
+                  gap={16}
                   hoverSpeed={0}
                   scaleOnHover
                   fadeOut
