@@ -168,13 +168,13 @@ export default function HomePage() {
             </div>
             {/* Wadah logo loop full-width: tinggi wajib ada agar ResizeObserver dapat ukuran */}
             <div className="w-full max-w-full pb-8 pt-4">
-              <div style={{ height: "128px", position: "relative", overflow: "hidden" }}>
+              <div style={{ height: "150px", position: "relative", overflow: "hidden" }}>
                 <LogoLoop
                   logos={TRUSTED_LOGOS}
                   speed={60}
                   direction="left"
-                  logoHeight={64}
-                  gap={16}
+                  logoHeight={80}
+                  gap={28}
                   hoverSpeed={0}
                   scaleOnHover
                   fadeOut
