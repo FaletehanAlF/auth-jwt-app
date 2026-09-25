@@ -9,8 +9,8 @@ import CircularGallery, { type GalleryItem } from "../../components/CircularGall
 
 const features: { title: string; desc: string; icon: ReactNode }[] = [
   {
-    title: "Application Tracking",
-    desc: "Keep track of every job application in one place.",
+    title: "Pelacakan Lamaran",
+    desc: "Pantau setiap lamaran kerjamu dalam satu tempat.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
         <rect
@@ -32,8 +32,8 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
     ),
   },
   {
-    title: "Interview Management",
-    desc: "Stay organized and keep important interview information within reach.",
+    title: "Manajemen Wawancara",
+    desc: "Tetap rapi dan simpan informasi wawancara penting dalam jangkauan.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
         <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
@@ -54,8 +54,8 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
     ),
   },
   {
-    title: "Career Progress",
-    desc: "Keep your job search organized and see your progress clearly.",
+    title: "Progres Karier",
+    desc: "Atur pencarian kerjamu dan lihat progresmu dengan jelas.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
         <path
@@ -76,14 +76,14 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 ];
 
 const GALLERY_ITEMS: GalleryItem[] = [
-  { image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop", text: "Teamwork" },
-  { image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop", text: "Collaboration" },
-  { image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop", text: "Meeting" },
-  { image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop", text: "Workspace" },
-  { image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=800&auto=format&fit=crop", text: "Interview" },
-  { image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop", text: "Presentation" },
-  { image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800&auto=format&fit=crop", text: "Discussion" },
-  { image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop", text: "Career" },
+  { image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop", text: "Kerja Tim" },
+  { image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop", text: "Kolaborasi" },
+  { image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop", text: "Rapat" },
+  { image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop", text: "Ruang Kerja" },
+  { image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=800&auto=format&fit=crop", text: "Wawancara" },
+  { image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop", text: "Presentasi" },
+  { image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=800&auto=format&fit=crop", text: "Diskusi" },
+  { image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop", text: "Karier" },
 ];
 
 export default function HomePage() {
