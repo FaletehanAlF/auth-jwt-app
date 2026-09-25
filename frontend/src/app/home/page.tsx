@@ -150,7 +150,7 @@ export default function HomePage() {
 
           {}
           <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
-            <div className="mx-auto w-full max-w-5xl px-4 pt-8 text-center sm:px-6">
+            <div className="mx-auto w-full max-w-5xl px-4 pt-10 text-center sm:px-6">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/50">
                 Telah dipercayai oleh
               </p>
