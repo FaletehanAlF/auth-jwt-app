@@ -86,9 +86,9 @@ const TRUSTED_LOGOS = [
   { src: "https://i.pinimg.com/736x/45/20/dd/4520ddfc56208707045c56232e946f7f.jpg", alt: "Google", href: "https://google.com", title: "Google" },
   { src: "https://i.pinimg.com/1200x/5c/5f/7c/5c5f7cba8ab12518de6d36356da572a7.jpg", alt: "NVIDIA", href: "https://nvidia.com", title: "NVIDIA" },
   { src: "https://i.pinimg.com/736x/ad/78/5a/ad785a9fb1587a496092b3d2f4e912b8.jpg", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
-  { src: "https://logo.clearbit.com/microsoft.com?size=128", alt: "Microsoft", href: "https://microsoft.com", title: "Microsoft" },
-  { src: "https://logo.clearbit.com/apple.com?size=128", alt: "Apple Inc", href: "https://apple.com", title: "Apple Inc" },
-  { src: "https://logo.clearbit.com/tesla.com?size=128", alt: "Tesla Inc", href: "https://tesla.com", title: "Tesla Inc" },
+  { src: "https://i.pinimg.com/1200x/08/48/58/084858e17760cdcf8eccb77c6554f978.jpg", alt: "Microsoft", href: "https://microsoft.com", title: "Microsoft" },
+  { src: "https://i.pinimg.com/736x/60/6b/c0/606bc0717982547e555a514b479365a0.jpg", alt: "Apple Inc", href: "https://apple.com", title: "Apple Inc" },
+  { src: "https://i.pinimg.com/1200x/29/92/5a/29925ae71627c8ba50710db01fcd2c57.jpg", alt: "Tesla Inc", href: "https://tesla.com", title: "Tesla Inc" },
 ];
 
 // ============================================================
