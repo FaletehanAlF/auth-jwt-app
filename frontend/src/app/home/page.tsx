@@ -156,7 +156,7 @@ export default function HomePage() {
               </p>
             </div>
             {}
-            <div className="w-full max-w-full pb-10 pt-8">
+            <div className="w-full max-w-full pb-12 pt-10">
               <div style={{ height: "130px", position: "relative", overflow: "hidden" }}>
                 <LogoLoop
                   logos={TRUSTED_LOGOS}
