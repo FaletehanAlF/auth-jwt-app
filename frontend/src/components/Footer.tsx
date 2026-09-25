@@ -14,8 +14,8 @@ const CONTACT = ["Email", "LinkedIn", "GitHub"];
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-transparent px-4 pb-10 sm:px-6">
-      <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 px-6 py-10 sm:px-10 sm:py-12">
+    <footer className="w-full border-t border-white/10 bg-neutral-900">
+      <div className="w-full overflow-hidden px-6 py-10 sm:px-10 sm:py-12">
         <div className="grid gap-10 md:grid-cols-[1.1fr_1.9fr]">
           <div>
             <p className="font-display text-lg font-bold tracking-tight text-white">
@@ -102,7 +102,7 @@ export default function Footer() {
         </div>
 
         <div aria-hidden="true" className="mt-8 select-none">
-          <p className="text-center font-display text-[clamp(3rem,13.5vw,9.5rem)] font-bold uppercase leading-[0.9] tracking-tight text-teal-300/20">
+          <p className="text-center font-display text-[clamp(3.5rem,15vw,12rem)] font-bold uppercase leading-[0.9] tracking-tight text-teal-300/20">
             Jobtrack
           </p>
         </div>
