@@ -137,7 +137,7 @@ export default function RegisterPage() {
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
-              className="shrink-0 rounded text-slate-400 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600"
+              className="shrink-0 rounded text-slate-400 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
             >
               {showPassword ? (
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-4 w-4">

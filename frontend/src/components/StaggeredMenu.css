@@ -55,7 +55,7 @@
 }
 
 .staggered-menu-wrapper[data-open] .sm-logo-badge {
-  background: rgba(94, 234, 212, 0.15);
+  background: rgba(96, 165, 250, 0.18);
   border-color: rgba(255, 255, 255, 0.15);
 }
 
@@ -95,7 +95,7 @@
   width: 36px;
   height: 36px;
   border-radius: 9999px;
-  background: rgba(94, 234, 212, 0.15);
+  background: rgba(96, 165, 250, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -387,7 +387,7 @@
   }
 
   .staggered-menu-wrapper[data-open] .sm-logo-badge {
-    background: rgba(20, 184, 166, 0.12);
+    background: rgba(37, 99, 235, 0.14);
     border-color: rgba(0, 0, 0, 0.1);
   }
 }

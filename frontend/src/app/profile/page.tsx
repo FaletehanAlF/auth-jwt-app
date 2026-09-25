@@ -79,14 +79,14 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-linear-to-tr from-teal-800 via-teal-950 to-neutral-950 text-white">
+    <div className="relative min-h-screen bg-linear-to-tr from-blue-900 via-blue-950 to-neutral-950 text-white">
       <div aria-hidden="true" className="pointer-events-none fixed inset-0">
         <ShapeGrid
           direction="diagonal"
           speed={0.4}
           squareSize={44}
-          borderColor="rgba(94, 234, 212, 0.22)"
-          hoverFillColor="rgba(45, 212, 191, 0.35)"
+          borderColor="rgba(147, 197, 253, 0.22)"
+          hoverFillColor="rgba(59, 130, 246, 0.35)"
           shape="square"
           hoverTrailAmount={5}
         />
@@ -138,7 +138,7 @@ export default function ProfilePage() {
                       role="status"
                       className="mt-3 flex items-center gap-2 text-sm text-white/70"
                     >
-                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-teal-300" />
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-blue-400" />
                       Mengunggah gambar...
                     </p>
                   )}
