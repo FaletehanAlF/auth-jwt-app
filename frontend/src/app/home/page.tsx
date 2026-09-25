@@ -180,7 +180,7 @@ export default function HomePage() {
                   fadeOut
                   fadeOutColor="#0a0a0a"
                   ariaLabel="Perusahaan yang mempercayai kami"
-                  className="logoloop--grayscale"
+                  className="logoloop--grayscale logoloop--square"
                 />
               </div>
             </div>
