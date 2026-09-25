@@ -32,22 +32,22 @@ export type StaggeredMenuProps = {
 };
 
 export function StaggeredMenu({
-  position = "right", // default panel dari kanan
-  colors = ["#B497CF", "#5227FF"], // default ungu React Bits
-  items = [], // default kosong
-  socialItems = [], // default kosong
-  displaySocials = true, // default tampilkan sosial
-  displayItemNumbering = true, // default tampilkan nomor
-  className, // class tambahan
-  logoUrl, // logo custom (opsional)
-  menuButtonColor = "#fff", // tombol putih saat tertutup
-  openMenuButtonColor = "#fff", // tombol putih saat terbuka
-  accentColor = "#5227FF", // aksen ungu saat hover
-  changeMenuColorOnOpen = true, // animasi warna tombol aktif
-  isFixed = false, // default menempel di parent
-  closeOnClickAway = true, // klik luar menutup
-  onMenuOpen, // callback buka
-  onMenuClose, // callback tutup
+  position = "right",
+  colors = ["#B497CF", "#5227FF"],
+  items = [],
+  socialItems = [],
+  displaySocials = true,
+  displayItemNumbering = true,
+  className,
+  logoUrl,
+  menuButtonColor = "#fff",
+  openMenuButtonColor = "#fff",
+  accentColor = "#5227FF",
+  changeMenuColorOnOpen = true,
+  isFixed = false,
+  closeOnClickAway = true,
+  onMenuOpen,
+  onMenuClose,
 }: StaggeredMenuProps) {
 
   const [open, setOpen] = useState(false);
@@ -170,10 +170,10 @@ export function StaggeredMenu({
     closeTweenRef.current?.kill();
     const offscreen = position === "left" ? -100 : 100;
     closeTweenRef.current = gsap.to([...layers, panel], {
-      xPercent: offscreen, // geser keluar
-      duration: 0.32, // cepat
+      xPercent: offscreen,
+      duration: 0.32,
       ease: "power3.in",
-      overwrite: "auto", // timpa animasi lama
+      overwrite: "auto",
       onComplete: () => {
         gsap.set(panel.querySelectorAll(".sm-panel-itemLabel"), { yPercent: 140, rotate: 10 });
         gsap.set(panel.querySelectorAll(".sm-panel-list[data-numbering] .sm-panel-item"), { "--sm-num-opacity": 0 } as gsap.TweenVars);
