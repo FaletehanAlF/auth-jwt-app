@@ -14,4 +14,5 @@ export const TRUSTED_LOGOS: LogoItem[] = [
   { src: "/logos/docker.svg", alt: "Docker", href: "https://docker.com", title: "Docker" },
   { src: "/logos/figma.svg", alt: "Figma", href: "https://figma.com", title: "Figma" },
   { src: "/logos/samsung.svg", alt: "Samsung", href: "https://samsung.com", title: "Samsung" },
+  { src: "/logos/openai.svg", alt: "OpenAI", href: "https://openai.com", title: "OpenAI" },
 ];
