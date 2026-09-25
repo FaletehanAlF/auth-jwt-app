@@ -82,7 +82,7 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 // Logo tampil abu-abu, berwarna asli saat di-hover (CSS).
 // ============================================================
 const TRUSTED_LOGOS = [
-  { src: "https://i.pinimg.com/1200x/5c/ab/96/5cab9657d21f9eddf4abce7bd7be36a1.jpg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
+  { src: "https://i.pinimg.com/736x/ad/a1/7c/ada17c578743c123f075eddc7ea0d449.jpg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
   { src: "https://logo.clearbit.com/google.com?size=128", alt: "Google", href: "https://google.com", title: "Google" },
   { src: "https://logo.clearbit.com/nvidia.com?size=128", alt: "NVIDIA", href: "https://nvidia.com", title: "NVIDIA" },
   { src: "https://logo.clearbit.com/amazon.com?size=128", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
@@ -168,19 +168,19 @@ export default function HomePage() {
             </div>
             {/* Wadah logo loop full-width: tinggi wajib ada agar ResizeObserver dapat ukuran */}
             <div className="w-full max-w-full pb-8 pt-4">
-              <div style={{ height: "150px", position: "relative", overflow: "hidden" }}>
+              <div style={{ height: "130px", position: "relative", overflow: "hidden" }}>
                 <LogoLoop
                   logos={TRUSTED_LOGOS}
                   speed={60}
                   direction="left"
-                  logoHeight={80}
+                  logoHeight={96}
                   gap={28}
                   hoverSpeed={0}
                   scaleOnHover
                   fadeOut
                   fadeOutColor="#0a0a0a"
                   ariaLabel="Perusahaan yang mempercayai kami"
-                  className="logoloop--grayscale logoloop--trusted"
+                  className="logoloop--grayscale"
                 />
               </div>
             </div>

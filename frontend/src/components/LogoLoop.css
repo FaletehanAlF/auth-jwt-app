@@ -204,31 +204,6 @@
   opacity: 1;
 }
 
-/* Bingkai putih PERSEGI agar logo perusahaan tetap rapi di background
-   gelap dan gambarnya utuh terlihat (bukan pil memanjang).
-   Ukuran kotak mengikuti --logoloop-logoHeight, jadi cukup ubah
-   prop logoHeight untuk memperbesar/memperkecil. */
-.logoloop--trusted .logoloop__link,
-.logoloop--trusted .logoloop__item > img {
-  background: #ffffff;
-  border-radius: 12px;
-  box-sizing: border-box;
-  width: calc(var(--logoloop-logoHeight) + 28px);
-  height: calc(var(--logoloop-logoHeight) + 28px);
-  padding: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-}
-
-.logoloop--trusted .logoloop__link img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-}
-
-.logoloop--trusted .logoloop__item > img {
-  object-fit: contain;
-}
+/* Logo tampil langsung tanpa bingkai: ukuran mengikuti
+   prop logoHeight. Efek abu-abu -> warna asli saat hover
+   diatur oleh .logoloop--grayscale di atas. */
