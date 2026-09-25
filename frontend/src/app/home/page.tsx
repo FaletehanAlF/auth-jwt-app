@@ -174,7 +174,7 @@ export default function HomePage() {
                   speed={60}
                   direction="left"
                   logoHeight={96}
-                  gap={72}
+                  gap={96}
                   hoverSpeed={0}
                   fadeOut
                   fadeOutColor="#0a0a0a"
