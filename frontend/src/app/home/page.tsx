@@ -4,6 +4,15 @@ import SiteMenu from "../../components/SiteMenu";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
 import LogoLoop from "../../components/LogoLoop";
+import {
+  SiAmazon,
+  SiApple,
+  SiGoogle,
+  SiLinkedin,
+  SiMicrosoft,
+  SiNvidia,
+  SiTesla,
+} from "react-icons/si";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
 
 const features: { title: string; desc: string; icon: ReactNode }[] = [
@@ -75,20 +84,21 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 ];
 
 // ============================================================
-// LOGO PERUSAHAAN — GANTI DI SINI (custom img bebas)
-// Caranya: ganti `src` dengan URL / path gambar apapun,
-// contoh lokal: "/logos/perusahaan-saya.png"
-// `href` opsional: link saat logo diklik.
-// Logo tampil abu-abu, berwarna asli saat di-hover (CSS).
+// LOGO PERUSAHAAN — GANTI DI SINI
+// Ikon SVG transparan (tanpa background putih). Warna = warna
+// asli tiap brand; tampil abu-abu, berwarna saat di-hover (CSS).
+// Mau pakai gambar sendiri? Ganti salah satu item dengan:
+// { src: "/logos/perusahaan-saya.png", alt: "Nama", href: "https://..." }
+// (pakai PNG transparan agar menyatu dengan background gelap)
 // ============================================================
 const TRUSTED_LOGOS = [
-  { src: "https://i.pinimg.com/736x/29/fe/f9/29fef91506c1750b02a2541b3f73f8d2.jpg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
-  { src: "https://i.pinimg.com/736x/45/20/dd/4520ddfc56208707045c56232e946f7f.jpg", alt: "Google", href: "https://google.com", title: "Google" },
-  { src: "https://i.pinimg.com/1200x/5c/5f/7c/5c5f7cba8ab12518de6d36356da572a7.jpg", alt: "NVIDIA", href: "https://nvidia.com", title: "NVIDIA" },
-  { src: "https://i.pinimg.com/736x/ad/78/5a/ad785a9fb1587a496092b3d2f4e912b8.jpg", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
-  { src: "https://i.pinimg.com/1200x/7a/07/25/7a0725f23eb6f99590406d7273976586.jpg", alt: "Microsoft", href: "https://microsoft.com", title: "Microsoft" },
-  { src: "https://i.pinimg.com/736x/60/6b/c0/606bc0717982547e555a514b479365a0.jpg", alt: "Apple Inc", href: "https://apple.com", title: "Apple Inc" },
-  { src: "https://i.pinimg.com/1200x/29/92/5a/29925ae71627c8ba50710db01fcd2c57.jpg", alt: "Tesla Inc", href: "https://tesla.com", title: "Tesla Inc" },
+  { node: <SiLinkedin color="#0A66C2" />, title: "LinkedIn", href: "https://linkedin.com" },
+  { node: <SiGoogle color="#4285F4" />, title: "Google", href: "https://google.com" },
+  { node: <SiNvidia color="#76B900" />, title: "NVIDIA", href: "https://nvidia.com" },
+  { node: <SiAmazon color="#FF9900" />, title: "Amazon", href: "https://amazon.com" },
+  { node: <SiMicrosoft color="#5D6C7A" />, title: "Microsoft", href: "https://microsoft.com" },
+  { node: <SiApple color="#FFFFFF" />, title: "Apple Inc", href: "https://apple.com" },
+  { node: <SiTesla color="#CC0000" />, title: "Tesla Inc", href: "https://tesla.com" },
 ];
 
 // ============================================================
@@ -167,7 +177,7 @@ export default function HomePage() {
               </p>
             </div>
             {/* Wadah logo loop full-width: tinggi wajib ada agar ResizeObserver dapat ukuran */}
-            <div className="w-full max-w-full pb-8 pt-4">
+            <div className="w-full max-w-full pb-10 pt-8">
               <div style={{ height: "130px", position: "relative", overflow: "hidden" }}>
                 <LogoLoop
                   logos={TRUSTED_LOGOS}
