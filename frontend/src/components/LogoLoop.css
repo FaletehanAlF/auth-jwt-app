@@ -213,9 +213,9 @@
   background: #ffffff;
   border-radius: 12px;
   box-sizing: border-box;
-  width: calc(var(--logoloop-logoHeight) + 16px);
-  height: calc(var(--logoloop-logoHeight) + 16px);
-  padding: 8px;
+  width: calc(var(--logoloop-logoHeight) + 28px);
+  height: calc(var(--logoloop-logoHeight) + 28px);
+  padding: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
