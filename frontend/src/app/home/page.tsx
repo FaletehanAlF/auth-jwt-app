@@ -75,6 +75,24 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
   },
 ];
 
+const STEPS: { no: string; title: string; desc: string }[] = [
+  {
+    no: "01",
+    title: "Tambah Lamaran",
+    desc: "Simpan pekerjaan yang ingin kamu lamar.",
+  },
+  {
+    no: "02",
+    title: "Pantau Proses",
+    desc: "Kelola dan pantau status setiap lamaran.",
+  },
+  {
+    no: "03",
+    title: "Terus Melangkah",
+    desc: "Tetap terorganisir selama proses pencarian kerja.",
+  },
+];
+
 const GALLERY_ITEMS: GalleryItem[] = [
   { image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=800&auto=format&fit=crop", text: "Kerja Tim" },
   { image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop", text: "Kolaborasi" },
@@ -202,6 +220,30 @@ export default function HomePage() {
                 />
               ))}
             </div>
+          </section>
+
+          <section className="mx-auto w-full max-w-5xl px-4 pb-12 sm:px-6 lg:pb-16">
+            <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+              Bagaimana JobTrack membantu?
+            </h2>
+            <ol className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
+              {STEPS.map((step) => (
+                <li
+                  key={step.no}
+                  className="border-t border-white/10 pt-6"
+                >
+                  <p className="font-display text-sm font-bold tracking-[0.2em] text-teal-300">
+                    {step.no}
+                  </p>
+                  <h3 className="mt-3 font-display text-lg font-semibold tracking-tight text-white">
+                    {step.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-white/60">
+                    {step.desc}
+                  </p>
+                </li>
+              ))}
+            </ol>
           </section>
 
           <section className="mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6">
