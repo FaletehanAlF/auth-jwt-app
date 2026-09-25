@@ -75,6 +75,23 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 ];
 
 // ============================================================
+// LOGO PERUSAHAAN — GANTI DI SINI (custom img bebas)
+// Caranya: ganti `src` dengan URL / path gambar apapun,
+// contoh lokal: "/logos/perusahaan-saya.png"
+// `href` opsional: link saat logo diklik.
+// Logo tampil abu-abu, berwarna asli saat di-hover (CSS).
+// ============================================================
+const TRUSTED_LOGOS = [
+  { src: "https://logo.clearbit.com/linkedin.com?size=128", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
+  { src: "https://logo.clearbit.com/google.com?size=128", alt: "Google", href: "https://google.com", title: "Google" },
+  { src: "https://logo.clearbit.com/nvidia.com?size=128", alt: "NVIDIA", href: "https://nvidia.com", title: "NVIDIA" },
+  { src: "https://logo.clearbit.com/amazon.com?size=128", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
+  { src: "https://logo.clearbit.com/microsoft.com?size=128", alt: "Microsoft", href: "https://microsoft.com", title: "Microsoft" },
+  { src: "https://logo.clearbit.com/apple.com?size=128", alt: "Apple Inc", href: "https://apple.com", title: "Apple Inc" },
+  { src: "https://logo.clearbit.com/tesla.com?size=128", alt: "Tesla Inc", href: "https://tesla.com", title: "Tesla Inc" },
+];
+
+// ============================================================
 // FOTO GALLERY — GANTI DI SINI (img network bebas)
 // Caranya: ganti `image` dengan URL foto apapun,
 // ganti `text` dengan label di bawah tiap foto.
@@ -139,6 +156,33 @@ export default function HomePage() {
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0">
               <div className="h-px w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               <div className="h-6 w-full bg-gradient-to-b from-white/10 to-transparent" />
+            </div>
+          </section>
+
+          {/* Trusted-by tepat di bawah hero — logo loop perusahaan */}
+          <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
+            <div className="mx-auto w-full max-w-5xl px-4 pt-10 text-center sm:px-6">
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/50">
+                Telah dipercayai oleh
+              </p>
+            </div>
+            {/* Wadah logo loop: tinggi wajib ada agar ResizeObserver dapat ukuran */}
+            <div className="mx-auto w-full max-w-5xl px-4 pb-10 pt-6 sm:px-6">
+              <div style={{ height: "64px", position: "relative", overflow: "hidden" }}>
+                <LogoLoop
+                  logos={TRUSTED_LOGOS}
+                  speed={60}
+                  direction="left"
+                  logoHeight={28}
+                  gap={32}
+                  hoverSpeed={0}
+                  scaleOnHover
+                  fadeOut
+                  fadeOutColor="#0a0a0a"
+                  ariaLabel="Perusahaan yang mempercayai kami"
+                  className="logoloop--grayscale logoloop--trusted"
+                />
+              </div>
             </div>
           </section>
 
