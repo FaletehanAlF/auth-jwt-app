@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteMenu from "../../components/SiteMenu";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
+import LogoLoop from "../../components/LogoLoop";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
 
 const features: { title: string; desc: string; icon: ReactNode }[] = [
