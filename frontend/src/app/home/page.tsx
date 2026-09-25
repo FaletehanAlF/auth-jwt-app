@@ -238,7 +238,7 @@ export default function HomePage() {
           {}
           <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-blue-950 to-neutral-950">
             <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-12 sm:px-6 lg:pb-16">
-            <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+            <h2 className="mx-auto w-fit max-w-full whitespace-nowrap text-center font-display text-[clamp(0.65rem,3.2vw,1.875rem)] font-semibold tracking-tight text-white">
               Semua yang kamu butuhkan untuk mengelola pencarian kerja
             </h2>
             <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
