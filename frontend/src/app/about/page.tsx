@@ -21,7 +21,7 @@ export default function AboutPage() {
                 loading="eager"
               />
               <div className="absolute inset-0 bg-neutral-950/70" />
-              <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-teal-950/40 to-neutral-950" />
+              <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/60 via-blue-950/40 to-neutral-950" />
             </div>
 
             <div className="relative m-auto w-full max-w-5xl px-4 py-28 text-center sm:px-6 sm:py-36">
@@ -34,7 +34,7 @@ export default function AboutPage() {
               </p>
               <Link
                 href="/profile"
-                className="mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-teal-200 px-6 text-sm font-medium text-neutral-950 transition-colors duration-150 hover:bg-teal-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-200 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                className="mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-blue-600 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
               >
                 Go to Profile
                 <span aria-hidden="true">→</span>
@@ -43,7 +43,7 @@ export default function AboutPage() {
           </section>
 
           {}
-          <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-teal-950 to-neutral-950">
+          <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-blue-950 to-neutral-950">
             <section className="mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 lg:py-16">
               <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight sm:text-3xl">
                 Why JobTrack exists

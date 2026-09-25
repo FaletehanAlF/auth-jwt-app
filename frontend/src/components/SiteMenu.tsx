@@ -14,8 +14,8 @@ export default function SiteMenu() {
       items={MENU_ITEMS}
       displaySocials={false}
       displayItemNumbering={true}
-      colors={["#134e4a", "#2dd4bf"]}
-      accentColor="#14b8a6"
+      colors={["#1e3a8a", "#60a5fa"]}
+      accentColor="#2563eb"
       menuButtonColor="#fff"
       openMenuButtonColor="#111"
       changeMenuColorOnOpen={true}

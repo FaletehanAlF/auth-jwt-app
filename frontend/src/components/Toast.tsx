@@ -50,7 +50,7 @@ export default function Toast({ toast }: { toast: ToastData | null }) {
             viewBox="0 0 20 20"
             fill="none"
             aria-hidden="true"
-            className="mt-0.5 h-4 w-4 shrink-0 text-teal-300"
+            className="mt-0.5 h-4 w-4 shrink-0 text-blue-500"
           >
             <circle cx="10" cy="10" r="8.2" stroke="currentColor" strokeWidth="1.5" />
             <path
