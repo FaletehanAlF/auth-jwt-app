@@ -83,9 +83,9 @@ const features: { title: string; desc: string; icon: ReactNode }[] = [
 // ============================================================
 const TRUSTED_LOGOS = [
   { src: "https://i.pinimg.com/736x/29/fe/f9/29fef91506c1750b02a2541b3f73f8d2.jpg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },
-  { src: "https://logo.clearbit.com/google.com?size=128", alt: "Google", href: "https://google.com", title: "Google" },
-  { src: "https://logo.clearbit.com/nvidia.com?size=128", alt: "NVIDIA", href: "https://nvidia.com", title: "NVIDIA" },
-  { src: "https://logo.clearbit.com/amazon.com?size=128", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
+  { src: "https://i.pinimg.com/736x/45/20/dd/4520ddfc56208707045c56232e946f7f.jpg", alt: "Google", href: "https://google.com", title: "Google" },
+  { src: "https://i.pinimg.com/1200x/5c/5f/7c/5c5f7cba8ab12518de6d36356da572a7.jpg", alt: "NVIDIA", href: "https://nvidia.com", title: "NVIDIA" },
+  { src: "https://i.pinimg.com/736x/ad/78/5a/ad785a9fb1587a496092b3d2f4e912b8.jpg", alt: "Amazon", href: "https://amazon.com", title: "Amazon" },
   { src: "https://logo.clearbit.com/microsoft.com?size=128", alt: "Microsoft", href: "https://microsoft.com", title: "Microsoft" },
   { src: "https://logo.clearbit.com/apple.com?size=128", alt: "Apple Inc", href: "https://apple.com", title: "Apple Inc" },
   { src: "https://logo.clearbit.com/tesla.com?size=128", alt: "Tesla Inc", href: "https://tesla.com", title: "Tesla Inc" },
@@ -174,7 +174,7 @@ export default function HomePage() {
                   speed={60}
                   direction="left"
                   logoHeight={96}
-                  gap={96}
+                  gap={120}
                   hoverSpeed={0}
                   fadeOut
                   fadeOutColor="#0a0a0a"
