@@ -102,7 +102,7 @@ export default function Footer() {
         </div>
 
         <div aria-hidden="true" className="mt-8 select-none">
-          <p className="text-center font-display text-[clamp(3.5rem,15vw,12rem)] font-bold uppercase leading-[0.9] tracking-tight text-teal-300/20">
+          <p className="text-center font-display text-[clamp(3.5rem,15vw,12rem)] font-bold uppercase leading-[0.9] tracking-tight text-blue-500/20">
             Jobtrack
           </p>
         </div>
