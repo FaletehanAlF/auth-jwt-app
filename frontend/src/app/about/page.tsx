@@ -1,11 +1,27 @@
 import Link from "next/link";
+import Image from "next/image";
 import SiteMenu from "../../components/SiteMenu";
 import Footer from "../../components/Footer";
 
-const VALUES = [
+// ============================================================
+// CARA PASANG GAMBAR (nantinya atur sendiri di sini):
+// 1. Taruh file gambar di folder: frontend/public/
+//    contoh: frontend/public/about-team.jpg
+// 2. Isi konstanta di bawah dengan path-nya:
+//    MAIN_IMAGE_SRC = "/about-team.jpg"
+//    OVERLAY_IMAGE_SRC = "/about-meeting.jpg"
+// 3. Biarkan "" (kosong) jika masih ingin tampil placeholder.
+// 4. VIDEO_URL opsional: isi link YouTube/video untuk tombol play,
+//    contoh: "https://youtube.com/watch?v=xxxx"
+// ============================================================
+const MAIN_IMAGE_SRC = "";
+const OVERLAY_IMAGE_SRC = "";
+const VIDEO_URL = "";
+
+const FEATURES = [
   {
-    title: "Sederhana",
-    desc: "Satu tempat untuk setiap peluang yang kamu kejar. Tanpa ribet, tanpa berantakan.",
+    title: "Pelacakan Lamaran",
+    desc: "Pantau setiap lamaran kerjamu dalam satu tempat yang rapi.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
         <rect x="3" y="7.5" width="18" height="12.5" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
@@ -15,50 +31,54 @@ const VALUES = [
     ),
   },
   {
-    title: "Fokus",
-    desc: "Selalu tahu di tahap apa setiap lamaranmu berada — dari terkirim sampai wawancara.",
+    title: "Analisis Progres",
+    desc: "Lihat perkembangan pencarian kerjamu dengan jelas dan terukur.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
-        <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.8" />
-        <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="1.8" />
-        <circle cx="12" cy="12" r="1" fill="currentColor" />
+        <path d="M4 19.5h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M6.5 16.5v-5M12 16.5V8M17.5 16.5v-8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
     ),
   },
   {
-    title: "Milikmu",
-    desc: "Perjalanan kariermu, diatur dengan caramu sendiri. Rapi dan tetap terkendali.",
+    title: "Siap Wawancara",
+    desc: "Kelola jadwal dan catatan wawancara agar selalu siap tampil.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
-        <path d="M12 3.5 14.5 9l6 .5-4.6 3.9 1.4 5.8L12 15.7l-5.3 3.5 1.4-5.8L3.5 9.5l6-.5L12 3.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+        <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M3.5 9.5h17" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M8 3v3.5M16 3v3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M7.5 13.5h3M7.5 16.5h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
     ),
   },
 ];
 
-const STEPS = [
-  {
-    no: "01",
-    title: "Catat Lamaran",
-    desc: "Simpan setiap pekerjaan yang kamu lamar beserta detail pentingnya.",
-  },
-  {
-    no: "02",
-    title: "Pantau Proses",
-    desc: "Lihat status lamaran dan jadwal wawancaramu dengan jelas.",
-  },
-  {
-    no: "03",
-    title: "Terus Berkembang",
-    desc: "Tetap terorganisir dan melangkah maju di setiap peluang.",
-  },
-];
-
-const STATS = [
-  { value: "3", label: "Fitur inti pelacakan" },
-  { value: "1", label: "Dashboard terpadu" },
-  { value: "100%", label: "Fokus pada kariermu" },
-];
+function ImagePlaceholder({
+  label,
+  ratio,
+}: {
+  label: string;
+  ratio: string;
+}) {
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-white/15 bg-white/[0.02] p-6 text-center">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-600/15 text-blue-400">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
+          <rect x="3.5" y="4.5" width="17" height="15" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+          <circle cx="9" cy="10" r="1.6" stroke="currentColor" strokeWidth="1.6" />
+          <path d="m5.5 17.5 4.5-4.5 3 3 2.5-2.5 3 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+      <p className="text-xs font-medium text-white/70">{label}</p>
+      <p className="text-[11px] leading-relaxed text-white/40">
+        Kosong — isi di konstanta
+        <br />
+        {ratio}
+      </p>
+    </div>
+  );
+}
 
 export default function AboutPage() {
   return (
@@ -67,187 +87,123 @@ export default function AboutPage() {
         <SiteMenu />
 
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
-          {/* Hero — clean, tanpa foto, aksen biru sesuai tema */}
+          {/* Layout mengikuti referensi: badge + heading kiri + 2 paragraf kanan */}
           <section className="relative w-full overflow-hidden">
             <div aria-hidden="true" className="absolute inset-0">
               <div className="absolute inset-0 bg-neutral-950" />
-              <div
-                className="absolute inset-0 opacity-40"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-                  backgroundSize: "44px 44px",
-                  maskImage:
-                    "radial-gradient(ellipse 80% 70% at 50% 0%, black 40%, transparent 75%)",
-                  WebkitMaskImage:
-                    "radial-gradient(ellipse 80% 70% at 50% 0%, black 40%, transparent 75%)",
-                }}
-              />
-              <div className="absolute left-1/2 top-[-8rem] h-80 w-[42rem] -translate-x-1/2 rounded-full bg-blue-700/25 blur-[120px]" />
-              <div className="absolute inset-x-0 bottom-0 h-px bg-white/10" />
+              <div className="absolute left-1/2 top-[-9rem] h-80 w-[44rem] -translate-x-1/2 rounded-full bg-blue-700/20 blur-[120px]" />
             </div>
 
-            <div className="relative mx-auto w-full max-w-5xl px-4 pb-16 pt-32 text-center sm:px-6 sm:pt-40">
-              <p className="mx-auto inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-3.5 py-1.5 text-xs font-medium text-blue-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-                Tentang JobTrack
+            <div className="relative mx-auto w-full max-w-6xl px-4 pt-28 sm:px-6 sm:pt-36">
+              {/* Badge kecil seperti referensi */}
+              <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+                About Us
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
               </p>
-              <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
-                Satu tempat untuk seluruh perjalanan kariermu.
-              </h1>
-              <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
-                JobTrack membantumu merapikan lamaran kerja, wawancara, dan
-                progres karier — semuanya dalam satu dashboard yang bersih
-                dan mudah dipakai.
-              </p>
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link
-                  href="/profile"
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 sm:w-auto"
-                >
-                  Mulai Melacak
-                  <span aria-hidden="true">→</span>
-                </Link>
-                <Link
-                  href="/home"
-                  className="inline-flex h-11 w-full items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 text-sm font-medium text-white/85 transition-colors duration-150 hover:border-white/30 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:w-auto"
-                >
-                  Kembali ke Beranda
-                </Link>
-              </div>
 
-              <dl className="mx-auto mt-12 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
-                {STATS.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4"
-                  >
-                    <dt className="order-2 mt-1 text-xs leading-relaxed text-white/55">
-                      {stat.label}
-                    </dt>
-                    <dd className="order-1 font-display text-2xl font-semibold tracking-tight text-white">
-                      {stat.value}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </section>
-
-          {/* Misi */}
-          <section className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 lg:py-20">
-            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-              <div className="lg:sticky lg:top-24">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400">
-                  Misi kami
+              <div className="mt-5 grid gap-8 lg:grid-cols-[1.15fr_0.85fr_0.85fr] lg:items-start">
+                <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+                  <span className="text-blue-500">Introduction</span>{" "}
+                  <span className="text-white">To Best Job Tracker!</span>
+                </h1>
+                <p className="text-sm leading-relaxed text-white/60">
+                  JobTrack hadir untuk merapikan perjalanan kariermu. Simpan
+                  setiap lamaran, pantau statusnya, dan kelola jadwal
+                  wawancaramu — semuanya dalam satu dashboard yang bersih
+                  dan mudah dipakai.
                 </p>
-                <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                  Kenapa JobTrack ada?
-                </h2>
-                <p className="mt-3 max-w-md text-sm leading-relaxed text-white/60">
-                  Mencari kerja itu melelahkan kalau semuanya tersebar.
-                  JobTrack hadir agar kamu punya satu tempat yang rapi untuk
-                  mencatat, memantau, dan menuntaskan setiap peluang.
+                <p className="text-sm leading-relaxed text-white/60">
+                  Tidak ada lagi catatan tersebar atau peluang terlewat.
+                  Dengan JobTrack, kamu bisa fokus pada hal terpenting:
+                  tampil terbaik dan terus melangkah maju di setiap proses.
                 </p>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                {VALUES.map((item) => (
+
+              {/* 3 kartu fitur seperti referensi */}
+              <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+                {FEATURES.map((item) => (
                   <div
                     key={item.title}
-                    className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-colors duration-150 hover:border-blue-500/30 sm:p-6"
+                    className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-colors duration-150 hover:border-blue-500/30"
                   >
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/15 text-blue-400">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white">
                       {item.icon}
                     </span>
-                    <h3 className="mt-4 font-display text-base font-semibold tracking-tight text-white">
-                      {item.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-white/60">
-                      {item.desc}
-                    </p>
+                    <span>
+                      <h2 className="text-[15px] font-semibold tracking-tight text-white">
+                        {item.title}
+                      </h2>
+                      <p className="mt-1 text-[13px] leading-relaxed text-white/55">
+                        {item.desc}
+                      </p>
+                    </span>
                   </div>
                 ))}
-                <div className="rounded-2xl border border-blue-500/25 bg-blue-600/[0.08] p-5 sm:p-6">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
-                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
-                      <path d="M4 12.5h16M13 6.5l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                  <h3 className="mt-4 font-display text-base font-semibold tracking-tight text-white">
-                    Siap mencoba?
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-blue-200/70">
-                    Mulai dari profilmu dan rasakan bedanya dalam sekali pakai.
-                  </p>
-                  <Link
-                    href="/profile"
-                    className="mt-4 inline-flex h-9 items-center justify-center rounded-full bg-blue-600 px-4 text-[13px] font-medium text-white transition-colors duration-150 hover:bg-blue-500"
-                  >
-                    Ke Profil →
-                  </Link>
+              </div>
+
+              {/* Kolase gambar: besar + overlay kecil dengan tombol play */}
+              <div className="relative mt-8 pb-10 sm:pb-16 lg:pb-24">
+                {/* Gambar utama — KOSONG, atur di MAIN_IMAGE_SRC */}
+                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/10 bg-neutral-900 sm:aspect-[21/10]">
+                  {MAIN_IMAGE_SRC ? (
+                    <Image
+                      src={MAIN_IMAGE_SRC}
+                      alt="Tim JobTrack"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 1100px"
+                    />
+                  ) : (
+                    <ImagePlaceholder
+                      label="Gambar utama (kolase besar)"
+                      ratio="disarankan 1600 × 800"
+                    />
+                  )}
                 </div>
-              </div>
-            </div>
-          </section>
 
-          {/* Cara kerja */}
-          <section className="border-t border-white/10 bg-white/[0.015]">
-            <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 lg:py-20">
-              <div className="max-w-xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400">
-                  Cara kerja
-                </p>
-                <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                  Sederhana dalam tiga langkah
-                </h2>
-              </div>
-              <ol className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                {STEPS.map((step) => (
-                  <li
-                    key={step.no}
-                    className="rounded-2xl border border-white/10 bg-neutral-950 p-5 sm:p-6"
-                  >
-                    <p className="font-display text-sm font-bold tracking-[0.2em] text-blue-400">
-                      {step.no}
-                    </p>
-                    <h3 className="mt-3 font-display text-base font-semibold tracking-tight text-white">
-                      {step.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-white/60">
-                      {step.desc}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </section>
-
-          {/* CTA */}
-          <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-4 sm:px-6 lg:pb-20">
-            <div className="relative overflow-hidden rounded-3xl border border-blue-500/25 bg-gradient-to-br from-blue-700 via-blue-800 to-neutral-950 px-6 py-12 text-center sm:px-10">
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 opacity-30"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px)",
-                  backgroundSize: "20px 20px",
-                }}
-              />
-              <div className="relative">
-                <h2 className="mx-auto max-w-xl font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                  Tetap terorganisir. Terus melangkah maju.
-                </h2>
-                <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-blue-100/80">
-                  Semua lamaran, wawancara, dan progres kariermu — rapi dalam
-                  satu tempat.
-                </p>
-                <Link
-                  href="/profile"
-                  className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-medium text-blue-900 transition-colors duration-150 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-800"
-                >
-                  Mulai Melacak →
-                </Link>
+                {/* Gambar overlay kecil + tombol play — KOSONG, atur di OVERLAY_IMAGE_SRC */}
+                <div className="mt-4 sm:mt-0 sm:absolute sm:-bottom-2 sm:right-6 sm:w-[38%] lg:right-10 lg:w-[34%]">
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border-4 border-neutral-950 bg-neutral-900 shadow-2xl shadow-black/50 outline outline-1 outline-white/10">
+                    {OVERLAY_IMAGE_SRC ? (
+                      <Image
+                        src={OVERLAY_IMAGE_SRC}
+                        alt="Preview video JobTrack"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, 400px"
+                      />
+                    ) : (
+                      <ImagePlaceholder
+                        label="Gambar overlay (video)"
+                        ratio="disarankan 800 × 500"
+                      />
+                    )}
+                    {/* Tombol play */}
+                    {VIDEO_URL ? (
+                      <Link
+                        href={VIDEO_URL}
+                        target="_blank"
+                        aria-label="Putar video"
+                        className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-900/50 transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                      >
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-0.5 h-5 w-5">
+                          <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                        </svg>
+                      </Link>
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        title="Isi VIDEO_URL untuk mengaktifkan"
+                        className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blue-600/90 text-white shadow-lg shadow-blue-900/50"
+                      >
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-0.5 h-5 w-5">
+                          <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                        </svg>
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </section>
