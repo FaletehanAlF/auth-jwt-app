@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import db from "../database";
 import { registerSchema, loginSchema } from "../validation";
 
-const JWT_SECRET = "rahasia-jwt-project";
+const JWT_SECRET = process.env.JWT_SECRET || "rahasia-jwt-project";
 
 export const register = async (req: Request, res: Response) => {
   try {

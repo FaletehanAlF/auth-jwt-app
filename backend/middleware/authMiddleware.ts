@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "rahasia-jwt-project";
+const JWT_SECRET = process.env.JWT_SECRET || "rahasia-jwt-project";
 
 export const verifyToken = (
   req: Request,

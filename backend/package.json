@@ -7,13 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node index.ts",
     "build": "tsc",
-    "start": "node index.js"
+    "start": "node dist/index.js"
   },
   "author": "Faletehan",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.24.4",
