@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "rahasia-jwt-project";
 
-// Menjaga route: request hanya lanjut kalau membawa token yang valid.
-// Format header yang diharapkan: Authorization: Bearer <token>
 export const verifyToken = (
   req: Request,
   res: Response,
@@ -24,7 +22,6 @@ export const verifyToken = (
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // Tempel data user ke request agar bisa dibaca di route berikutnya
     (req as any).user = decoded;
 
     next();

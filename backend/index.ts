@@ -5,8 +5,6 @@ import routes from "./routes";
 
 const app = express();
 
-// Backend default 5001 agar tidak bentrok dengan frontend (port 5000).
-// Bisa dioverride via env: PORT=5000 npm run dev
 const PORT = Number(process.env.PORT) || 5001;
 
 // Izinkan frontend di port 5000 (baru) dan 3000 (default Next.js lama)
