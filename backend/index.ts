@@ -7,7 +7,6 @@ const app = express();
 
 const PORT = Number(process.env.PORT) || 5001;
 
-// Izinkan frontend di port 5000 (baru) dan 3000 (default Next.js lama)
 const ALLOWED_ORIGINS = (
   process.env.FRONTEND_URL || "http://localhost:5000,http://localhost:3000"
 )
@@ -27,7 +26,6 @@ app.get("/", (req, res) => {
 
 app.use("/api", routes);
 
-// 404 handler agar response selalu JSON (bukan HTML Express default)
 app.use((_req, res) => {
   res.status(404).json({ success: false, message: "Endpoint tidak ditemukan" });
 });
