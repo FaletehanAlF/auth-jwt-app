@@ -303,6 +303,12 @@ export default function HomePage() {
                     <p className="mt-3 text-sm leading-relaxed text-white/60">
                       {job.description}
                     </p>
+                    <Link
+                      href={`/jobs/${job.id}`}
+                      className="mt-4 inline-flex text-sm font-medium text-blue-400 transition-colors hover:text-blue-300"
+                    >
+                      Lihat Detail
+                    </Link>
                   </div>
                 ))}
               </div>
