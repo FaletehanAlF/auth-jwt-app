@@ -47,6 +47,26 @@ export const createJob = async (req: Request, res: Response) => {
   }
 };
 
+export const getMyJobs = async (req: Request, res: Response) => {
+  try {
+    const [rows] = await db.execute(
+      "SELECT id, title, description, location, company, recruiter_id, created_at FROM jobs WHERE recruiter_id = ? ORDER BY created_at DESC",
+      [req.user!.id]
+    );
+
+    return res.status(200).json({
+      success: true,
+      jobs: rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Gagal mengambil lowongan recruiter",
+    });
+  }
+};
+
 export const getJobs = async (req: Request, res: Response) => {
   try {
     const [rows] = await db.execute(
