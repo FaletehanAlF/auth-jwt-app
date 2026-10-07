@@ -176,6 +176,12 @@ export default function RecruiterJobsPage() {
                   >
                     Edit
                   </Link>
+                  <Link
+                    href={`/recruiter/jobs/${job.id}/applicants`}
+                    className="text-sm font-medium text-teal-300 transition-colors hover:text-teal-200"
+                  >
+                    Lihat Pelamar
+                  </Link>
                   <button
                     type="button"
                     onClick={() => handleDelete(job.id)}
