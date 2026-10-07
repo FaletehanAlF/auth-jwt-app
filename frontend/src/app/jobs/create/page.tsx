@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SiteMenu from "../../../components/SiteMenu";
 import Footer from "../../../components/Footer";
@@ -8,6 +8,24 @@ import { apiFetch } from "../../../lib/api";
 
 export default function CreateJobPage() {
   const router = useRouter();
+
+  const [roleChecked, setRoleChecked] = useState(false);
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    let role: string | null = null;
+    if (token) {
+      try {
+        role = JSON.parse(atob(token.split(".")[1])).role ?? null;
+      } catch {
+        role = null;
+      }
+    }
+    setAllowed(role === "recruiter");
+    setRoleChecked(true);
+  }, []);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -71,6 +89,13 @@ export default function CreateJobPage() {
           Buat Lowongan
         </h1>
 
+        {roleChecked && !allowed && (
+          <p className="mt-6 text-sm text-red-400">
+            Hanya recruiter yang dapat membuat lowongan.
+          </p>
+        )}
+
+        {allowed && (
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
             <label htmlFor="title" className="text-sm text-white/70">
@@ -139,6 +164,7 @@ export default function CreateJobPage() {
           )}
           {error && <p className="text-sm text-red-400">{error}</p>}
         </form>
+        )}
       </main>
       <Footer />
     </div>

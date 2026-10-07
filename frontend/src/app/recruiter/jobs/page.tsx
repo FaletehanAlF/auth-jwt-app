@@ -5,6 +5,7 @@ import Link from "next/link";
 import SiteMenu from "../../../components/SiteMenu";
 import Footer from "../../../components/Footer";
 import { apiFetch } from "../../../lib/api";
+import CreateJobWidget from "../../../components/CreateJobWidget";
 
 type Job = {
   id: number;
@@ -108,17 +109,9 @@ export default function RecruiterJobsPage() {
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <SiteMenu />
       <main className="mx-auto w-full max-w-3xl px-4 pb-16 pt-32 sm:px-6">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-            Lowongan Saya
-          </h1>
-          <Link
-            href="/jobs/create"
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500"
-          >
-            Buat Lowongan
-          </Link>
-        </div>
+        <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          Lowongan
+        </h1>
 
         {deleteSuccess && (
           <p className="mt-4 text-sm text-green-400">{deleteSuccess}</p>
@@ -197,6 +190,7 @@ export default function RecruiterJobsPage() {
         )}
       </main>
       <Footer />
+      <CreateJobWidget />
     </div>
   );
 }

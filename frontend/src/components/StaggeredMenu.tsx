@@ -8,7 +8,7 @@ import { gsap } from "gsap";
 
 import "./StaggeredMenu.css";
 
-export type StaggeredMenuItem = { label: string; ariaLabel?: string; link: string };
+export type StaggeredMenuItem = { label: string; ariaLabel?: string; link: string; onClick?: () => void };
 
 export type StaggeredMenuSocialItem = { label: string; link: string };
 
@@ -353,7 +353,7 @@ export function StaggeredMenu({
             {items?.length ? (
               items.map((it, idx) => (
                 <li className="sm-panel-itemWrap" key={it.label + idx}>
-                  <Link className="sm-panel-item" href={it.link} aria-label={it.ariaLabel} data-index={idx + 1} onClick={closeMenu}>
+                  <Link className="sm-panel-item" href={it.link} aria-label={it.ariaLabel} data-index={idx + 1} onClick={() => { it.onClick?.(); closeMenu(); }}>
                     <span className="sm-panel-itemLabel">{it.label}</span>
                   </Link>
                 </li>

@@ -10,6 +10,7 @@ import { TRUSTED_LOGOS } from "../../data/trustedLogos";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
 import TechText from "../../components/TechText";
 import { apiFetch } from "../../lib/api";
+import CreateJobWidget from "../../components/CreateJobWidget";
 
 type Job = {
   id: number;
@@ -126,9 +127,14 @@ export default function HomePage() {
       try {
         setLoading(true);
         setError(null);
-        const data = await apiFetch<{ success: boolean; jobs?: Job[] }>("/jobs");
+        const data = await apiFetch<{ success: boolean; message?: string; jobs?: Job[] }>("/jobs");
         if (data.success && Array.isArray(data.jobs)) {
           setJobs(data.jobs);
+        } else if (
+          data.message === "Token tidak ditemukan" ||
+          data.message === "Token tidak valid atau sudah expired"
+        ) {
+          setError("Silakan login terlebih dahulu untuk melihat lowongan.");
         } else {
           setError("Gagal mengambil data lowongan.");
         }
@@ -280,7 +286,17 @@ export default function HomePage() {
               <p className="mt-6 text-sm text-white/60">Memuat lowongan...</p>
             )}
             {error && !loading && (
-              <p className="mt-6 text-sm text-red-400">{error}</p>
+              <div className="mt-6">
+                <p className="text-sm text-red-400">{error}</p>
+                {error.startsWith("Silakan login") && (
+                  <Link
+                    href="/login"
+                    className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-5 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500"
+                  >
+                    Masuk ke Akun
+                  </Link>
+                )}
+              </div>
             )}
             {!loading && !error && jobs.length === 0 && (
               <p className="mt-6 text-sm text-white/60">
@@ -376,6 +392,7 @@ export default function HomePage() {
 
         <Footer />
       </div>
+      <CreateJobWidget />
     </div>
   );
 }

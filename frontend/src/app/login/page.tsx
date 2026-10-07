@@ -6,6 +6,7 @@ import Link from "next/link";
 import AuthCard, { AuthField } from "../../components/AuthCard";
 import Toast, { ToastData, ToastKind } from "../../components/Toast";
 import { API_BASE_URL } from "../../lib/api";
+import { loginSchema } from "../../lib/validation";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -34,6 +35,14 @@ export default function LoginPage() {
     }
     if (!password) {
       notify("error", "Kata sandi wajib diisi");
+      return;
+    }
+
+    const parsed = loginSchema.safeParse({ email: email.trim(), password });
+    if (!parsed.success) {
+      const firstMessage =
+        parsed.error.issues[0]?.message ?? "Data login tidak valid.";
+      notify("error", firstMessage);
       return;
     }
 
