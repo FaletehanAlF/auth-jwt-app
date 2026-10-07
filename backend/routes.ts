@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { register, login } from "./controllers/authController";
 import { createJob, getJobs, getJobById, updateJob, deleteJob } from "./controllers/jobController";
+import { applyJob, getMyApplications } from "./controllers/applicationController";
 import { verifyToken } from "./middleware/authMiddleware";
 import { authorize } from "./middleware/authorizeMiddleware";
 
@@ -18,6 +19,10 @@ router.get("/jobs/:id", verifyToken, getJobById);
 router.put("/jobs/:id", verifyToken, authorize("recruiter"), updateJob);
 
 router.delete("/jobs/:id", verifyToken, authorize("recruiter"), deleteJob);
+
+router.post("/jobs/:id/apply", verifyToken, authorize("jobseeker"), applyJob);
+
+router.get("/applications/me", verifyToken, authorize("jobseeker"), getMyApplications);
 
 router.get("/profile", verifyToken, (req, res) => {
   res.json({
