@@ -44,14 +44,27 @@ export const register = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await db.execute(
+    const [insertResult] = await db.execute(
       "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
       [name, email, hashedPassword]
     );
+    const insertId = (insertResult as any).insertId;
+
+    const [newUserRows] = await db.execute(
+      "SELECT id, name, email, role FROM users WHERE id = ?",
+      [insertId]
+    );
+    const newUser = (newUserRows as any[])[0];
 
     return res.status(201).json({
       success: true,
       message: "Register berhasil",
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
     });
   } catch (error) {
     return serverError(res, error);
@@ -70,7 +83,7 @@ export const login = async (req: Request, res: Response) => {
     }
     const { email, password } = result.data;
     const [rows] = await db.execute(
-      "SELECT * FROM users WHERE email = ?",
+      "SELECT id, name, email, password, role FROM users WHERE email = ?",
       [email]
     );
     const users = rows as any[];
@@ -91,7 +104,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, role: user.role },
       JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -99,6 +112,12 @@ export const login = async (req: Request, res: Response) => {
     return res.json({
       success: true,
       message: "Login berhasil",
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
       token,
     });
   } catch (error) {
