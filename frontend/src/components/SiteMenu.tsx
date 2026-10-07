@@ -44,16 +44,7 @@ function buildItems(role: "jobseeker" | "recruiter" | null): StaggeredMenuItem[]
   ];
 }
 
-// ============================================================
-// CARA GANTI LOGO KIRI (sebelah tulisan JobTrack):
-// 1. Taruh file gambar di folder: frontend/public/
-//    contoh: frontend/public/logo.png (bisa .png / .svg / .webp)
-// 2. Ganti LOGO_IMAGE_SRC di bawah dengan path-nya:
-//    contoh: "/logo.png"  -> akan dimuat dari public/logo.png
-// 3. Biarkan "" (kosong) jika ingin tetap pakai logo bawaan (ikon kotak biru).
-// 4. Ganti LOGO_TEXT jika ingin ubah tulisan di samping logo.
-// ============================================================
-const LOGO_IMAGE_SRC = ""; // contoh: "/logo.png"
+const LOGO_IMAGE_SRC = "";
 const LOGO_TEXT = "JobTrack";
 
 export default function SiteMenu() {

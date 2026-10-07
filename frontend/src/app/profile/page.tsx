@@ -91,7 +91,6 @@ export default function ProfilePage() {
 
   return (
     <div className="relative min-h-screen bg-neutral-950 text-white">
-      {/* Background statis (tanpa animasi): base gelap + grid + blob gradasi */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-neutral-950" />
         <div
@@ -116,7 +115,6 @@ export default function ProfilePage() {
 
         <main>
           <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-24 sm:px-6 sm:pt-28">
-            {/* Header halaman */}
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-teal-200">
@@ -139,9 +137,7 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Kartu profil utama */}
             <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/80 shadow-2xl shadow-black/40 backdrop-blur">
-              {/* Cover statis */}
               <div className="relative h-36 sm:h-44">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-800 via-indigo-700 to-teal-600" />
                 <div
@@ -164,7 +160,6 @@ export default function ProfilePage() {
               </div>
 
               <div className="px-5 pb-6 sm:px-8 sm:pb-8">
-                {/* Baris avatar */}
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                   <div className="-mt-12 flex items-end gap-4">
                     <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-neutral-800 text-xl font-semibold text-white ring-4 ring-neutral-900 sm:h-28 sm:w-28">
@@ -225,9 +220,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Grid konten */}
                 <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-                  {/* Zona upload */}
                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
                     <p className="text-sm font-medium text-white">Upload gambar</p>
                     <p className="mt-1 text-[13px] leading-relaxed text-white/55">
@@ -273,7 +266,6 @@ export default function ProfilePage() {
                     )}
                   </div>
 
-                  {/* Panel info */}
                   <div className="flex flex-col gap-4">
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
                       <p className="text-sm font-medium text-white">URL hasil upload</p>

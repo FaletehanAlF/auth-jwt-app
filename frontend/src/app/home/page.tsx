@@ -166,7 +166,6 @@ export default function HomePage() {
                 className="h-full w-full object-cover"
                 loading="eager"
               />
-              {/* Overlay flat hitam tanpa gradient agar teks tetap terbaca */}
               <div className="absolute inset-0 bg-neutral-950/70" />
             </div>
 
@@ -221,7 +220,6 @@ export default function HomePage() {
             </Link>
             </div>
 
-            {/* Pembatas solid tanpa gradient */}
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0">
               <div className="h-px w-full bg-white/10" />
             </div>

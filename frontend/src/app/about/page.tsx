@@ -4,18 +4,6 @@ import SiteMenu from "../../components/SiteMenu";
 import Footer from "../../components/Footer";
 import ScrollExpand from "../../components/ScrollExpand";
 
-// ============================================================
-// CARA PASANG GAMBAR (atur sendiri di sini):
-// 1. Taruh file gambar di folder: frontend/public/
-//    contoh: frontend/public/about-team.jpg
-// 2. Isi konstanta di bawah dengan path-nya:
-//    HERO_IMAGE_SRC    -> gambar pembuka (efek scroll-expand)
-//    MAIN_IMAGE_SRC    -> gambar utama kolase, contoh: "/about-team.jpg"
-//    OVERLAY_IMAGE_SRC -> gambar kecil overlay, contoh: "/about-meeting.jpg"
-// 3. Biarkan konstanta kolase "" (kosong) jika masih ingin placeholder.
-// 4. VIDEO_URL opsional: isi link YouTube/video untuk tombol play,
-//    contoh: "https://youtube.com/watch?v=xxxx"
-// ============================================================
 const HERO_IMAGE_SRC =
   "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1920&auto=format&fit=crop";
 const MAIN_IMAGE_SRC = "";
@@ -89,7 +77,6 @@ export default function AboutPage() {
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <SiteMenu />
 
-      {/* HERO: bingkai foto melebar mengikuti scroll halaman */}
       <ScrollExpand
         src={HERO_IMAGE_SRC}
         alt="Tim JobTrack sedang berkolaborasi"
@@ -118,7 +105,6 @@ export default function AboutPage() {
       </ScrollExpand>
 
       <main className="w-full max-w-full overflow-x-clip overscroll-none">
-        {/* MISI */}
         <section className="relative w-full overflow-hidden">
           <div
             aria-hidden="true"
@@ -150,7 +136,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* FITUR */}
         <section id="fitur" className="relative w-full scroll-mt-20">
           <div className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 sm:pb-24">
             <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -183,7 +168,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* GALERI */}
         <section className="relative w-full">
           <div className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 sm:pb-24">
             <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -255,7 +239,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="relative w-full">
           <div className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 sm:pb-24">
             <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-blue-950/60 to-neutral-950 px-6 py-10 text-center sm:px-10 sm:py-12">
