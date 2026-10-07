@@ -20,11 +20,8 @@ export type StaggeredMenuProps = {
   displaySocials?: boolean;
   displayItemNumbering?: boolean;
   className?: string;
-  /** Path gambar custom, contoh "/logo.png". File harus ada di frontend/public/. Kosongkan untuk pakai logo bawaan. */
   logoUrl?: string;
-  /** Teks di samping logo, default "JobTrack". */
   logoText?: string;
-  /** Alt untuk gambar logo custom. */
   logoImageAlt?: string;
   menuButtonColor?: string;
   openMenuButtonColor?: string;
