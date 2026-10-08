@@ -36,7 +36,7 @@ export default function LandingHeroMomentumRing() {
             <div
               key={item.title}
               className={`momentum-ring__card${active ? " is-active" : ""}`}
-              style={{ transform: `rotateY(${i * step}deg) translateZ(260px)` }}
+              style={{ transform: `rotateY(${i * step}deg) translateZ(var(--ring-z, 260px))` }}
             >
               <p className="momentum-ring__card-title">{item.title}</p>
               <p className="momentum-ring__card-subtitle">{item.subtitle}</p>

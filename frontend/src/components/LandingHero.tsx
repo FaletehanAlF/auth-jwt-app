@@ -1,5 +1,5 @@
 import Link from "next/link";
-import LandingHeroMagicTransform from "./LandingHeroMagicTransform";
+import LandingHeroMomentumRing from "./LandingHeroMomentumRing";
 import TechText from "./TechText";
 
 export default function LandingHero() {
@@ -139,7 +139,7 @@ export default function LandingHero() {
             className="animate-hero-fade-up mt-10 w-full max-w-3xl"
             style={{ animationDelay: "380ms" }}
           >
-            <LandingHeroMagicTransform />
+            <LandingHeroMomentumRing />
           </div>
 
         </div>
