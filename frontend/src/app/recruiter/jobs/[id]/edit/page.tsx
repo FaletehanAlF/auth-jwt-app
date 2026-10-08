@@ -105,6 +105,7 @@ export default function EditJobPage() {
 
       if (data.success === true) {
         setSuccess(true);
+        window.dispatchEvent(new Event("jobs-changed"));
         setTimeout(() => router.push("/recruiter/jobs"), 800);
         return;
       }

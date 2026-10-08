@@ -61,6 +61,7 @@ export default function CreateJobWidget() {
         reset();
         setNotice("Lowongan berhasil dibuat.");
         setTimeout(() => setNotice(null), 3000);
+        window.dispatchEvent(new Event("jobs-changed"));
         return;
       }
       const message = data.message ?? "Gagal membuat lowongan.";

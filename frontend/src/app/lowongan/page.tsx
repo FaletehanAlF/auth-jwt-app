@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import SiteMenu from "../../components/SiteMenu";
 import Footer from "../../components/Footer";
+import BorderGlow from "../../components/BorderGlow";
 import { apiFetch } from "../../lib/api";
 
 type Job = {
@@ -20,9 +21,9 @@ export default function LowonganPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchJobs = async (showLoading = true) => {
       try {
-        setLoading(true);
+        if (showLoading) setLoading(true);
         setError(null);
         const data = await apiFetch<{ success: boolean; message?: string; jobs?: Job[] }>("/jobs");
         if (data.success && Array.isArray(data.jobs)) {
@@ -43,6 +44,9 @@ export default function LowonganPage() {
     };
 
     fetchJobs();
+    const onChanged = () => fetchJobs(false);
+    window.addEventListener("jobs-changed", onChanged);
+    return () => window.removeEventListener("jobs-changed", onChanged);
   }, []);
 
   return (
@@ -76,9 +80,13 @@ export default function LowonganPage() {
         {!loading && !error && jobs.length > 0 && (
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {jobs.map((job) => (
-              <div
+              <BorderGlow
                 key={job.id}
-                className="rounded-lg border border-white/10 bg-neutral-900 px-5 py-5"
+                borderRadius={12}
+                backgroundColor="#171717"
+                glowColor="217 91 60"
+                colors={["#3b82f6", "#60a5fa", "#818cf8"]}
+                className="px-5 py-5"
               >
                 <h3 className="font-display text-lg font-semibold text-white">
                   {job.title}
@@ -95,7 +103,7 @@ export default function LowonganPage() {
                 >
                   Lihat Detail
                 </Link>
-              </div>
+              </BorderGlow>
             ))}
           </div>
         )}

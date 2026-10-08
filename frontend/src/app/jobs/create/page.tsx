@@ -59,7 +59,8 @@ export default function CreateJobPage() {
 
       if (data.success === true) {
         setSuccess(true);
-        setTimeout(() => router.push("/home"), 800);
+        window.dispatchEvent(new Event("jobs-changed"));
+        setTimeout(() => router.push("/lowongan"), 800);
         return;
       }
 

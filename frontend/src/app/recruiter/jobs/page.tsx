@@ -6,6 +6,7 @@ import SiteMenu from "../../../components/SiteMenu";
 import Footer from "../../../components/Footer";
 import { apiFetch } from "../../../lib/api";
 import CreateJobWidget from "../../../components/CreateJobWidget";
+import BorderGlow from "../../../components/BorderGlow";
 
 type Job = {
   id: number;
@@ -43,6 +44,7 @@ export default function RecruiterJobsPage() {
       if (data.success === true) {
         setJobs((prev) => prev.filter((job) => job.id !== jobId));
         setDeleteSuccess("Lowongan berhasil dihapus.");
+        window.dispatchEvent(new Event("jobs-changed"));
         return;
       }
 
@@ -70,9 +72,9 @@ export default function RecruiterJobsPage() {
   };
 
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchJobs = async (showLoading = true) => {
       try {
-        setLoading(true);
+        if (showLoading) setLoading(true);
         setError(null);
         const data = await apiFetch<{
           success: boolean;
@@ -103,6 +105,9 @@ export default function RecruiterJobsPage() {
     };
 
     fetchJobs();
+    const onChanged = () => fetchJobs(false);
+    window.addEventListener("jobs-changed", onChanged);
+    return () => window.removeEventListener("jobs-changed", onChanged);
   }, []);
 
   return (
@@ -137,9 +142,13 @@ export default function RecruiterJobsPage() {
         {!loading && !error && jobs.length > 0 && (
           <div className="mt-6 grid grid-cols-1 gap-4">
             {jobs.map((job) => (
-              <div
+              <BorderGlow
                 key={job.id}
-                className="rounded-lg border border-white/10 bg-neutral-900 px-5 py-5"
+                borderRadius={12}
+                backgroundColor="#171717"
+                glowColor="217 91 60"
+                colors={["#3b82f6", "#60a5fa", "#818cf8"]}
+                className="px-5 py-5"
               >
                 <h2 className="font-display text-lg font-semibold text-white">
                   {job.title}
@@ -184,7 +193,7 @@ export default function RecruiterJobsPage() {
                     {deletingId === job.id ? "Menghapus..." : "Hapus"}
                   </button>
                 </div>
-              </div>
+              </BorderGlow>
             ))}
           </div>
         )}
