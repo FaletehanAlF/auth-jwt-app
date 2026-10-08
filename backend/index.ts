@@ -17,6 +17,13 @@ const ALLOWED_ORIGINS = (
 app.use(cors({ origin: ALLOWED_ORIGINS }));
 app.use(express.json());
 
+app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (err?.type === "entity.parse.failed" || err instanceof SyntaxError) {
+    return res.status(400).json({ success: false, message: "Body JSON tidak valid" });
+  }
+  next(err);
+});
+
 app.get("/", (req, res) => {
   res.json({
     success: true,
