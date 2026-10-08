@@ -1,6 +1,6 @@
 import Link from "next/link";
 import LandingHeroCarousel from "./LandingHeroCarousel";
-import SplitText from "./SplitText";
+import TechText from "./TechText";
 
 export default function LandingHero() {
   return (
@@ -19,14 +19,32 @@ export default function LandingHero() {
             Your career, your way
           </p>
 
-          <h1 className="mt-6 font-display text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
-            <SplitText text="Temukan Pekerjaan yang Tepat" delayStart={200} />
-            <span className="block text-sky-100">
-              <SplitText text="untuk Langkah " delayStart={200 + 28 * 40} />
-
-              <span className="italic text-lime-200">
-                <SplitText text="Kariermu" delayStart={200 + 42 * 40} />
-              </span>
+          <h1 className="mt-6 w-full font-display">
+            <span className="block h-14 sm:h-20 lg:h-24">
+              <TechText
+                text="Temukan Pekerjaan yang Tepat"
+                fontWeight={700}
+                fontSize={64}
+                color="#ffffff"
+                accentColor="#bef264"
+                reveal="letter"
+                dashLength={4}
+                dashGap={2}
+                specks={15}
+              />
+            </span>
+            <span className="block h-14 text-sky-100 sm:h-20 lg:h-24">
+              <TechText
+                text="untuk Langkah Kariermu"
+                fontWeight={700}
+                fontSize={64}
+                color="#e0f2fe"
+                accentColor="#bef264"
+                reveal="letter"
+                dashLength={4}
+                dashGap={2}
+                specks={15}
+              />
             </span>
           </h1>
 
