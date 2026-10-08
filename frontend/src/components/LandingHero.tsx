@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LandingHeroCarousel from "./LandingHeroCarousel";
+import LandingHeroMagicTransform from "./LandingHeroMagicTransform";
 import TechText from "./TechText";
 
 export default function LandingHero() {
@@ -136,8 +137,15 @@ export default function LandingHero() {
           </div>
 
           <div
-            className="animate-hero-fade-up mt-10 w-full max-w-4xl"
+            className="animate-hero-fade-up mt-10 w-full max-w-3xl"
             style={{ animationDelay: "380ms" }}
+          >
+            <LandingHeroMagicTransform />
+          </div>
+
+          <div
+            className="animate-hero-fade-up mt-8 w-full max-w-4xl"
+            style={{ animationDelay: "460ms" }}
           >
             <LandingHeroCarousel />
           </div>
