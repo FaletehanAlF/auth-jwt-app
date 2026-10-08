@@ -83,10 +83,42 @@ body {
   animation: toast-in 0.25s ease-out;
 }
 
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-fade-up {
+  animation: hero-fade-up 0.3s ease-out both;
+}
+
+@keyframes split-char-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em) rotate(4deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.animate-split-char {
+  animation: split-char-in 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-jobtrack-splash,
   .animate-jobtrack-page,
-  .animate-toast-in {
+  .animate-toast-in,
+  .animate-hero-fade-up,
+  .animate-split-char {
     animation: none;
   }
 }

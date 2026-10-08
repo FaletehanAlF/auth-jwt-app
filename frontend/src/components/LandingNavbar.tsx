@@ -40,8 +40,8 @@ export default function LandingNavbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-200/70 bg-white/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+    <header className="absolute inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
+      <div className="mx-auto flex h-14 w-full max-w-3xl items-center justify-between gap-4 rounded-full border border-white/25 bg-sky-700/40 px-3 shadow-[0_10px_30px_-16px_rgba(2,60,120,0.5)] backdrop-blur-md">
         {/* Kiri: Logo */}
         <Link
           href="/"
@@ -119,8 +119,8 @@ export default function LandingNavbar() {
 
       {/* Mobile: panel menu */}
       {open && (
-        <div className="border-t border-neutral-200/70 bg-white md:hidden">
-          <nav aria-label="Navigasi mobile" className="mx-auto w-full max-w-6xl space-y-1 px-4 py-4 sm:px-6">
+        <div className="mx-auto mt-2 w-full max-w-3xl rounded-3xl border border-neutral-200/80 bg-white p-4 shadow-lg md:hidden">
+          <nav aria-label="Navigasi mobile" className="w-full space-y-1">
             {NAV_LINKS.map((item) => (
               <Link
                 key={item.label}
