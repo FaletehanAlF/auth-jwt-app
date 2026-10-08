@@ -5,8 +5,6 @@ import Link from "next/link";
 import SiteMenu from "../../components/SiteMenu";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
-import LogoLoop from "../../components/LogoLoop";
-import { TRUSTED_LOGOS } from "../../data/trustedLogos";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
 import TechText from "../../components/TechText";
 
