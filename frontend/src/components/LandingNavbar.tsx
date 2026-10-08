@@ -45,11 +45,11 @@ export default function LandingNavbar() {
         {/* Kiri: Logo */}
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+          className="flex shrink-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label="JobTrack - ke beranda"
         >
           <LogoMark />
-          <span className="font-display text-lg font-bold tracking-tight text-neutral-900">
+          <span className="font-display text-lg font-bold tracking-tight text-white">
             JobTrack
           </span>
         </Link>
@@ -60,13 +60,13 @@ export default function LandingNavbar() {
             <Link
               key={item.label}
               href={item.href}
-              className="group relative rounded py-1 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
+              className="group relative rounded py-1 text-sm font-medium text-sky-100 transition-colors duration-150 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               {item.label}
-              <span
-                aria-hidden="true"
-                className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-neutral-900 transition-transform duration-150 group-hover:scale-x-100"
-              />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-white transition-transform duration-150 group-hover:scale-x-100"
+                />
             </Link>
           ))}
         </nav>
@@ -75,13 +75,13 @@ export default function LandingNavbar() {
         <div className="hidden items-center gap-2 md:flex">
           <Link
             href="/login"
-            className="inline-flex h-10 items-center justify-center rounded-full px-4 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+            className="inline-flex h-10 items-center justify-center rounded-full px-4 text-sm font-medium text-sky-100 transition-colors duration-150 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
           >
             Masuk
           </Link>
           <Link
             href="/register"
-            className="inline-flex h-10 items-center justify-center rounded-full bg-neutral-900 px-5 text-sm font-medium text-white transition-colors duration-150 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 active:bg-neutral-950"
+            className="inline-flex h-10 items-center justify-center rounded-full bg-white px-5 text-sm font-medium text-neutral-900 transition-colors duration-150 hover:bg-sky-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 active:bg-neutral-100"
           >
             Daftar
           </Link>
@@ -93,7 +93,7 @@ export default function LandingNavbar() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Tutup menu navigasi" : "Buka menu navigasi"}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 text-neutral-700 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 text-white transition-colors duration-150 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white md:hidden"
         >
           {open ? (
             <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-5 w-5">

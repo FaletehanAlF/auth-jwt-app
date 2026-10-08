@@ -5,7 +5,7 @@ import SplitText from "./SplitText";
 export default function LandingHero() {
   return (
     <section className="relative">
-      <div className="relative flex min-h-[calc(100svh-4.5rem)] flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-sky-600 via-sky-500 to-sky-300 px-4 py-16 text-center sm:px-10">
+      <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-sky-600 via-sky-500 to-sky-300 px-4 pb-16 pt-28 text-center sm:px-10">
         {/* Dekorasi awan halus */}
         <div aria-hidden="true" className="absolute inset-0">
           <div className="absolute left-[-6rem] top-10 h-40 w-72 rounded-full bg-white/20 blur-3xl" />
