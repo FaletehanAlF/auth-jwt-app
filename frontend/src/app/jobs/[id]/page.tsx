@@ -23,10 +23,6 @@ export default function JobDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [applying, setApplying] = useState(false);
-  const [applyError, setApplyError] = useState<string | null>(null);
-  const [applySuccess, setApplySuccess] = useState(false);
-
   useEffect(() => {
     const fetchJob = async () => {
       try {
@@ -54,41 +50,6 @@ export default function JobDetailPage() {
       fetchJob();
     }
   }, [id]);
-
-  const handleApply = async () => {
-    if (applying) return;
-    try {
-      setApplying(true);
-      setApplyError(null);
-      setApplySuccess(false);
-
-      const data = await apiFetch<{ success: boolean; message?: string }>(
-        `/jobs/${id}/apply`,
-        { method: "POST" },
-      );
-
-      if (data.success === true) {
-        setApplySuccess(true);
-        return;
-      }
-
-      const message = data.message ?? "Gagal mengirim lamaran.";
-      if (
-        message === "Token tidak ditemukan" ||
-        message === "Token tidak valid atau sudah expired"
-      ) {
-        setApplyError("Silakan login terlebih dahulu untuk melamar.");
-      } else if (message === "Akses ditolak") {
-        setApplyError("Hanya jobseeker yang dapat melamar lowongan ini.");
-      } else {
-        setApplyError(message);
-      }
-    } catch {
-      setApplyError("Gagal mengirim lamaran. Coba lagi.");
-    } finally {
-      setApplying(false);
-    }
-  };
 
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
@@ -129,23 +90,12 @@ export default function JobDetailPage() {
               {job.description}
             </p>
 
-            <button
-              type="button"
-              onClick={handleApply}
-              disabled={applying}
-              className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+            <Link
+              href="/home"
+              className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500"
             >
-              {applying ? "Mengirim Lamaran..." : "Lamar Sekarang"}
-            </button>
-
-            {applySuccess && (
-              <p className="mt-4 text-sm text-green-400">
-                Lamaran berhasil dikirim.
-              </p>
-            )}
-            {applyError && (
-              <p className="mt-4 text-sm text-red-400">{applyError}</p>
-            )}
+              Lihat Lowongan Tersedia
+            </Link>
           </article>
         )}
 
