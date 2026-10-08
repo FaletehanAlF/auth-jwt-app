@@ -187,32 +187,6 @@ export default function HomePage() {
 
           {}
           <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
-            <div className="mx-auto w-full max-w-5xl px-4 pt-10 text-center sm:px-6">
-              <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/50">
-                Telah dipercayai oleh
-              </p>
-            </div>
-            {}
-            <div className="w-full max-w-full pb-12 pt-6 mt-8">
-              <div style={{ height: "96px", position: "relative", overflow: "hidden" }}>
-                <LogoLoop
-                  logos={TRUSTED_LOGOS}
-                  speed={60}
-                  direction="left"
-                  logoHeight={64}
-                  gap={80}
-                  hoverSpeed={0}
-                  fadeOut
-                  fadeOutColor="#0a0a0a"
-                  ariaLabel="Perusahaan yang mempercayai kami"
-                  className="logoloop--grayscale logoloop--square"
-                />
-              </div>
-            </div>
-          </section>
-
-          {}
-          <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
             <div className="mx-auto w-full max-w-5xl px-4 pt-12 text-center sm:px-6">
               <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                 Momen dari komunitas kami

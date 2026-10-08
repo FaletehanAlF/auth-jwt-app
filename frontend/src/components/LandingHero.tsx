@@ -1,5 +1,6 @@
 import Link from "next/link";
-import LandingHeroMomentumRing from "./LandingHeroMomentumRing";
+import LandingHeroMagicTransform from "./LandingHeroMagicTransform";
+import LandingHeroSearch from "./LandingHeroSearch";
 import TechText from "./TechText";
 
 export default function LandingHero() {
@@ -56,52 +57,12 @@ export default function LandingHero() {
             kariermu bersama JobTrack.
           </p>
 
-          {/* Search bar (UI only, tanpa logic/API) */}
-          <form
-            action="/home"
-            method="get"
-            role="search"
+          <div
             className="animate-hero-fade-up mt-8 w-full max-w-xl"
             style={{ animationDelay: "240ms" }}
           >
-            <div className="flex flex-col gap-2 rounded-2xl border border-white/40 bg-white p-2 shadow-[0_16px_40px_-20px_rgba(2,60,120,0.5)] transition-colors duration-150 focus-within:border-sky-200 sm:flex-row sm:items-center">
-              <div className="flex h-12 flex-1 items-center gap-2.5 px-3">
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  aria-hidden="true"
-                  className="h-5 w-5 shrink-0 text-neutral-400"
-                >
-                  <circle
-                    cx="9"
-                    cy="9"
-                    r="5.5"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                  />
-                  <path
-                    d="m13.5 13.5 3 3"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <input
-                  type="search"
-                  name="q"
-                  placeholder="Cari posisi atau keahlian..."
-                  aria-label="Cari posisi atau keahlian"
-                  className="h-full w-full min-w-0 bg-transparent text-sm text-neutral-900 outline-none placeholder:text-neutral-400"
-                />
-              </div>
-              <button
-                type="submit"
-                className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-neutral-900 px-7 text-sm font-medium text-white transition-colors duration-150 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 active:bg-neutral-950 sm:w-auto"
-              >
-                Cari
-              </button>
-            </div>
-          </form>
+            <LandingHeroSearch />
+          </div>
 
           <div
             className="animate-hero-fade-up mt-6 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row"
@@ -139,7 +100,7 @@ export default function LandingHero() {
             className="animate-hero-fade-up mt-10 w-full max-w-3xl"
             style={{ animationDelay: "380ms" }}
           >
-            <LandingHeroMomentumRing />
+            <LandingHeroMagicTransform />
           </div>
 
         </div>
