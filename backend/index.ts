@@ -8,7 +8,7 @@ const app = express();
 const PORT = Number(process.env.PORT) || 5001;
 
 const ALLOWED_ORIGINS = (
-  process.env.FRONTEND_URL || "http://localhost:5000,http://localhost:3000"
+  process.env.FRONTEND_URL || "http://localhost:5000"
 )
   .split(",")
   .map((s) => s.trim())
