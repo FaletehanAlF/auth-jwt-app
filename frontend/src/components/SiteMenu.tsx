@@ -25,15 +25,14 @@ function buildItems(role: "jobseeker" | "recruiter" | null): StaggeredMenuItem[]
   if (role === "recruiter") {
     return [
       ...BASE_ITEMS,
-      { label: "Lowongan Saya", ariaLabel: "Job milik recruiter", link: "/recruiter/jobs" },
+      { label: "Lowongan", ariaLabel: "Job milik recruiter", link: "/recruiter/jobs" },
       { label: "Keluar", ariaLabel: "Logout", link: "/login", onClick: () => localStorage.removeItem("token") },
     ];
   }
   if (role === "jobseeker") {
     return [
       ...BASE_ITEMS,
-      { label: "Lowongan", ariaLabel: "Lihat lowongan", link: "/home" },
-      { label: "Lamaran Saya", ariaLabel: "Lamaran saya", link: "/applications" },
+      { label: "Lowongan", ariaLabel: "Lihat lowongan", link: "/lowongan" },
       { label: "Keluar", ariaLabel: "Logout", link: "/login", onClick: () => localStorage.removeItem("token") },
     ];
   }

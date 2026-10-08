@@ -62,17 +62,15 @@ export default function LoginPage() {
         return;
       }
 
-      const firstFieldError =
-        (Array.isArray(data.errors?.email) && data.errors.email[0]) ||
-        (Array.isArray(data.errors?.password) && data.errors.password[0]) ||
-        null;
+      const firstFieldError = Object.values(data.errors ?? {})
+        .flat()
+        .find((msg) => typeof msg === "string");
 
       notify(
         "error",
         firstFieldError ?? data.message ?? "Masuk gagal. Periksa kembali data Anda.",
       );
-    } catch (error) {
-      console.error("Gagal menghubungi server:", error);
+    } catch {
       notify("error", "Gagal menghubungi server. Coba lagi.");
     }
   };

@@ -56,7 +56,7 @@ export default function JobDetailPage() {
       <SiteMenu />
       <main className="mx-auto w-full max-w-3xl px-4 pb-16 pt-32 sm:px-6">
         <Link
-          href="/home"
+          href="/lowongan"
           className="inline-flex text-sm text-blue-400 transition-colors hover:text-blue-300"
         >
           ← Kembali ke Lowongan
@@ -91,7 +91,7 @@ export default function JobDetailPage() {
             </p>
 
             <Link
-              href="/home"
+              href="/lowongan"
               className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500"
             >
               Lihat Lowongan Tersedia
@@ -100,7 +100,7 @@ export default function JobDetailPage() {
         )}
 
         <Link
-          href="/home"
+          href="/lowongan"
           className="mt-8 inline-flex h-11 items-center justify-center rounded-lg bg-white px-6 text-sm font-medium text-neutral-900 transition-colors duration-150 hover:bg-slate-100"
         >
           Kembali ke Lowongan

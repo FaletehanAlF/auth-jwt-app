@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import SiteMenu from "../../components/SiteMenu";
 import Footer from "../../components/Footer";
+import BorderGlow from "../../components/BorderGlow";
 import { apiFetch } from "../../lib/api";
 
 type Application = {
@@ -80,9 +81,13 @@ export default function ApplicationsPage() {
         {!loading && !error && applications.length > 0 && (
           <div className="mt-6 grid grid-cols-1 gap-4">
             {applications.map((app) => (
-              <div
+              <BorderGlow
                 key={app.id}
-                className="rounded-lg border border-white/10 bg-neutral-900 px-5 py-5"
+                borderRadius={12}
+                backgroundColor="#171717"
+                glowColor="217 91 60"
+                colors={["#3b82f6", "#60a5fa", "#818cf8"]}
+                className="px-5 py-5"
               >
                 <h2 className="font-display text-lg font-semibold text-white">
                   {app.title}
@@ -106,7 +111,7 @@ export default function ApplicationsPage() {
                 >
                   Lihat Lowongan
                 </Link>
-              </div>
+              </BorderGlow>
             ))}
           </div>
         )}

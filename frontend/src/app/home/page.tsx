@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import Link from "next/link";
 import SiteMenu from "../../components/SiteMenu";
 import FeatureCard from "../../components/FeatureCard";
@@ -9,16 +9,6 @@ import LogoLoop from "../../components/LogoLoop";
 import { TRUSTED_LOGOS } from "../../data/trustedLogos";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
 import TechText from "../../components/TechText";
-import { apiFetch } from "../../lib/api";
-import CreateJobWidget from "../../components/CreateJobWidget";
-
-type Job = {
-  id: number;
-  title: string;
-  description: string;
-  location: string;
-  company: string;
-};
 
 const features: { title: string; desc: string; icon: ReactNode }[] = [
   {
@@ -118,36 +108,6 @@ const GALLERY_ITEMS: GalleryItem[] = [
 ];
 
 export default function HomePage() {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await apiFetch<{ success: boolean; message?: string; jobs?: Job[] }>("/jobs");
-        if (data.success && Array.isArray(data.jobs)) {
-          setJobs(data.jobs);
-        } else if (
-          data.message === "Token tidak ditemukan" ||
-          data.message === "Token tidak valid atau sudah expired"
-        ) {
-          setError("Silakan login terlebih dahulu untuk melihat lowongan.");
-        } else {
-          setError("Gagal mengambil data lowongan.");
-        }
-      } catch {
-        setError("Gagal mengambil data lowongan.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchJobs();
-  }, []);
-
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
@@ -275,60 +235,6 @@ export default function HomePage() {
             </div>
           </section>
 
-          {}
-          <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-12 sm:px-6">
-            <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Lowongan Tersedia
-            </h2>
-            {loading && (
-              <p className="mt-6 text-sm text-white/60">Memuat lowongan...</p>
-            )}
-            {error && !loading && (
-              <div className="mt-6">
-                <p className="text-sm text-red-400">{error}</p>
-                {error.startsWith("Silakan login") && (
-                  <Link
-                    href="/login"
-                    className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-5 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500"
-                  >
-                    Masuk ke Akun
-                  </Link>
-                )}
-              </div>
-            )}
-            {!loading && !error && jobs.length === 0 && (
-              <p className="mt-6 text-sm text-white/60">
-                Belum ada lowongan saat ini.
-              </p>
-            )}
-            {!loading && !error && jobs.length > 0 && (
-              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {jobs.map((job) => (
-                  <div
-                    key={job.id}
-                    className="rounded-lg border border-white/10 bg-neutral-900 px-5 py-5"
-                  >
-                    <h3 className="font-display text-lg font-semibold text-white">
-                      {job.title}
-                    </h3>
-                    <p className="mt-1 text-sm text-white/70">
-                      {job.company} · {job.location}
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-white/60">
-                      {job.description}
-                    </p>
-                    <Link
-                      href={`/jobs/${job.id}`}
-                      className="mt-4 inline-flex text-sm font-medium text-blue-400 transition-colors hover:text-blue-300"
-                    >
-                      Lihat Detail
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
-
           <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-blue-950 to-neutral-950">
             <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-12 sm:px-6 lg:pb-16">
             <h2 className="mx-auto w-fit max-w-full whitespace-nowrap text-center font-display text-[clamp(0.65rem,3.2vw,1.875rem)] font-semibold tracking-tight text-white">
@@ -390,7 +296,6 @@ export default function HomePage() {
 
         <Footer />
       </div>
-      <CreateJobWidget />
     </div>
   );
 }
