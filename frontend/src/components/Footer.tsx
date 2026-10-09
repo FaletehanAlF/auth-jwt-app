@@ -14,14 +14,17 @@ const CONTACT = ["Email", "LinkedIn", "GitHub"];
 
 export default function Footer() {
   return (
-    <footer className="relative w-full overflow-x-clip bg-transparent">
-      {/* Atas footer yang abu tua dibuat bergelombang — satu warna, tanpa background hitam tambahan */}
+    <footer className="relative z-10 -mt-12 w-full overflow-x-clip bg-transparent sm:-mt-14 lg:-mt-[60px]">
+      {/* -mt = tinggi gelombang: footer menimpa padding bawah section di atasnya,
+          sehingga lembah transparan menampilkan section (putih/gelap) bukan
+          background hitam body. Aman: semua page punya padding bawah >= 64px. */}
+      {/* Gelombang abu-abu tunggal — satu-satunya background di footer ini */}
       <div aria-hidden="true" className="relative w-full overflow-hidden leading-[0]">
         <svg
           viewBox="0 0 1440 120"
           preserveAspectRatio="none"
           focusable="false"
-          className="block h-[60px] w-full sm:h-[90px] lg:h-[120px]"
+          className="block h-12 w-full sm:h-14 lg:h-[60px]"
         >
           <path
             d="M0,80 C240,112 480,32 720,64 C960,96 1200,108 1440,72 L1440,120 L0,120 Z"
