@@ -3,9 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingHero from "../components/LandingHero";
-import JobTrackLoader, {
-  JOBTRACK_LOADER_SEEN_KEY,
-} from "../components/JobTrackLoader";
+import JobTrackLoader from "../components/JobTrackLoader";
 import LogoLoop from "../components/LogoLoop";
 import Reveal from "../components/Reveal";
 import SplitText from "../components/SplitText";
@@ -15,6 +13,11 @@ import LandingHowItWorks from "../components/LandingHowItWorks";
 import LandingTestimonials from "../components/LandingTestimonials";
 import Footer from "../components/Footer";
 
+// Flag in-memory (bukan sessionStorage): refresh/full-reload mengulang
+// animasi loader sama seperti masuk pertama kali; navigasi client-side
+// dalam sesi yang sama tetap melewati loader. Reset otomatis saat reload.
+let landingLoaderSeen = false;
+
 export default function LandingPage() {
   // Loader tampil di atas hero; entrance hero dimulai MENJELANG loader
   // selesai terangkat (bukan saat mulai naik) agar tidak tabrakan.
@@ -22,16 +25,13 @@ export default function LandingPage() {
   const [heroStart, setHeroStart] = useState(false);
 
   useEffect(() => {
-    // Navigasi internal dalam satu sesi tab: lewati loader, hero langsung jalan.
+    // Navigasi client-side internal: lewati loader, hero langsung jalan.
+    // Refresh/full-reload: flag kembali false → animasi diputar penuh lagi.
     // Dijadwalkan async agar bukan setState sinkron di body effect.
     const id = window.setTimeout(() => {
-      try {
-        if (window.sessionStorage.getItem(JOBTRACK_LOADER_SEEN_KEY)) {
-          setShowLoader(false);
-          setHeroStart(true);
-        }
-      } catch {
-        /* abaikan: storage diblokir, tampilkan loader normal */
+      if (landingLoaderSeen) {
+        setShowLoader(false);
+        setHeroStart(true);
       }
     }, 0);
     return () => window.clearTimeout(id);
@@ -42,6 +42,7 @@ export default function LandingPage() {
   }, []);
 
   const handleLoaderDone = useCallback(() => {
+    landingLoaderSeen = true;
     setShowLoader(false);
   }, []);
 
