@@ -2,6 +2,7 @@ import LandingNavbar from "../components/LandingNavbar";
 import LandingHero from "../components/LandingHero";
 import LogoLoop from "../components/LogoLoop";
 import { TRUSTED_LOGOS } from "../data/trustedLogos";
+import LandingAbout from "../components/LandingAbout";
 
 export default function LandingPage() {
   return (
