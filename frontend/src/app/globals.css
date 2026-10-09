@@ -110,18 +110,18 @@ body {
   border-radius: 0;
   will-change: transform, border-radius;
   transition:
-    transform 0.8s cubic-bezier(0.76, 0, 0.24, 1),
-    border-radius 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+    transform 1.2s cubic-bezier(0.76, 0, 0.24, 1),
+    border-bottom-left-radius 1.2s cubic-bezier(0.76, 0, 0.24, 1),
+    border-bottom-right-radius 1.2s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .jobtrack-loader--exit {
-  /* Keluar ke atas dengan mulus; radius keempat sudut agar transisi
-     seimbang (mencakup kiri-atas & kanan-atas sesuai spesifikasi). */
+  /* Terangkat ke atas hingga keluar viewport; kedua sudut BAWAH membulat
+     bertahap bersamaan dengan gerakan (radius + transform satu durasi &
+     satu easing sehingga lengkungan terlihat selama panel terangkat). */
   transform: translateY(-100%);
-  border-top-left-radius: 32px;
-  border-top-right-radius: 32px;
-  border-bottom-left-radius: 32px;
-  border-bottom-right-radius: 32px;
+  border-bottom-left-radius: 48px;
+  border-bottom-right-radius: 48px;
 }
 
 @keyframes jobtrack-loader-spin {
@@ -139,12 +139,13 @@ body {
   -webkit-user-drag: none;
   backface-visibility: hidden;
   transform: translateZ(0);
+  transform-origin: center;
   will-change: transform;
 }
 
 .jobtrack-loader__logo--spin {
-  /* Satu putaran terkontrol, tidak berulang. */
-  animation: jobtrack-loader-spin 0.9s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  /* Satu putaran perlahan (±2 detik), easing in-out halus tanpa sentakan. */
+  animation: jobtrack-loader-spin 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* ---- Hero entrance kiri/kanan (setara AOS, ringan, GPU only) ---- */

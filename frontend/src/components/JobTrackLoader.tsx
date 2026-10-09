@@ -22,7 +22,8 @@ type JobTrackLoaderProps = {
 /**
  * JobTrackLoader — loading screen minimalis landing page.
  * - Background putih polos, logo transparan tepat di tengah viewport.
- * - Logo berputar SATU kali secara halus, lalu layar bergeser naik keluar.
+ * - Logo berputar SATU kali dengan tenang (±2 detik), jeda singkat,
+ *   lalu panel putih terangkat keluar dengan sudut bawah membulat.
  * - Aman Strict Mode (timeout + scroll-lock selalu di-cleanup, guard unmount).
  * - Hormati prefers-reduced-motion (transisi disederhanakan via CSS + durasi dipersingkat).
  */
@@ -60,6 +61,7 @@ export default function JobTrackLoader({ onReveal, onDone }: JobTrackLoaderProps
     body.style.overflow = "hidden";
 
     const spinMs = reduced ? 0 : JOBTRACK_LOADER_SPIN_MS;
+    const holdMs = reduced ? 0 : JOBTRACK_LOADER_HOLD_MS;
     const exitMs = reduced ? 200 : JOBTRACK_LOADER_EXIT_MS;
 
     const clearAll = () => {
@@ -80,14 +82,14 @@ export default function JobTrackLoader({ onReveal, onDone }: JobTrackLoaderProps
       if (!aliveRef.current) return;
       setPhase("gone");
       doneRef.current?.();
-    }, spinMs + exitMs);
+    }, spinMs + holdMs + exitMs);
     timersRef.current.push(finishTimer);
 
     const revealTimer = window.setTimeout(() => {
       if (!aliveRef.current) return;
       setPhase("exit");
       revealRef.current?.();
-    }, spinMs);
+    }, spinMs + holdMs);
     timersRef.current.push(revealTimer);
 
     return () => {
