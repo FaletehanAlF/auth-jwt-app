@@ -108,18 +108,21 @@ body {
   justify-content: center;
   background: #ffffff;
   border-radius: 0;
-  will-change: transform, border-radius;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
   transition:
-    transform 2.4s cubic-bezier(0.76, 0, 0.24, 1),
-    border-bottom-left-radius 2.4s cubic-bezier(0.76, 0, 0.24, 1),
-    border-bottom-right-radius 2.4s cubic-bezier(0.76, 0, 0.24, 1);
+    transform 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-bottom-left-radius 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-bottom-right-radius 1.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .jobtrack-loader--exit {
   /* Terangkat ke atas hingga keluar viewport; kedua sudut BAWAH membulat
      bertahap bersamaan dengan gerakan (radius + transform satu durasi &
-     satu easing sehingga lengkungan terlihat selama panel terangkat). */
-  transform: translateY(-100%);
+     satu easing sehingga lengkungan terlihat selama panel terangkat).
+     translate3d = GPU-composited, tanpa repaint berat → tidak patah-patah. */
+  transform: translate3d(0, -100%, 0);
   border-bottom-left-radius: 48px;
   border-bottom-right-radius: 48px;
 }

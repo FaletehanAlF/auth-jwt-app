@@ -5,10 +5,10 @@ import Image from "next/image";
 
 /** Durasi satu putaran logo (sekali, perlahan, tidak berulang). */
 export const JOBTRACK_LOADER_SPIN_MS = 2000;
-/** Jeda tenang setelah rotasi selesai, sebelum panel mulai terangkat. */
-export const JOBTRACK_LOADER_HOLD_MS = 200;
+/** Jeda tenang setelah rotasi selesai, logo stay dulu sebelum panel terangkat. */
+export const JOBTRACK_LOADER_HOLD_MS = 550;
 /** Durasi transisi keluar (panel terangkat + sudut bawah membulat). */
-export const JOBTRACK_LOADER_EXIT_MS = 2400;
+export const JOBTRACK_LOADER_EXIT_MS = 1600;
 /** Kunci sessionStorage agar loader hanya tampil sekali per sesi tab. */
 export const JOBTRACK_LOADER_SEEN_KEY = "jobtrack-loader-seen";
 
