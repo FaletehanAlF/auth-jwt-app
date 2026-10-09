@@ -112,8 +112,9 @@ body {
   backface-visibility: hidden;
   will-change: transform;
   /* transform-only (tanpa animasi border-radius) = full GPU-composite,
-     tidak repaint tiap frame → naiknya halus, tidak geter/jedag-jedug. */
-  transition: transform 2.6s cubic-bezier(0.22, 1, 0.36, 1);
+     tidak repaint tiap frame → naiknya halus, tidak geter/jedag-jedug.
+     easeInOut = lepas landas & mendarat lembut, tidak ada sentakan awal. */
+  transition: transform 2.2s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .jobtrack-loader--exit {
