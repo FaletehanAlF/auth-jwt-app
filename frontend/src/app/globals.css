@@ -110,9 +110,9 @@ body {
   border-radius: 0;
   will-change: transform, border-radius;
   transition:
-    transform 1.2s cubic-bezier(0.76, 0, 0.24, 1),
-    border-bottom-left-radius 1.2s cubic-bezier(0.76, 0, 0.24, 1),
-    border-bottom-right-radius 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+    transform 2.4s cubic-bezier(0.76, 0, 0.24, 1),
+    border-bottom-left-radius 2.4s cubic-bezier(0.76, 0, 0.24, 1),
+    border-bottom-right-radius 2.4s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .jobtrack-loader--exit {
