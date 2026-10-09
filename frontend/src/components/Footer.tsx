@@ -122,7 +122,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-      </div>
     </footer>
   );
 }
