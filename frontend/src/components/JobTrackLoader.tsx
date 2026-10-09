@@ -6,7 +6,7 @@ import Image from "next/image";
 /** Durasi satu putaran logo (sekali, perlahan, tidak berulang). */
 export const JOBTRACK_LOADER_SPIN_MS = 2000;
 /** Jeda super singkat setelah rotasi berhenti, langsung naik. */
-export const JOBTRACK_LOADER_HOLD_MS = 150;
+export const JOBTRACK_LOADER_HOLD_MS = 80;
 /** Durasi transisi keluar (panel terangkat, transform-only biar halus). */
 export const JOBTRACK_LOADER_EXIT_MS = 2200;
 /** Kunci loader (kompatibilitas; gating sesi kini via flag in-memory di page). */
