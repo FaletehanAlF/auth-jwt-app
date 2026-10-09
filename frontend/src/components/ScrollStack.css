@@ -173,6 +173,11 @@
   .scroll-stack-end {
     height: 35vh;
   }
+  /* Layar kecil: tanpa pin — kartu statis berurutan + glow aktif saja. */
+  .scroll-stack-card {
+    position: relative;
+    top: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

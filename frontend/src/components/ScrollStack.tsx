@@ -26,7 +26,7 @@ type ScrollStackProps = {
   className?: string;
   itemDistance?: number;
   itemScale?: number;
-  /** Kompatibilitas API — tidak dipakai pada mode deck (semua kartu satu top). */
+  /** Jarak lipatan antar kartu bertumpuk (px). Kecil = rilis nyaris serentak. */
   itemStackDistance?: number;
   stackPosition?: string;
   scaleEndPosition?: string;
@@ -52,10 +52,10 @@ const ScrollStack = ({
   className = '',
   itemDistance = 240,
   itemScale: _itemScale = 0.05,
-  itemStackDistance: _itemStackDistance = 56,
+  itemStackDistance = 12,
   stackPosition = '18%',
-  scaleEndPosition = '10%',
-  baseScale = 0.85,
+  scaleEndPosition: _scaleEndPosition = '10%',
+  baseScale: _baseScale = 0.85,
   scaleDuration: _scaleDuration = 0.5,
   rotationAmount = 0,
   blurAmount = 0,
@@ -63,8 +63,9 @@ const ScrollStack = ({
   onStackComplete,
 }: ScrollStackProps) => {
   void _itemScale;
-  void _itemStackDistance;
+  void _baseScale;
   void _scaleDuration;
+  void _scaleEndPosition;
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const stackCompletedRef = useRef(false);
   const cardsRef = useRef<HTMLElement[]>([]);
@@ -74,6 +75,9 @@ const ScrollStack = ({
   const cardTopsRef = useRef<number[]>([]);
   const endTopRef = useRef(0);
   const topIndexRef = useRef(-1);
+  // Pinning hanya di layar ≥640px (kartu muat di bawah header sticky).
+  // Di layar kecil: kartu statis berurutan + glow aktif saja.
+  const pinEnabledRef = useRef(true);
 
   const parsePercentage = useCallback(
     (value: string, containerHeight: number) => {
@@ -98,6 +102,15 @@ const ScrollStack = ({
       containerHeight: scroller ? scroller.clientHeight : 0,
     };
   }, [useWindowScroll]);
+
+  // Tinggi header sticky seksi (0 bila tidak ada / mode non-pinning).
+  const getHeaderHeight = useCallback(() => {
+    const root = scrollerRef.current;
+    const header = root
+      ?.closest('section')
+      ?.querySelector<HTMLElement>('.how-sticky-header');
+    return header ? header.offsetHeight : 0;
+  }, []);
 
   const measureOffsets = useCallback(() => {
     const cards = cardsRef.current;
@@ -125,19 +138,31 @@ const ScrollStack = ({
     }
   }, [useWindowScroll]);
 
-  // Satu top yang SAMA untuk semua kartu → lepas sebagai satu unit.
+  // Kartu menempel tepat di bawah header sticky, berlipat tipis.
+  // Ditulis seperlunya (mount/resize), BUKAN per-frame.
   const applyCardTops = useCallback(() => {
-    const { containerHeight } = getScrollData();
-    const stackPx = parsePercentage(stackPosition, containerHeight);
-    const top = `${Math.round(stackPx * 100) / 100}px`;
-    cardsRef.current.forEach((card) => {
-      if (card) card.style.top = top;
+    if (!pinEnabledRef.current) {
+      cardsRef.current.forEach((card) => {
+        if (!card) return;
+        card.style.position = 'relative';
+        card.style.top = 'auto';
+        card.style.removeProperty('--ss');
+        card.style.removeProperty('--sr');
+        card.style.filter = '';
+      });
+      return;
+    }
+    const base = getHeaderHeight() + 16;
+    cardsRef.current.forEach((card, i) => {
+      if (!card) return;
+      card.style.position = 'sticky';
+      card.style.top = `${Math.round((base + itemStackDistance * i) * 100) / 100}px`;
     });
-  }, [getScrollData, parsePercentage, stackPosition]);
+  }, [getHeaderHeight, itemStackDistance]);
 
   // State machine stepped: hanya menulis DOM saat indeks kartu teratas
-  // BERUBAH (maksimal beberapa kali per traversal). Tidak ada tulis
-  // per-frame → mustahil geter. Animasi dihaluskan CSS transition.
+  // BERUBAH. Teks kartu yang sudah nempel TIDAK PERNAH bergerak (skala
+  // selalu 1); hanya kartu yang tiba tumbuh 0.94 → 1 saat meluncur masuk.
   const updateStackState = useCallback(() => {
     const cards = cardsRef.current;
     if (!cards.length) return;
@@ -147,40 +172,39 @@ const ScrollStack = ({
 
     const { scrollTop, containerHeight } = getScrollData();
     const stackPx = parsePercentage(stackPosition, containerHeight);
+    const pin = pinEnabledRef.current;
 
     let top = 0;
     for (let j = 0; j < cardTopsRef.current.length; j++) {
       const jTop = cardTopsRef.current[j] ?? 0;
-      if (scrollTop >= jTop - stackPx) {
+      const pinAt = pin ? jTop - (getHeaderHeight() + 16 + itemStackDistance * j) : jTop - stackPx;
+      if (scrollTop >= pinAt) {
         top = j;
       }
     }
 
     if (top !== topIndexRef.current) {
       topIndexRef.current = top;
-      const n = cards.length;
       cards.forEach((card, i) => {
         if (!card) return;
-        const behind = Math.max(0, top - i);
-        // Kartu depan penuh, makin ke belakang makin kecil hingga baseScale.
-        const scale =
-          behind === 0
-            ? 1
-            : 1 - (behind * (1 - baseScale)) / Math.max(1, n - 1);
-        card.style.setProperty(
-          '--ss',
-          String(Math.round(scale * 1000) / 1000)
-        );
-        if (rotationAmount) {
-          card.style.setProperty(
-            '--sr',
-            behind === 0 ? '0deg' : `${i * rotationAmount}deg`
-          );
-        }
-        if (blurAmount && behind > 0) {
-          card.style.filter = `blur(${behind * blurAmount}px)`;
-        } else if (blurAmount) {
-          card.style.filter = '';
+        if (pin) {
+          // Depan penuh; yang tiba tumbuh masuk; yang di belakang diam di 1.
+          const scale = i <= top ? 1 : 0.94;
+          const prev = card.style.getPropertyValue('--ss');
+          const next = i <= top ? '' : String(scale);
+          if ((prev || '') !== next) {
+            if (next) {
+              card.style.setProperty('--ss', next);
+            } else {
+              card.style.removeProperty('--ss');
+            }
+          }
+          if (rotationAmount) {
+            card.style.setProperty('--sr', '0deg');
+          }
+          if (blurAmount) {
+            card.style.filter = '';
+          }
         }
         const isActive = i === top;
         if ((card.dataset.active === 'true') !== isActive) {
@@ -205,16 +229,22 @@ const ScrollStack = ({
     }
   }, [
     stackPosition,
-    baseScale,
     rotationAmount,
     blurAmount,
+    itemStackDistance,
     onStackComplete,
     parsePercentage,
     getScrollData,
+    getHeaderHeight,
     measureOffsets,
   ]);
 
-  const handleResize = useCallback(() => {
+  const refresh = useCallback(() => {
+    pinEnabledRef.current =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function'
+        ? window.matchMedia('(min-width: 640px)').matches
+        : true;
     applyCardTops();
     measureOffsets();
     // Paksa evaluasi ulang state setelah layout berubah.
@@ -233,7 +263,6 @@ const ScrollStack = ({
     cardsRef.current = cards;
 
     cards.forEach((card, i) => {
-      card.style.position = 'sticky';
       card.style.transformOrigin = 'top center';
       card.style.backfaceVisibility = 'hidden';
       // Tumpukan eksplisit: kartu awal di belakang, kartu akhir di depan.
@@ -246,6 +275,9 @@ const ScrollStack = ({
       cards.forEach((card) => {
         card.style.position = 'relative';
         card.style.top = 'auto';
+        card.style.removeProperty('--ss');
+        card.style.removeProperty('--sr');
+        card.style.filter = '';
       });
       return () => {
         cardsRef.current = [];
@@ -255,26 +287,19 @@ const ScrollStack = ({
     }
 
     // Terapkan top + state awal sebelum paint pertama.
-    applyCardTops();
-    measureOffsets();
-    updateStackState();
+    refresh();
 
-    const remeasure = () => {
-      measureOffsets();
-      topIndexRef.current = -1;
-      updateStackState();
-    };
-    const handleLoad = () => remeasure();
+    const handleLoad = () => refresh();
 
     // Scroll handler ringan: hanya aritmetika + tulis saat state berubah.
     const handleScroll = () => updateStackState();
 
     if (useWindowScroll) {
       window.addEventListener('scroll', handleScroll, { passive: true });
-      window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', handleLoad);
     } else {
       root.addEventListener('scroll', handleScroll, { passive: true });
-      window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', handleLoad);
     }
     window.addEventListener('load', handleLoad);
     // Guard rantai penuh: tidak pernah throw walau API fonts tak lengkap.
@@ -285,7 +310,7 @@ const ScrollStack = ({
 
     let resizeObserver: ResizeObserver | null = null;
     if (typeof ResizeObserver !== 'undefined') {
-      resizeObserver = new ResizeObserver(() => remeasure());
+      resizeObserver = new ResizeObserver(() => refresh());
       resizeObserver.observe(root);
     }
 
@@ -295,7 +320,7 @@ const ScrollStack = ({
       intersectionObserver = new IntersectionObserver(
         (entries) => {
           if (entries.some((entry) => entry.isIntersecting)) {
-            remeasure();
+            refresh();
           }
         },
         { rootMargin: '40% 0px 40% 0px' }
@@ -306,10 +331,10 @@ const ScrollStack = ({
     return () => {
       if (useWindowScroll) {
         window.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('resize', handleLoad);
       } else {
         root.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('resize', handleLoad);
       }
       window.removeEventListener('load', handleLoad);
       resizeObserver?.disconnect();
@@ -321,17 +346,14 @@ const ScrollStack = ({
       topIndexRef.current = -1;
     };
   }, [
+    itemStackDistance,
     stackPosition,
-    scaleEndPosition,
-    baseScale,
     rotationAmount,
     blurAmount,
     useWindowScroll,
     onStackComplete,
-    applyCardTops,
-    measureOffsets,
+    refresh,
     updateStackState,
-    handleResize,
   ]);
 
   return (

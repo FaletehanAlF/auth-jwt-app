@@ -2,7 +2,7 @@ import Link from "next/link";
 import ScrollStack, { ScrollStackItem } from "./ScrollStack";
 
 const CARD_CLASS =
-  "flex min-h-[62vh] flex-col justify-center rounded-[1.75rem] border border-neutral-200/80 bg-white p-6 shadow-[0_32px_70px_-40px_rgba(2,60,120,0.4)] transition-[box-shadow,border-color] duration-200 hover:border-sky-200 hover:shadow-[0_36px_80px_-40px_rgba(2,60,120,0.45)] sm:min-h-[72vh] sm:rounded-[2rem] sm:p-10";
+  "flex min-h-[62vh] flex-col justify-center rounded-[1.75rem] border border-neutral-200/80 bg-white p-6 shadow-[0_32px_70px_-40px_rgba(2,60,120,0.4)] transition-[box-shadow,border-color] duration-200 hover:border-sky-200 hover:shadow-[0_36px_80px_-40px_rgba(2,60,120,0.45)] sm:min-h-[52vh] sm:rounded-[2rem] sm:p-10";
 
 function BriefcaseIcon({ className }: { className?: string }) {
   return (
@@ -107,8 +107,9 @@ export default function LandingHowItWorks() {
         <div className="how-blob how-blob-b" />
       </div>
       <div className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:py-28">
-        {/* Header section */}
-        <div className="mx-auto max-w-2xl text-center">
+        {/* Header section — sticky di desktop: tetap terlihat (stay) selama
+            stack berjalan, kartu meluncur di bawahnya. */}
+        <div className="how-sticky-header relative mx-auto max-w-2xl text-center sm:sticky sm:top-0 sm:z-50 sm:bg-neutral-50 sm:pb-8">
           <p className="flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
             <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
             Cara Kerja JobTrack
@@ -132,7 +133,7 @@ export default function LandingHowItWorks() {
           <ScrollStack
             itemDistance={240}
             itemScale={0.05}
-            itemStackDistance={56}
+            itemStackDistance={12}
             stackPosition="18%"
             scaleEndPosition="10%"
             baseScale={0.85}
