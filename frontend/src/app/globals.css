@@ -118,9 +118,58 @@ body {
   .animate-jobtrack-page,
   .animate-toast-in,
   .animate-hero-fade-up,
-  .animate-split-char {
-    animation: none;
+  .animate-split-char,
+  .reveal {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
+  .testimonial-loop .logoloop__track {
+    transform: translate3d(0, 0, 0) !important;
+  }
+}
+
+/* ---- Reveal (AOS-like, scroll dari samping) ---- */
+.reveal {
+  min-width: 0;
+  backface-visibility: hidden;
+}
+
+/* ---- Testimonials dual marquee ---- */
+.testimonial-row {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  padding-block: 6px;
+}
+
+.testimonial-loop {
+  overflow: hidden;
+}
+
+.testimonial-loop .logoloop__track {
+  align-items: stretch;
+}
+
+.testimonial-loop .logoloop__list {
+  align-items: stretch;
+  padding-block: 8px;
+}
+
+.testimonial-loop .logoloop__item {
+  display: flex;
+  align-items: stretch;
+  font-size: medium;
+}
+
+.testimonial-loop .logoloop__node {
+  display: flex;
+  align-items: stretch;
+}
+
+.testimonial-card {
+  height: 100%;
 }
 
 .shapegrid-canvas {

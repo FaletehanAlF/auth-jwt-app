@@ -103,15 +103,6 @@ const ScrollStack = ({
     };
   }, [useWindowScroll]);
 
-  // Tinggi header sticky seksi (0 bila tidak ada / mode non-pinning).
-  const getHeaderHeight = useCallback(() => {
-    const root = scrollerRef.current;
-    const header = root
-      ?.closest('section')
-      ?.querySelector<HTMLElement>('.how-sticky-header');
-    return header ? header.offsetHeight : 0;
-  }, []);
-
   const measureOffsets = useCallback(() => {
     const cards = cardsRef.current;
     if (!cards.length) return;
@@ -138,7 +129,7 @@ const ScrollStack = ({
     }
   }, [useWindowScroll]);
 
-  // Kartu menempel tepat di bawah header sticky, berlipat tipis.
+  // Kartu menempel pada posisi viewport yang sama (stay), berlipat tipis.
   // Ditulis seperlunya (mount/resize), BUKAN per-frame.
   const applyCardTops = useCallback(() => {
     if (!pinEnabledRef.current) {
@@ -152,13 +143,14 @@ const ScrollStack = ({
       });
       return;
     }
-    const base = getHeaderHeight() + 16;
+    const { containerHeight } = getScrollData();
+    const stackPx = parsePercentage(stackPosition, containerHeight);
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
       card.style.position = 'sticky';
-      card.style.top = `${Math.round((base + itemStackDistance * i) * 100) / 100}px`;
+      card.style.top = `${Math.round((stackPx + itemStackDistance * i) * 100) / 100}px`;
     });
-  }, [getHeaderHeight, itemStackDistance]);
+  }, [getScrollData, parsePercentage, stackPosition, itemStackDistance]);
 
   // State machine stepped: hanya menulis DOM saat indeks kartu teratas
   // BERUBAH. Teks kartu yang sudah nempel TIDAK PERNAH bergerak (skala
@@ -177,7 +169,9 @@ const ScrollStack = ({
     let top = 0;
     for (let j = 0; j < cardTopsRef.current.length; j++) {
       const jTop = cardTopsRef.current[j] ?? 0;
-      const pinAt = pin ? jTop - (getHeaderHeight() + 16 + itemStackDistance * j) : jTop - stackPx;
+      const pinAt = pin
+        ? jTop - (stackPx + itemStackDistance * j)
+        : jTop - stackPx;
       if (scrollTop >= pinAt) {
         top = j;
       }
@@ -235,7 +229,6 @@ const ScrollStack = ({
     onStackComplete,
     parsePercentage,
     getScrollData,
-    getHeaderHeight,
     measureOffsets,
   ]);
 

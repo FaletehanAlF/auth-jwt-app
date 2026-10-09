@@ -4,6 +4,7 @@ import LogoLoop from "../components/LogoLoop";
 import { TRUSTED_LOGOS } from "../data/trustedLogos";
 import LandingAbout from "../components/LandingAbout";
 import LandingHowItWorks from "../components/LandingHowItWorks";
+import LandingTestimonials from "../components/LandingTestimonials";
 import Footer from "../components/Footer";
 
 export default function LandingPage() {
@@ -37,6 +38,7 @@ export default function LandingPage() {
         </section>
         <LandingAbout />
         <LandingHowItWorks />
+        <LandingTestimonials />
       </main>
       <Footer />
     </div>

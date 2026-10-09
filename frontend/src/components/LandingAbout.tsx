@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Reveal from "./Reveal";
 
 function BriefcaseIcon({ className }: { className?: string }) {
   return (
@@ -76,77 +77,82 @@ export default function LandingAbout() {
       </div>
 
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[1.02fr_1fr] lg:gap-20 lg:py-28">
-        {/* Copy — first in DOM for logical reading order, right on desktop */}
+        {/* Copy — first in DOM for logical reading order, right on desktop.
+            Muncul dari kanan saat di-scroll (AOS-like). */}
         <div className="order-1 w-full max-w-xl justify-self-start lg:order-2">
-          <p className="animate-hero-fade-up flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
-            <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
-            A Bit About JobTrack
-          </p>
+          <Reveal direction="right" delay={0}>
+            <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
+              <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
+              A Bit About JobTrack
+            </p>
+          </Reveal>
 
-          <h2
-            id="about-heading"
-            className="animate-hero-fade-up mt-5 font-display text-4xl font-semibold leading-[1.06] tracking-tight text-balance text-neutral-900 sm:text-5xl"
-            style={{ animationDelay: "80ms" }}
-          >
-            Connecting Talent
-            <br className="hidden sm:block" /> With{" "}
-            <span className="text-blue-600">Opportunity</span>
-          </h2>
-
-          <p
-            className="animate-hero-fade-up mt-6 max-w-md text-base leading-relaxed text-neutral-600"
-            style={{ animationDelay: "160ms" }}
-          >
-            JobTrack membantu jobseeker menemukan peluang karier dan membantu
-            recruiter mengelola lowongan serta menemukan kandidat dengan lebih
-            mudah.
-          </p>
-          <p
-            className="animate-hero-fade-up mt-4 max-w-md text-base leading-relaxed text-neutral-600"
-            style={{ animationDelay: "220ms" }}
-          >
-            Kami membangun pengalaman recruitment yang lebih sederhana,
-            terstruktur, dan mudah digunakan oleh kedua sisi.
-          </p>
-
-          <ul
-            className="animate-hero-fade-up mt-8 space-y-4"
-            style={{ animationDelay: "280ms" }}
-          >
-            {AUDIENCES.map((item) => (
-              <li key={item.title} className="flex items-start gap-3">
-                <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
-                <p className="text-sm leading-relaxed text-neutral-600">
-                  <span className="font-semibold text-neutral-900">
-                    {item.title}
-                  </span>{" "}
-                  &mdash; {item.desc}
-                </p>
-              </li>
-            ))}
-          </ul>
-
-          <div
-            className="animate-hero-fade-up mt-10"
-            style={{ animationDelay: "340ms" }}
-          >
-            <Link
-              href="/home"
-              className="group inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-full bg-blue-600 px-8 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_12px_30px_-12px_rgba(37,99,235,0.6)] transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 active:bg-blue-700"
+          <Reveal direction="right" delay={90}>
+            <h2
+              id="about-heading"
+              className="mt-5 font-display text-4xl font-semibold leading-[1.06] tracking-tight text-balance text-neutral-900 sm:text-5xl"
             >
-              Explore Jobs
-              <ArrowIcon className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" />
-            </Link>
-          </div>
+              Connecting Talent
+              <br className="hidden sm:block" /> With{" "}
+              <span className="text-blue-600">Opportunity</span>
+            </h2>
+          </Reveal>
+
+          <Reveal direction="right" delay={170}>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-neutral-600">
+              JobTrack membantu jobseeker menemukan peluang karier dan membantu
+              recruiter mengelola lowongan serta menemukan kandidat dengan lebih
+              mudah.
+            </p>
+          </Reveal>
+
+          <Reveal direction="right" delay={230}>
+            <p className="mt-4 max-w-md text-base leading-relaxed text-neutral-600">
+              Kami membangun pengalaman recruitment yang lebih sederhana,
+              terstruktur, dan mudah digunakan oleh kedua sisi.
+            </p>
+          </Reveal>
+
+          <Reveal direction="right" delay={290}>
+            <ul className="mt-8 space-y-4">
+              {AUDIENCES.map((item) => (
+                <li key={item.title} className="flex items-start gap-3">
+                  <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
+                  <p className="text-sm leading-relaxed text-neutral-600">
+                    <span className="font-semibold text-neutral-900">
+                      {item.title}
+                    </span>{" "}
+                    &mdash; {item.desc}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+
+          <Reveal direction="right" delay={350}>
+            <div className="mt-10">
+              <Link
+                href="/home"
+                className="group inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-full bg-blue-600 px-8 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_12px_30px_-12px_rgba(37,99,235,0.6)] transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 active:bg-blue-700"
+              >
+                Explore Jobs
+                <ArrowIcon className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </Reveal>
         </div>
 
-        {/* Visual composition — pure CSS product illustration, decorative */}
-        <div
-          aria-hidden="true"
-          className="animate-hero-fade-up order-2 w-full max-w-md justify-self-center lg:order-1 lg:max-w-none"
-          style={{ animationDelay: "120ms" }}
+        {/* Visual composition — muncul dari kiri saat di-scroll.
+            Pure CSS product illustration, decorative. */}
+        <Reveal
+          direction="left"
+          delay={120}
+          className="order-2 w-full max-w-md justify-self-center lg:order-1 lg:max-w-none"
         >
-          <div className="relative rounded-[2rem] border border-neutral-100 bg-gradient-to-b from-neutral-50 to-white p-5 shadow-[0_32px_70px_-40px_rgba(2,60,120,0.35)] sm:p-7">
+          <div
+            aria-hidden="true"
+            className="relative rounded-[2rem] border border-neutral-100 bg-gradient-to-b from-neutral-50 to-white p-5 shadow-[0_32px_70px_-40px_rgba(2,60,120,0.35)] sm:p-7"
+          >
             {/* dot texture */}
             <div
               className="pointer-events-none absolute inset-0 rounded-[2rem] opacity-60"
@@ -253,7 +259,7 @@ export default function LandingAbout() {
               </span>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
