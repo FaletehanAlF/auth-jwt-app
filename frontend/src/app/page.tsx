@@ -3,10 +3,12 @@ import LandingHero from "../components/LandingHero";
 import LogoLoop from "../components/LogoLoop";
 import { TRUSTED_LOGOS } from "../data/trustedLogos";
 import LandingAbout from "../components/LandingAbout";
+import LandingHowItWorks from "../components/LandingHowItWorks";
+import Footer from "../components/Footer";
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen bg-white font-sans text-neutral-900 antialiased">
+    <div className="relative min-h-screen w-full max-w-full overflow-x-clip bg-white font-sans text-neutral-900 antialiased">
       <LandingNavbar />
       <main>
         <LandingHero />
@@ -33,7 +35,10 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        <LandingAbout />
+        <LandingHowItWorks />
       </main>
+      <Footer />
     </div>
   );
 }
