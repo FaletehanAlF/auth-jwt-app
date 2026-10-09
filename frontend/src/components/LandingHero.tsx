@@ -1,9 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import LandingHeroMagicTransform from "./LandingHeroMagicTransform";
 import LandingHeroSearch from "./LandingHeroSearch";
 import TechText from "./TechText";
 
-export default function LandingHero() {
+type LandingHeroProps = {
+  /**
+   * Gerbang entrance hero (dikoordinasikan dengan JobTrackLoader).
+   * - false: elemen teks disembunyikan (opacity-0) selama loader menutupi layar.
+   * - true: entrance kiri/kanan berjalan dengan stagger halus.
+   * Default true agar perilaku mandiri tetap sama seperti sebelumnya.
+   */
+  start?: boolean;
+};
+
+export default function LandingHero({ start = true }: LandingHeroProps) {
   return (
     <section className="relative">
       <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-sky-600 via-sky-500 to-sky-300 px-4 pb-16 pt-28 text-center sm:px-10">
@@ -15,12 +27,25 @@ export default function LandingHero() {
         </div>
 
         <div className="relative flex w-full max-w-3xl flex-col items-center">
-          <p className="animate-hero-fade-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
+          <p
+            className={
+              start
+                ? "animate-hero-from-left inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
+                : "inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white opacity-0"
+            }
+          >
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-lime-300" />
             Your career, your way
           </p>
 
-          <h1 className="mt-6 w-full font-display">
+          <h1
+            className={
+              start
+                ? "animate-hero-from-left mt-6 w-full font-display"
+                : "mt-6 w-full font-display opacity-0"
+            }
+            style={start ? { animationDelay: "90ms" } : undefined}
+          >
             <span className="block h-14 sm:h-20 lg:h-24">
               <TechText
                 text="Temukan Pekerjaan yang Tepat"
@@ -50,23 +75,35 @@ export default function LandingHero() {
           </h1>
 
           <p
-            className="animate-hero-fade-up mt-5 max-w-xl text-balance text-sm leading-relaxed text-sky-50/90 sm:text-base"
-            style={{ animationDelay: "160ms" }}
+            className={
+              start
+                ? "animate-hero-from-right mt-5 max-w-xl text-balance text-sm leading-relaxed text-sky-50/90 sm:text-base"
+                : "mt-5 max-w-xl text-balance text-sm leading-relaxed text-sky-50/90 opacity-0 sm:text-base"
+            }
+            style={start ? { animationDelay: "180ms" } : undefined}
           >
             Cari peluang kerja, temukan kesempatan baru, dan mulai perjalanan
             kariermu bersama JobTrack.
           </p>
 
           <div
-            className="animate-hero-fade-up mt-8 w-full max-w-xl"
-            style={{ animationDelay: "240ms" }}
+            className={
+              start
+                ? "animate-hero-fade-up mt-8 w-full max-w-xl"
+                : "mt-8 w-full max-w-xl opacity-0"
+            }
+            style={start ? { animationDelay: "240ms" } : undefined}
           >
             <LandingHeroSearch />
           </div>
 
           <div
-            className="animate-hero-fade-up mt-6 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row"
-            style={{ animationDelay: "300ms" }}
+            className={
+              start
+                ? "animate-hero-from-right mt-6 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row"
+                : "mt-6 flex w-full flex-col items-center justify-center gap-3 opacity-0 sm:w-auto sm:flex-row"
+            }
+            style={start ? { animationDelay: "300ms" } : undefined}
           >
             <Link
               href="/home"
@@ -97,8 +134,12 @@ export default function LandingHero() {
           </div>
 
           <div
-            className="animate-hero-fade-up mt-10 w-full max-w-3xl"
-            style={{ animationDelay: "380ms" }}
+            className={
+              start
+                ? "animate-hero-fade-up mt-10 w-full max-w-3xl"
+                : "mt-10 w-full max-w-3xl opacity-0"
+            }
+            style={start ? { animationDelay: "380ms" } : undefined}
           >
             <LandingHeroMagicTransform />
           </div>

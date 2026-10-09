@@ -1,5 +1,11 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
 import LandingNavbar from "../components/LandingNavbar";
 import LandingHero from "../components/LandingHero";
+import JobTrackLoader, {
+  JOBTRACK_LOADER_SEEN_KEY,
+} from "../components/JobTrackLoader";
 import LogoLoop from "../components/LogoLoop";
 import Reveal from "../components/Reveal";
 import SplitText from "../components/SplitText";
@@ -10,11 +16,46 @@ import LandingTestimonials from "../components/LandingTestimonials";
 import Footer from "../components/Footer";
 
 export default function LandingPage() {
+  // Loader tampil di atas hero; entrance hero dimulai saat loader MULAI
+  // keluar (tumpang tindih) agar tidak ada jeda halaman kosong.
+  const [showLoader, setShowLoader] = useState(true);
+  const [heroStart, setHeroStart] = useState(false);
+
+  useEffect(() => {
+    // Navigasi internal dalam satu sesi tab: lewati loader, hero langsung jalan.
+    // Dijadwalkan async agar bukan setState sinkron di body effect.
+    const id = window.setTimeout(() => {
+      try {
+        if (window.sessionStorage.getItem(JOBTRACK_LOADER_SEEN_KEY)) {
+          setShowLoader(false);
+          setHeroStart(true);
+        }
+      } catch {
+        /* abaikan: storage diblokir, tampilkan loader normal */
+      }
+    }, 0);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  const handleLoaderReveal = useCallback(() => {
+    setHeroStart(true);
+  }, []);
+
+  const handleLoaderDone = useCallback(() => {
+    setShowLoader(false);
+  }, []);
+
   return (
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip bg-white font-sans text-neutral-900 antialiased">
+      {showLoader && (
+        <JobTrackLoader
+          onReveal={handleLoaderReveal}
+          onDone={handleLoaderDone}
+        />
+      )}
       <LandingNavbar />
       <main>
-        <LandingHero />
+        <LandingHero start={heroStart} />
         <section className="relative w-full max-w-full overflow-hidden bg-white pb-12">
           <div className="mx-auto w-full max-w-5xl px-4 pt-10 text-center sm:px-6">
             <Reveal direction="left" delay={0}>

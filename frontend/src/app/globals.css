@@ -98,6 +98,86 @@ body {
   animation: hero-fade-up 0.3s ease-out both;
 }
 
+/* ---- JobTrack loading screen (landing, sekali per sesi) ---- */
+.jobtrack-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 0;
+  will-change: transform, border-radius;
+  transition:
+    transform 0.8s cubic-bezier(0.76, 0, 0.24, 1),
+    border-radius 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.jobtrack-loader--exit {
+  /* Keluar ke atas dengan mulus; radius keempat sudut agar transisi
+     seimbang (mencakup kiri-atas & kanan-atas sesuai spesifikasi). */
+  transform: translateY(-100%);
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+}
+
+@keyframes jobtrack-loader-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.jobtrack-loader__logo {
+  background: transparent;
+  user-select: none;
+  -webkit-user-drag: none;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.jobtrack-loader__logo--spin {
+  /* Satu putaran terkontrol, tidak berulang. */
+  animation: jobtrack-loader-spin 0.9s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+/* ---- Hero entrance kiri/kanan (setara AOS, ringan, GPU only) ---- */
+@keyframes hero-enter-left {
+  from {
+    opacity: 0;
+    transform: translate3d(-48px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-enter-right {
+  from {
+    opacity: 0;
+    transform: translate3d(48px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-hero-from-left {
+  animation: hero-enter-left 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-hero-from-right {
+  animation: hero-enter-right 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @keyframes split-char-in {
   from {
     opacity: 0;
@@ -118,7 +198,10 @@ body {
   .animate-jobtrack-page,
   .animate-toast-in,
   .animate-hero-fade-up,
+  .animate-hero-from-left,
+  .animate-hero-from-right,
   .animate-split-char,
+  .jobtrack-loader__logo--spin,
   .split-char,
   .split-text,
   .reveal {
@@ -126,6 +209,14 @@ body {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+  .jobtrack-loader {
+    transition: opacity 0.2s ease-out !important;
+  }
+  .jobtrack-loader--exit {
+    transform: none !important;
+    border-radius: 0 !important;
+    opacity: 0 !important;
   }
   .testimonial-loop .logoloop__track {
     transform: translate3d(0, 0, 0) !important;
