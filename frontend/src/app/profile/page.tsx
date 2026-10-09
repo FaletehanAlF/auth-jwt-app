@@ -5,6 +5,8 @@ import { useState } from "react";
 import Image from "next/image";
 import SiteMenu from "../../components/SiteMenu";
 import Footer from "../../components/Footer";
+import Reveal from "../../components/Reveal";
+import SplitText from "../../components/SplitText";
 
 const CLOUDINARY_CLOUD_NAME = "bsu3p6yn";
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -115,20 +117,25 @@ export default function ProfilePage() {
 
         <main>
           <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-24 sm:px-6 sm:pt-28">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-teal-200">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-300" />
-                  Profil Pengguna
-                </p>
-                <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                  Kelola foto profilmu
-                </h1>
-                <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/60">
-                  Upload gambar ke Cloudinary. URL hasil upload hanya disimpan
-                  di state frontend dan langsung tampil sebagai pratinjau.
-                </p>
-              </div>
+            <Reveal direction="left" delay={0}>
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-teal-200">
+                    <span className="h-1.5 w-1.5 rounded-full bg-teal-300" />
+                    Profil Pengguna
+                  </p>
+                  <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                    <SplitText
+                      text="Kelola foto profilmu"
+                      direction="left"
+                      charDelay={12}
+                    />
+                  </h1>
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/60">
+                    Upload gambar ke Cloudinary. URL hasil upload hanya disimpan
+                    di state frontend dan langsung tampil sebagai pratinjau.
+                  </p>
+                </div>
               <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-white/70">
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-3.5 w-3.5 text-teal-300">
                   <path d="M8 1.5 9.7 5l3.8.3-2.9 2.5.9 3.7L8 9.6 4.5 11.5l.9-3.7L2.5 5.3 6.3 5 8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
@@ -136,8 +143,10 @@ export default function ProfilePage() {
                 {profileImageUrl ? "Foto terpasang" : "Belum ada foto"}
               </div>
             </div>
+            </Reveal>
 
-            <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/80 shadow-2xl shadow-black/40 backdrop-blur">
+            <Reveal direction="right" delay={120}>
+              <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/80 shadow-2xl shadow-black/40 backdrop-blur">
               <div className="relative h-36 sm:h-44">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-800 via-indigo-700 to-teal-600" />
                 <div
@@ -315,6 +324,7 @@ export default function ProfilePage() {
                 </div>
               </div>
             </div>
+            </Reveal>
           </section>
         </main>
 

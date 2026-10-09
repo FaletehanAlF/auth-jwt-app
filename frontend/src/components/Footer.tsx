@@ -14,8 +14,23 @@ const CONTACT = ["Email", "LinkedIn", "GitHub"];
 
 export default function Footer() {
   return (
-    <footer className="w-full border-t border-white/10 bg-neutral-900">
-      <div className="w-full overflow-hidden px-6 py-10 sm:px-10 sm:py-12">
+    <footer className="relative w-full overflow-x-clip bg-transparent">
+      {/* Atas footer yang abu tua dibuat bergelombang — satu warna, tanpa background hitam tambahan */}
+      <div aria-hidden="true" className="relative w-full overflow-hidden leading-[0]">
+        <svg
+          viewBox="0 0 1440 120"
+          preserveAspectRatio="none"
+          focusable="false"
+          className="block h-[60px] w-full sm:h-[90px] lg:h-[120px]"
+        >
+          <path
+            d="M0,80 C240,112 480,32 720,64 C960,96 1200,108 1440,72 L1440,120 L0,120 Z"
+            fill="#262626"
+          />
+        </svg>
+      </div>
+
+      <div className="-mt-px relative w-full overflow-hidden bg-neutral-800 px-6 pb-10 pt-8 sm:px-10 sm:pt-10 lg:pt-12">
         <div className="grid gap-10 md:grid-cols-[1.1fr_1.9fr]">
           <div>
             <p className="font-display text-lg font-bold tracking-tight text-white">
@@ -101,11 +116,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div aria-hidden="true" className="mt-8 select-none">
-          <p className="text-center font-display text-[clamp(3.5rem,15vw,12rem)] font-bold uppercase leading-[0.9] tracking-tight text-blue-500/20">
+        <div aria-hidden="true" className="mt-8 select-none overflow-hidden">
+          <p className="text-center font-display text-[clamp(3rem,14vw,11rem)] font-bold uppercase leading-[0.9] tracking-tight text-blue-500/20">
             Jobtrack
           </p>
         </div>
+      </div>
       </div>
     </footer>
   );

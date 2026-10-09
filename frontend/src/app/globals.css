@@ -119,6 +119,8 @@ body {
   .animate-toast-in,
   .animate-hero-fade-up,
   .animate-split-char,
+  .split-char,
+  .split-text,
   .reveal {
     animation: none !important;
     transition: none !important;
@@ -128,6 +130,17 @@ body {
   .testimonial-loop .logoloop__track {
     transform: translate3d(0, 0, 0) !important;
   }
+}
+
+/* ---- SplitText ringan (scroll dari kiri/kanan/bawah, GPU only) ---- */
+.split-text {
+  display: inline-block;
+  min-width: 0;
+}
+
+.split-char {
+  display: inline-block;
+  backface-visibility: hidden;
 }
 
 /* ---- Reveal (AOS-like, scroll dari samping) ---- */
@@ -146,6 +159,44 @@ body {
 
 .testimonial-loop {
   overflow: hidden;
+}
+
+/* ---- Loop murni animasi: jalan terus, tidak bisa diapa-apain ---- */
+/* pointer-events none = cursor lewat tidak pause / tidak hover / tidak klik */
+.logo-auto-run,
+.logo-auto-run *,
+.testimonial-loop,
+.testimonial-loop * {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+/* Kunci visual card: tidak ada efek hover (tetap jalan mulus) */
+.testimonial-loop .testimonial-card,
+.testimonial-loop .testimonial-card:hover {
+  transform: none !important;
+  border-color: rgb(229 231 235 / 0.8) !important;
+  box-shadow: 0 20px 50px -30px rgba(2, 60, 120, 0.35) !important;
+}
+
+/* Kunci grayscale logo: tetap abu-abu, hover tidak mengubah */
+.logo-auto-run.logoloop--grayscale .logoloop__item img,
+.logo-auto-run.logoloop--grayscale .logoloop__item .logoloop__node svg,
+.logo-auto-run.logoloop--grayscale .logoloop__item:hover img,
+.logo-auto-run.logoloop--grayscale .logoloop__item:hover .logoloop__node svg {
+  filter: grayscale(1) !important;
+  opacity: 0.65 !important;
+  transform: none !important;
+}
+
+/* Matikan scale-hover bila class auto-run dipakai */
+.logo-auto-run.logoloop--scale-hover .logoloop__item:hover img,
+.logo-auto-run.logoloop--scale-hover .logoloop__item:hover .logoloop__node {
+  transform: none !important;
+}
+
+.logo-auto-run .logoloop__link:hover {
+  opacity: 1 !important;
 }
 
 .testimonial-loop .logoloop__track {

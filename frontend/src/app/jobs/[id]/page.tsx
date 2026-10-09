@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import SiteMenu from "../../../components/SiteMenu";
 import Footer from "../../../components/Footer";
+import Reveal from "../../../components/Reveal";
+import SplitText from "../../../components/SplitText";
 import { apiFetch } from "../../../lib/api";
 
 type Job = {
@@ -79,24 +81,26 @@ export default function JobDetailPage() {
         )}
 
         {!loading && !error && job && (
-          <article className="mt-6 rounded-lg border border-white/10 bg-neutral-900 px-6 py-8">
-            <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              {job.title}
-            </h1>
-            <p className="mt-2 text-sm text-white/70">
-              {job.company} · {job.location}
-            </p>
-            <p className="mt-5 text-sm leading-relaxed text-white/60">
-              {job.description}
-            </p>
+          <Reveal direction="left" delay={0}>
+            <article className="mt-6 rounded-lg border border-white/10 bg-neutral-900 px-6 py-8">
+              <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                <SplitText text={job.title} direction="left" charDelay={12} />
+              </h1>
+              <p className="mt-2 text-sm text-white/70">
+                {job.company} · {job.location}
+              </p>
+              <p className="mt-5 text-sm leading-relaxed text-white/60">
+                {job.description}
+              </p>
 
-            <Link
-              href="/lowongan"
-              className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500"
-            >
-              Lihat Lowongan Tersedia
-            </Link>
-          </article>
+              <Link
+                href="/lowongan"
+                className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500"
+              >
+                Lihat Lowongan Tersedia
+              </Link>
+            </article>
+          </Reveal>
         )}
 
         <Link

@@ -1,5 +1,6 @@
 import LogoLoop from "./LogoLoop";
 import Reveal from "./Reveal";
+import SplitText from "./SplitText";
 
 type Testimonial = {
   name: string;
@@ -131,7 +132,7 @@ function Stars({ value }: { value: number }) {
 
 function TestimonialCard({ item }: { item: Testimonial }) {
   return (
-    <article className="testimonial-card w-[280px] shrink-0 rounded-2xl border border-neutral-200/80 bg-white p-5 text-left shadow-[0_20px_50px_-30px_rgba(2,60,120,0.35)] transition-[box-shadow,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-[0_28px_60px_-28px_rgba(2,60,120,0.45)] sm:w-[340px]">
+    <article className="testimonial-card w-[280px] shrink-0 rounded-2xl border border-neutral-200/80 bg-white p-5 text-left shadow-[0_20px_50px_-30px_rgba(2,60,120,0.35)] select-none sm:w-[340px]">
       <Stars value={item.rating} />
       <p className="mt-3 min-h-[3.75rem] text-sm leading-relaxed text-neutral-600">
         &ldquo;{item.quote}&rdquo;
@@ -168,25 +169,37 @@ export default function LandingTestimonials() {
       </div>
 
       <div className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:py-28">
-        <Reveal direction="up" className="mx-auto max-w-2xl text-center">
+        <Reveal direction="left" delay={0} className="mx-auto max-w-2xl text-center">
           <p className="flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
             <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
             Testimoni Pengguna
             <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
           </p>
+        </Reveal>
+        <Reveal direction="right" delay={90} className="mx-auto max-w-2xl text-center">
           <h2
             id="testimonials-heading"
             className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-balance text-neutral-900 sm:text-4xl lg:text-5xl"
           >
-            Kata mereka tentang <span className="text-blue-600">JobTrack.</span>
+            <SplitText text="Kata mereka tentang" direction="right" charDelay={12} />{" "}
+            <span className="text-blue-600">
+              <SplitText
+                text="JobTrack."
+                direction="left"
+                charDelay={20}
+                delayStart={150}
+              />
+            </span>
           </h2>
+        </Reveal>
+        <Reveal direction="left" delay={170} className="mx-auto max-w-2xl text-center">
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-neutral-600">
             Cerita jobseeker yang menemukan peluang dan recruiter yang
             merekrut lebih cepat.
           </p>
         </Reveal>
 
-        {/* Loop 1 — ke kiri */}
+        {/* Loop 1 — ke kiri, murni animasi jalan terus (tanpa pause/hover) */}
         <Reveal
           direction="left"
           delay={100}
@@ -202,16 +215,16 @@ export default function LandingTestimonials() {
               direction="left"
               logoHeight={28}
               gap={20}
-              pauseOnHover
+              pauseOnHover={false}
               fadeOut
               fadeOutColor="#ffffff"
               ariaLabel="Testimoni pengguna baris pertama, bergerak ke kiri"
-              className="testimonial-loop"
+              className="testimonial-loop logo-auto-run"
             />
           </div>
         </Reveal>
 
-        {/* Loop 2 — ke kanan */}
+        {/* Loop 2 — ke kanan, murni animasi jalan terus (tanpa pause/hover) */}
         <Reveal
           direction="right"
           delay={150}
@@ -227,11 +240,11 @@ export default function LandingTestimonials() {
               direction="right"
               logoHeight={28}
               gap={20}
-              pauseOnHover
+              pauseOnHover={false}
               fadeOut
               fadeOutColor="#ffffff"
               ariaLabel="Testimoni pengguna baris kedua, bergerak ke kanan"
-              className="testimonial-loop"
+              className="testimonial-loop logo-auto-run"
             />
           </div>
         </Reveal>

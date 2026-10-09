@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
+import SplitText from "./SplitText";
 
 function BriefcaseIcon({ className }: { className?: string }) {
   return (
@@ -92,9 +93,17 @@ export default function LandingAbout() {
               id="about-heading"
               className="mt-5 font-display text-4xl font-semibold leading-[1.06] tracking-tight text-balance text-neutral-900 sm:text-5xl"
             >
-              Connecting Talent
-              <br className="hidden sm:block" /> With{" "}
-              <span className="text-blue-600">Opportunity</span>
+              <SplitText text="Connecting Talent" direction="right" charDelay={14} />
+              <br className="hidden sm:block" />{" "}
+              <SplitText text="With " direction="right" charDelay={14} delayStart={200} />
+              <span className="text-blue-600">
+                <SplitText
+                  text="Opportunity"
+                  direction="left"
+                  charDelay={14}
+                  delayStart={280}
+                />
+              </span>
             </h2>
           </Reveal>
 

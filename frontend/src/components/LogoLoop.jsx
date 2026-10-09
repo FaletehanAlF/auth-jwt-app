@@ -166,8 +166,9 @@ export const LogoLoop = memo(
     const effectiveHoverSpeed = useMemo(() => {
       if (hoverSpeed !== undefined) return hoverSpeed;
       if (pauseOnHover === true) return 0;
-      if (pauseOnHover === false) return undefined;
-      return 0;
+      // Default: murni animasi jalan terus, tidak pause saat hover.
+      // Hanya pause jika pauseOnHover === true / hoverSpeed diset eksplisit.
+      return undefined;
     }, [hoverSpeed, pauseOnHover]);
 
     const isVertical = direction === "up" || direction === "down";

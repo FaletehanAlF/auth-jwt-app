@@ -5,6 +5,8 @@ import Link from "next/link";
 import SiteMenu from "../../components/SiteMenu";
 import FeatureCard from "../../components/FeatureCard";
 import Footer from "../../components/Footer";
+import Reveal from "../../components/Reveal";
+import SplitText from "../../components/SplitText";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
 import TechText from "../../components/TechText";
 
@@ -186,12 +188,20 @@ export default function HomePage() {
           {}
           <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
             <div className="mx-auto w-full max-w-5xl px-4 pt-12 text-center sm:px-6">
-              <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Momen dari komunitas kami
-              </h2>
-              <p className="mx-auto mt-2 max-w-xl text-sm text-white/60">
-                Seret, gulir, atau pakai tombol panah kiri / kanan untuk menjelajah.
-              </p>
+              <Reveal direction="left" delay={0}>
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                  <SplitText
+                    text="Momen dari komunitas kami"
+                    direction="left"
+                    charDelay={14}
+                  />
+                </h2>
+              </Reveal>
+              <Reveal direction="right" delay={120}>
+                <p className="mx-auto mt-2 max-w-xl text-sm text-white/60">
+                  Seret, gulir, atau pakai tombol panah kiri / kanan untuk menjelajah.
+                </p>
+              </Reveal>
             </div>
             {}
             <div style={{ height: "600px", position: "relative" }}>
@@ -209,59 +219,86 @@ export default function HomePage() {
 
           <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-blue-950 to-neutral-950">
             <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-12 sm:px-6 lg:pb-16">
-            <h2 className="mx-auto w-fit max-w-full whitespace-nowrap text-center font-display text-[clamp(0.65rem,3.2vw,1.875rem)] font-semibold tracking-tight text-white">
-              Semua yang kamu butuhkan untuk mengelola pencarian kerja
-            </h2>
-            <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {features.map((feature) => (
-                <FeatureCard
-                  key={feature.title}
-                  title={feature.title}
-                  desc={feature.desc}
-                  icon={feature.icon}
+            <Reveal direction="right" delay={0}>
+              <h2 className="mx-auto w-fit max-w-full whitespace-nowrap text-center font-display text-[clamp(0.65rem,3.2vw,1.875rem)] font-semibold tracking-tight text-white">
+                <SplitText
+                  text="Semua yang kamu butuhkan untuk mengelola pencarian kerja"
+                  direction="right"
+                  charDelay={8}
                 />
-              ))}
-            </div>
+              </h2>
+            </Reveal>
+            <Reveal direction="left" delay={120}>
+              <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                {features.map((feature) => (
+                  <FeatureCard
+                    key={feature.title}
+                    title={feature.title}
+                    desc={feature.desc}
+                    icon={feature.icon}
+                  />
+                ))}
+              </div>
+            </Reveal>
           </section>
 
           <section className="mx-auto w-full max-w-5xl px-4 pb-12 sm:px-6 lg:pb-16">
-            <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Bagaimana JobTrack membantu?
-            </h2>
-            <ol className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
-              {STEPS.map((step) => (
-                <li
-                  key={step.no}
-                  className="border-t border-white/10 pt-6"
-                >
-                  <p className="font-display text-sm font-bold tracking-[0.2em] text-teal-300">
-                    {step.no}
-                  </p>
-                  <h3 className="mt-3 font-display text-lg font-semibold tracking-tight text-white">
-                    {step.title}
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-white/60">
-                    {step.desc}
-                  </p>
-                </li>
-              ))}
-            </ol>
+            <Reveal direction="left" delay={0}>
+              <h2 className="max-w-xl font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                <SplitText
+                  text="Bagaimana JobTrack membantu?"
+                  direction="left"
+                  charDelay={12}
+                />
+              </h2>
+            </Reveal>
+            <Reveal direction="right" delay={120}>
+              <ol className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
+                {STEPS.map((step) => (
+                  <li
+                    key={step.no}
+                    className="border-t border-white/10 pt-6"
+                  >
+                    <p className="font-display text-sm font-bold tracking-[0.2em] text-teal-300">
+                      {step.no}
+                    </p>
+                    <h3 className="mt-3 font-display text-lg font-semibold tracking-tight text-white">
+                      {step.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-white/60">
+                      {step.desc}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
           </section>
 
           <section className="mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6">
-            <div className="rounded-lg border border-white/10 bg-neutral-950 px-6 py-10 text-center sm:px-10 sm:py-12">
-              <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Tetap terorganisir.
-                <br />
-                Terus melangkah maju.
-              </h2>
-              <Link
-                href="/profile"
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-white px-6 text-sm font-medium text-neutral-900 transition-colors duration-150 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
-              >
-                Mulai Melacak
-              </Link>
-            </div>
+            <Reveal direction="left" delay={0}>
+              <div className="rounded-lg border border-white/10 bg-neutral-950 px-6 py-10 text-center sm:px-10 sm:py-12">
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                  <SplitText
+                    text="Tetap terorganisir."
+                    direction="left"
+                    charDelay={14}
+                  />
+                  <br />
+                  <SplitText
+                    text="Terus melangkah maju."
+                    direction="right"
+                    charDelay={14}
+                    delayStart={150}
+                  />
+                </h2>
+                <Link
+                  href="/profile"
+                  className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-white px-6 text-sm font-medium text-neutral-900 transition-colors duration-150 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                >
+                  Mulai Melacak
+                </Link>
+              </div>
+            </Reveal>
           </section>
           </div>
         </main>

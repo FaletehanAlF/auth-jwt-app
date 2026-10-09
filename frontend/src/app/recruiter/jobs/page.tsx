@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import SiteMenu from "../../../components/SiteMenu";
 import Footer from "../../../components/Footer";
+import Reveal from "../../../components/Reveal";
+import SplitText from "../../../components/SplitText";
 import { apiFetch } from "../../../lib/api";
 import CreateJobWidget from "../../../components/CreateJobWidget";
 import BorderGlow from "../../../components/BorderGlow";
@@ -114,9 +116,11 @@ export default function RecruiterJobsPage() {
     <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
       <SiteMenu />
       <main className="mx-auto w-full max-w-3xl px-4 pb-16 pt-32 sm:px-6">
-        <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-          Lowongan
-        </h1>
+        <Reveal direction="left" delay={0}>
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            <SplitText text="Lowongan" direction="left" charDelay={20} />
+          </h1>
+        </Reveal>
 
         {deleteSuccess && (
           <p className="mt-4 text-sm text-green-400">{deleteSuccess}</p>
@@ -140,7 +144,8 @@ export default function RecruiterJobsPage() {
         )}
 
         {!loading && !error && jobs.length > 0 && (
-          <div className="mt-6 grid grid-cols-1 gap-4">
+          <Reveal direction="right" delay={120}>
+            <div className="mt-6 grid grid-cols-1 gap-4">
             {jobs.map((job) => (
               <BorderGlow
                 key={job.id}
@@ -195,7 +200,8 @@ export default function RecruiterJobsPage() {
                 </div>
               </BorderGlow>
             ))}
-          </div>
+            </div>
+          </Reveal>
         )}
       </main>
       <Footer />

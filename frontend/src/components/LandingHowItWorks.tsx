@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Reveal from "./Reveal";
+import SplitText from "./SplitText";
 import ScrollStack, { ScrollStackItem } from "./ScrollStack";
 
 const CARD_CLASS =
@@ -107,24 +109,41 @@ export default function LandingHowItWorks() {
         <div className="how-blob how-blob-b" />
       </div>
       <div className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:py-28">
-        {/* Header section — scroll normal seperti semula */}
+        {/* Header section — AOS ringan dari kiri/kanan saat scroll */}
         <div className="mx-auto max-w-2xl text-center">
-          <p className="flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
-            <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
-            Cara Kerja JobTrack
-            <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
-          </p>
-          <h2
-            id="how-heading"
-            className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-balance text-neutral-900 sm:text-4xl lg:text-5xl"
-          >
-            Langkah sederhana menuju{" "}
-            <span className="text-blue-600">peluang berikutnya.</span>
-          </h2>
-          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-neutral-600">
-            Temukan pekerjaan yang sesuai, kirim lamaran, dan biarkan
-            recruiter meninjau kandidat melalui satu platform.
-          </p>
+          <Reveal direction="left" delay={0}>
+            <p className="flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
+              <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
+              Cara Kerja JobTrack
+              <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
+            </p>
+          </Reveal>
+          <Reveal direction="right" delay={90}>
+            <h2
+              id="how-heading"
+              className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-balance text-neutral-900 sm:text-4xl lg:text-5xl"
+            >
+              <SplitText
+                text="Langkah sederhana menuju"
+                direction="right"
+                charDelay={12}
+              />{" "}
+              <span className="text-blue-600">
+                <SplitText
+                  text="peluang berikutnya."
+                  direction="left"
+                  charDelay={12}
+                  delayStart={150}
+                />
+              </span>
+            </h2>
+          </Reveal>
+          <Reveal direction="left" delay={170}>
+            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-neutral-600">
+              Temukan pekerjaan yang sesuai, kirim lamaran, dan biarkan
+              recruiter meninjau kandidat melalui satu platform.
+            </p>
+          </Reveal>
         </div>
 
         {/* Stack */}
