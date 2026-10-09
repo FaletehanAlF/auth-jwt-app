@@ -142,13 +142,6 @@ body {
   will-change: transform;
   pointer-events: none;
   opacity: 1;
-  transition: opacity 0.45s ease-out;
-}
-
-/* Saat panel mulai terangkat, logo memudar halus (tidak hilang mendadak),
-   panel putih yang naik perlahan membawa layar ke hero. */
-.jobtrack-loader--exit .jobtrack-loader__logo {
-  opacity: 0;
 }
 
 .jobtrack-loader__logo--spin {
