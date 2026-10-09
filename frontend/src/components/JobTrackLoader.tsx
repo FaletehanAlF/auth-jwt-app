@@ -13,7 +13,7 @@ export const JOBTRACK_LOADER_EXIT_MS = 1600;
 export const JOBTRACK_LOADER_SEEN_KEY = "jobtrack-loader-seen";
 
 type JobTrackLoaderProps = {
-  /** Dipanggil saat animasi keluar dimulai (hero boleh mulai entrance). */
+  /** Dipanggil menjelang panel selesai terangkat (hero baru mulai entrance). */
   onReveal?: () => void;
   /** Dipanggil saat loader selesai dan aman di-unmount. */
   onDone?: () => void;
@@ -88,9 +88,18 @@ export default function JobTrackLoader({ onReveal, onDone }: JobTrackLoaderProps
     const revealTimer = window.setTimeout(() => {
       if (!aliveRef.current) return;
       setPhase("exit");
-      revealRef.current?.();
     }, spinMs + holdMs);
     timersRef.current.push(revealTimer);
+
+    // Hero BARU boleh entrance menjelang panel selesai terangkat
+    // (±500ms sebelum panel hilang), bukan saat panel mulai naik.
+    // Ini mencegah entrance + hover hero bertabrakan dengan panel.
+    const heroLeadMs = reduced ? 0 : 500;
+    const heroTimer = window.setTimeout(() => {
+      if (!aliveRef.current) return;
+      revealRef.current?.();
+    }, spinMs + holdMs + Math.max(0, exitMs - heroLeadMs));
+    timersRef.current.push(heroTimer);
 
     return () => {
       clearAll();

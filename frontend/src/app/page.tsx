@@ -16,8 +16,8 @@ import LandingTestimonials from "../components/LandingTestimonials";
 import Footer from "../components/Footer";
 
 export default function LandingPage() {
-  // Loader tampil di atas hero; entrance hero dimulai saat loader MULAI
-  // keluar (tumpang tindih) agar tidak ada jeda halaman kosong.
+  // Loader tampil di atas hero; entrance hero dimulai MENJELANG loader
+  // selesai terangkat (bukan saat mulai naik) agar tidak tabrakan.
   const [showLoader, setShowLoader] = useState(true);
   const [heroStart, setHeroStart] = useState(false);
 
