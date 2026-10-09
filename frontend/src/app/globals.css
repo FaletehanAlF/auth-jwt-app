@@ -111,20 +111,15 @@ body {
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   will-change: transform;
-  transition:
-    transform 2.6s cubic-bezier(0.22, 1, 0.36, 1),
-    border-bottom-left-radius 2.6s cubic-bezier(0.22, 1, 0.36, 1),
-    border-bottom-right-radius 2.6s cubic-bezier(0.22, 1, 0.36, 1);
+  /* transform-only (tanpa animasi border-radius) = full GPU-composite,
+     tidak repaint tiap frame → naiknya halus, tidak geter/jedag-jedug. */
+  transition: transform 2.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .jobtrack-loader--exit {
-  /* Terangkat ke atas hingga keluar viewport; kedua sudut BAWAH membulat
-     bertahap bersamaan dengan gerakan (radius + transform satu durasi &
-     satu easing sehingga lengkungan terlihat selama panel terangkat).
-     translate3d = GPU-composited, tanpa repaint berat → tidak patah-patah. */
+  /* Terangkat ke atas hingga keluar viewport secara kontinu.
+     Sengaja persegi (tanpa radius) agar tetap ringan di semua device. */
   transform: translate3d(0, -100%, 0);
-  border-bottom-left-radius: 48px;
-  border-bottom-right-radius: 48px;
 }
 
 @keyframes jobtrack-loader-spin {

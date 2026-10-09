@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 const NAV_LINKS = [
@@ -11,28 +12,14 @@ const NAV_LINKS = [
 
 function LogoMark() {
   return (
-    <span
+    <Image
+      src="/assets/jobtrack.avif"
+      alt=""
+      width={36}
+      height={36}
       aria-hidden="true"
-      className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white"
-    >
-      <svg viewBox="0 0 24 24" fill="none" className="h-4.5 w-4.5" width="18" height="18">
-        <rect
-          x="3"
-          y="7.5"
-          width="18"
-          height="12.5"
-          rx="2.5"
-          stroke="currentColor"
-          strokeWidth="1.8"
-        />
-        <path
-          d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5"
-          stroke="currentColor"
-          strokeWidth="1.8"
-        />
-        <path d="M3 12.5h18" stroke="currentColor" strokeWidth="1.8" />
-      </svg>
-    </span>
+      className="h-9 w-9 shrink-0 object-contain"
+    />
   );
 }
 
