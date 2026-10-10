@@ -221,6 +221,14 @@ const CurvedInput = ({
   const pad = Math.ceil(borderWidth / 2) + 6;
   const geom = useMemo(() => (w > 2 ? buildGeometry(w, bend, height, pad) : null), [w, bend, height, pad]);
 
+  // Ruang tinggi yang sama dengan tinggi SVG (buildGeometry: T + tekuk + 2*pad).
+  // Tanpa ini form mulai tinggi 0 (SVG baru ada setelah ResizeObserver pertama),
+  // lalu melonjak 88px -> layout shift di hero tepat saat font selesai dimuat.
+  const reserveHeight = useMemo(() => {
+    const cap = typeof width === 'number' ? Math.abs(width) * 0.35 : Infinity;
+    return Math.ceil(Math.min(Math.abs(bend), cap) + height + pad * 2);
+  }, [bend, height, pad, width]);
+
   const layout = useMemo(() => {
     if (!geom) return null;
     const T = height;
@@ -482,7 +490,7 @@ const CurvedInput = ({
     <form
       ref={rootRef}
       className={`curved-input ${focused ? 'curved-input--focused' : ''} ${className}`.trim()}
-      style={{ width: typeof width === 'number' ? `${width}px` : width, ...style }}
+      style={{ width: typeof width === 'number' ? `${width}px` : width, minHeight: reserveHeight, ...style }}
       onSubmit={handleSubmit}
       noValidate
     >
