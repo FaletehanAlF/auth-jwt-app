@@ -570,7 +570,10 @@ const TechText = ({
         moving ||
         Math.abs(presence - (s.reveal === 'area' && active && dragging < 0 ? 1 : 0)) > 0.002 ||
         (frame.alpha > 0.01 && frame.alpha < 0.99);
-      if ((active || settling) && visible && alive) raf = requestAnimationFrame(tick);
+      // Saat paused (mis. panel loading masih menutupi layar) kita tetap
+      // menggambar satu frame status final, lalu berhenti: canvas beku di
+      // kondisi teks utuh, tidak ada rAF sia-sia di belakang loader.
+      if (!paused && (active || settling) && visible && alive) raf = requestAnimationFrame(tick);
     };
 
     const wake = () => {

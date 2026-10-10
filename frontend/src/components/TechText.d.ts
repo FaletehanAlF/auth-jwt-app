@@ -21,6 +21,8 @@ export type TechTextProps = {
   draggable?: boolean;
   sweep?: boolean;
   speed?: number;
+  /** Hentikan loop rAF (gambar satu frame final lalu diam). */
+  paused?: boolean;
   className?: string;
   style?: CSSProperties;
 };

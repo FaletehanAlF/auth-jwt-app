@@ -57,6 +57,7 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
                 dashLength={4}
                 dashGap={2}
                 specks={15}
+                paused={!start}
               />
             </span>
             <span className="block h-14 text-sky-100 sm:h-20 lg:h-24">
@@ -70,6 +71,7 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
                 dashLength={4}
                 dashGap={2}
                 specks={15}
+                paused={!start}
               />
             </span>
           </h1>
