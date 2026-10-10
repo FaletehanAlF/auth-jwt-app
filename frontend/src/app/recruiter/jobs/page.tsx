@@ -9,15 +9,7 @@ import SplitText from "../../../components/SplitText";
 import { apiFetch } from "../../../lib/api";
 import CreateJobWidget from "../../../components/CreateJobWidget";
 import BorderGlow from "../../../components/BorderGlow";
-
-type Job = {
-  id: number;
-  title: string;
-  description: string;
-  location: string;
-  company: string;
-  created_at?: string;
-};
+import type { Job } from "../../../lib/types";
 
 export default function RecruiterJobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);

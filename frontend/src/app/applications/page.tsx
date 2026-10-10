@@ -8,16 +8,7 @@ import Reveal from "../../components/Reveal";
 import SplitText from "../../components/SplitText";
 import BorderGlow from "../../components/BorderGlow";
 import { apiFetch } from "../../lib/api";
-
-type Application = {
-  id: number;
-  job_id: number;
-  title: string;
-  company: string;
-  location: string;
-  description?: string;
-  created_at?: string;
-};
+import type { Application } from "../../lib/types";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState<Application[]>([]);

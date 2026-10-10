@@ -6,17 +6,7 @@ import { useParams } from "next/navigation";
 import SiteMenu from "../../../../../components/SiteMenu";
 import Footer from "../../../../../components/Footer";
 import { apiFetch } from "../../../../../lib/api";
-
-type Applicant = {
-  id: number;
-  job_id: number;
-  jobseeker_id: number;
-  created_at?: string;
-  name?: string;
-  email?: string;
-  jobseeker_name?: string;
-  jobseeker_email?: string;
-};
+import type { Applicant } from "../../../../../lib/types";
 
 export default function ApplicantsPage() {
   const params = useParams();

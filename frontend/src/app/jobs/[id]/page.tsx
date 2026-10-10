@@ -8,14 +8,7 @@ import Footer from "../../../components/Footer";
 import Reveal from "../../../components/Reveal";
 import SplitText from "../../../components/SplitText";
 import { apiFetch } from "../../../lib/api";
-
-type Job = {
-  id: number;
-  title: string;
-  description: string;
-  location: string;
-  company: string;
-};
+import type { Job } from "../../../lib/types";
 
 export default function JobDetailPage() {
   const params = useParams();

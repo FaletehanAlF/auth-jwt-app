@@ -5,14 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import SiteMenu from "../../../../../components/SiteMenu";
 import Footer from "../../../../../components/Footer";
 import { apiFetch } from "../../../../../lib/api";
-
-type Job = {
-  id: number;
-  title: string;
-  description: string;
-  location: string;
-  company: string;
-};
+import type { Job } from "../../../../../lib/types";
 
 export default function EditJobPage() {
   const params = useParams();
