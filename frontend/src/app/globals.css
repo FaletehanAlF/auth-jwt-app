@@ -129,27 +129,14 @@ body {
 }
 
 .jobtrack-loader--exit {
-  /* Terangkat ke atas hingga keluar viewport secara kontinu. */
+  /* Terangkat ke atas hingga keluar viewport secara kontinu.
+     Sudut bawah membulat saat panel bergerak. Radius TIDAK dianimasikan:
+     ia langsung pasang begitu panel mulai naik (sudut awal ada di tepi layar
+     yang sudah putih, jadi tidak kelihatan), lalu ikut terangkat bareng
+     panel. Animasikan border-radius di sini = re-raster layer putih
+     se layar penuh tiap frame -> sumber "jedag-jedug", makanya radius
+     dipasang diam, dan gerak tetap 100% transform-only. */
   transform: translate3d(0, -100%, 0);
-}
-
-/* Sudut bawah membulat saat panel bergerak. Sengaja elemen kecil terpisah:
-   hanya strip 40px ini yang di-repaint tiap frame, bukan layer putih
-   se layar penuh (sumber "jedag-jedug" pada versi lama). */
-.jobtrack-loader__cap {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 40px;
-  background: #ffffff;
-  border-radius: 0;
-  pointer-events: none;
-  transition: border-radius calc(var(--jt-loader-exit-ms) * 1ms)
-    cubic-bezier(0.33, 0, 0.2, 1);
-}
-
-.jobtrack-loader--exit .jobtrack-loader__cap {
   border-radius: 0 0 28px 28px;
 }
 
@@ -253,10 +240,6 @@ body {
   }
   .jobtrack-loader {
     transition: opacity calc(var(--jt-loader-exit-ms) * 1ms) ease-out !important;
-  }
-  .jobtrack-loader__cap {
-    transition: none !important;
-    border-radius: 0 !important;
   }
   .jobtrack-loader--exit {
     transform: none !important;

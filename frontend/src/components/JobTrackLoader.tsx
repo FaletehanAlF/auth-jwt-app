@@ -171,9 +171,6 @@ export default function JobTrackLoader({ onReveal, onDone }: JobTrackLoaderProps
       data-phase={phase}
       className={`jobtrack-loader${phase === "exit" ? " jobtrack-loader--exit" : ""}`}
     >
-      {/* Strip tipis khusus sudut bawah; dipisah supaya animasi radius hanya
-          merepaint 40px, bukan layer putih full-screen. */}
-      <span aria-hidden="true" className="jobtrack-loader__cap" />
       <Image
         src="/assets/jobtrack.avif"
         alt="JobTrack"
