@@ -65,8 +65,8 @@ function readDurations(): Durations {
  * - Background putih polos, logo transparan tepat di tengah viewport.
  * - Logo berputar SATU kali dengan tenang (±2 detik), jeda singkat,
  *   lalu panel putih terangkat keluar dengan sudut bawah membulat.
- * - Scroll dikunci tanpa mengubah lebar konten: scrollbar yang hilang saat
- *   dikunci dikompensasi sebagai padding, jadi hero tidak bergeser horizontal.
+ * - Scroll dikunci tanpa mengubah lebar layout: scrollbar yang hilang saat dikunci
+ *   dicegah hilang, jadi hero tidak bergeser horizontal.
  * - Aman Strict Mode (satu effect, semua timer di-cleanup, guard unmount).
  * - Hormati prefers-reduced-motion (durasi diambil dari CSS yang menyesuaikan).
  */
@@ -95,25 +95,37 @@ export default function JobTrackLoader({ onReveal, onDone }: JobTrackLoaderProps
 
     const previous = {
       docOverflow: doc.style.overflow,
+      docOverflowY: doc.style.overflowY,
       bodyOverflow: body.style.overflow,
-      bodyPaddingRight: body.style.paddingRight,
+      bodyHeight: body.style.height,
     };
 
-    // Scroll + padding dipulihkan dalam satu frame: lebar konten tidak pernah
-    // berubah, jadi tidak ada layout shift saat kunci scroll dilepas.
+    // Scroll + style body dipulihkan dalam satu frame: lebar layout tidak
+    // pernah berubah, jadi tidak ada layout shift saat kunci scroll dilepas.
     const releaseScroll = () => {
       doc.style.overflow = previous.docOverflow;
+      doc.style.overflowY = previous.docOverflowY;
       body.style.overflow = previous.bodyOverflow;
-      body.style.paddingRight = previous.bodyPaddingRight;
+      body.style.height = previous.bodyHeight;
     };
 
-    // Lebar scrollbar yang bakal hilang begitu scroll dikunci. Dikompensasi
-    // sebagai padding body supaya konten tetap selebar viewport yang sama
-    // (ini sumber utama layar bergeser setelah loader selesai).
+    // Scrollbar vertikal yang hilang saat scroll dikunci adalah PENYEBAB layar
+    // bergeser: viewport melebar ~15px, seluruh konten (hero, navbar, container
+    // query) ikut bergeser 7px tepat saat panel selesai terangkat.
+    //
+    // Scrollbar klasik (lebar > 0): track-nya dipertahankan lewat
+    // `overflow-y: scroll` supaya lebar layout tetap, dan scroll dikunci lewat
+    // body (tinggi 100vh + overflow hidden) sehingga rentang scroll = 0.
+    // Tidak ada elemen yang berubah ukuran -> nol pergeseran.
     const gutter = Math.max(0, window.innerWidth - doc.clientWidth);
-    doc.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    if (gutter > 0) body.style.paddingRight = `${gutter}px`;
+    if (gutter > 0) {
+      doc.style.overflowY = "scroll";
+      body.style.overflow = "hidden";
+      body.style.height = "100vh";
+    } else {
+      // Scrollbar overlay/tidak ada: overflow hidden tidak mengubah lebar apa pun.
+      doc.style.overflow = "hidden";
+    }
 
     const timers: number[] = [];
     const at = (delay: number, run: () => void) => {
