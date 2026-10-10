@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import AppShell from "../../components/AppShell";
+import RequireAuth from "../../components/RequireAuth";
 import Reveal from "../../components/Reveal";
 import SplitText from "../../components/SplitText";
 import BorderGlow from "../../components/BorderGlow";
@@ -49,6 +50,7 @@ export default function ApplicationsPage() {
   }, []);
 
   return (
+    <RequireAuth roles={["jobseeker"]}>
     <AppShell title="Lamaran Saya" subtitle="Pantau status lamaranmu">
       <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <Reveal direction="right" delay={0}>
@@ -112,5 +114,6 @@ export default function ApplicationsPage() {
         )}
       </div>
     </AppShell>
+    </RequireAuth>
   );
 }

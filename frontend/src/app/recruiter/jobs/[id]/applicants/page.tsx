@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import AppShell from "../../../../../components/AppShell";
+import RequireAuth from "../../../../../components/RequireAuth";
 import { apiFetch } from "../../../../../lib/api";
 import type { Applicant } from "../../../../../lib/types";
 
@@ -59,6 +60,7 @@ export default function ApplicantsPage() {
   }, [id]);
 
   return (
+    <RequireAuth roles={["recruiter"]}>
     <AppShell title="Pelamar Lowongan" subtitle="Daftar pelamar untuk lowongan ini">
       <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
@@ -119,5 +121,6 @@ export default function ApplicantsPage() {
         </Link>
       </div>
     </AppShell>
+    </RequireAuth>
   );
 }

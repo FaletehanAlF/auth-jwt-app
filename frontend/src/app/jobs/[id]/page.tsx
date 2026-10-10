@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import AppShell from "../../../components/AppShell";
+import RequireAuth from "../../../components/RequireAuth";
 import Reveal from "../../../components/Reveal";
 import SplitText from "../../../components/SplitText";
 import { apiFetch } from "../../../lib/api";
@@ -46,6 +47,7 @@ export default function JobDetailPage() {
   }, [id]);
 
   return (
+    <RequireAuth>
     <AppShell title="Detail Lowongan" subtitle="Informasi lengkap lowongan">
       <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <Link
@@ -102,5 +104,6 @@ export default function JobDetailPage() {
         </Link>
       </div>
     </AppShell>
+    </RequireAuth>
   );
 }

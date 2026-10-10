@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppShell from "../../../components/AppShell";
+import RequireAuth from "../../../components/RequireAuth";
 import { apiFetch } from "../../../lib/api";
 import { isRecruiter } from "../../../lib/auth";
 
@@ -73,6 +74,7 @@ export default function CreateJobPage() {
   };
 
   return (
+    <RequireAuth roles={["recruiter"]}>
     <AppShell title="Buat Lowongan" subtitle="Publikasikan lowongan baru">
       <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
@@ -157,5 +159,6 @@ export default function CreateJobPage() {
         )}
       </div>
     </AppShell>
+    </RequireAuth>
   );
 }

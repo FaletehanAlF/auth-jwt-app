@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import AppShell from "../../../../../components/AppShell";
+import RequireAuth from "../../../../../components/RequireAuth";
 import { apiFetch } from "../../../../../lib/api";
 import type { Job } from "../../../../../lib/types";
 
@@ -127,6 +128,7 @@ export default function EditJobPage() {
   };
 
   return (
+    <RequireAuth roles={["recruiter"]}>
     <AppShell title="Edit Lowongan" subtitle="Perbarui detail lowongan">
       <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
@@ -223,5 +225,6 @@ export default function EditJobPage() {
         )}
       </div>
     </AppShell>
+    </RequireAuth>
   );
 }

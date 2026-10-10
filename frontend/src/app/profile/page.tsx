@@ -4,6 +4,7 @@ import type { ChangeEvent } from "react";
 import { useState } from "react";
 import Image from "next/image";
 import AppShell from "../../components/AppShell";
+import RequireAuth from "../../components/RequireAuth";
 import Reveal from "../../components/Reveal";
 import SplitText from "../../components/SplitText";
 
@@ -91,6 +92,7 @@ export default function ProfilePage() {
   }
 
   return (
+    <RequireAuth>
     <AppShell title="Profil Saya" subtitle="Kelola foto profilmu">
       <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <div>
@@ -305,5 +307,6 @@ export default function ProfilePage() {
           </div>
       </div>
     </AppShell>
+    </RequireAuth>
   );
 }

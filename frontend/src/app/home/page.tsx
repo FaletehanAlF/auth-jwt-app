@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import AppShell from "../../components/AppShell";
+import RequireAuth from "../../components/RequireAuth";
 import { apiFetch } from "../../lib/api";
 import {
   getEmailFromToken,
@@ -882,49 +883,25 @@ function WelcomeBanner({
 
 export default function HomePage() {
   // Role & email dibaca sekali dari token lokal (lazy initializer, tanpa
-  // effect) — hanya untuk memilih tampilan. Otorisasi tetap di backend.
-  // Tanpa token -> tampilan tamu dengan CTA masuk (bukan fallback izin).
+  // effect) — hanya untuk memilih tampilan. Akses dijaga RequireAuth
+  // (validasi token ke backend); otorisasi tetap di backend.
   const [role] = useState<UserRole | null>(() => getRoleFromToken());
   const [email] = useState<string | null>(() => getEmailFromToken());
 
   const subtitle =
     role === "recruiter"
       ? "Kelola lowongan dan pantau pelamar"
-      : role === "jobseeker"
-        ? "Pantau lamaran dan temukan peluang terbaik"
-        : "Masuk untuk mengelola kariermu";
+      : "Pantau lamaran dan temukan peluang terbaik";
 
   return (
-    <AppShell title="Dashboard" subtitle={subtitle}>
-      {role === "recruiter" ? (
-        <RecruiterDashboard email={email} />
-      ) : role === "jobseeker" ? (
-        <JobseekerDashboard email={email} />
-      ) : (
-        <div className="space-y-6">
-          <WelcomeBanner
-            eyebrow="Selamat datang di JobTrack"
-            title={`${greetingForHour(new Date().getHours())}!`}
-            desc="Masuk untuk memantau lamaran, mengelola lowongan, dan menemukan peluang terbaik."
-            actions={
-              <>
-                <Link
-                  href="/login"
-                  className="inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-brand-600 to-accent-600 px-6 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-                >
-                  Masuk ke Akun
-                </Link>
-                <Link
-                  href="/register"
-                  className="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-6 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-                >
-                  Daftar
-                </Link>
-              </>
-            }
-          />
-        </div>
-      )}
-    </AppShell>
+    <RequireAuth>
+      <AppShell title="Dashboard" subtitle={subtitle}>
+        {role === "recruiter" ? (
+          <RecruiterDashboard email={email} />
+        ) : (
+          <JobseekerDashboard email={email} />
+        )}
+      </AppShell>
+    </RequireAuth>
   );
 }

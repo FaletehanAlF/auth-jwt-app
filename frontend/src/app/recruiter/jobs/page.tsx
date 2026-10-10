@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import AppShell from "../../../components/AppShell";
+import RequireAuth from "../../../components/RequireAuth";
 import Reveal from "../../../components/Reveal";
 import SplitText from "../../../components/SplitText";
 import { apiFetch } from "../../../lib/api";
@@ -104,6 +105,7 @@ export default function RecruiterJobsPage() {
   }, []);
 
   return (
+    <RequireAuth roles={["recruiter"]}>
     <AppShell title="Lowongan Saya" subtitle="Kelola lowongan yang kamu publikasikan">
       <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <Reveal direction="left" delay={0}>
@@ -204,5 +206,6 @@ export default function RecruiterJobsPage() {
       </div>
       <CreateJobWidget />
     </AppShell>
+    </RequireAuth>
   );
 }
