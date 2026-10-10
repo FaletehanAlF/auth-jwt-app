@@ -462,7 +462,8 @@ const TechText = ({
       last = now;
       const view = ensureLayout(s);
 
-      const sweeping = s.sweep && !reducedMotion && !pointer.inside && dragging < 0;
+      const paused = !!s.paused;
+      const sweeping = s.sweep && !paused && !reducedMotion && !pointer.inside && dragging < 0;
       if (sweeping) clock += dt * s.speed;
       pulse += dt;
       let targetX = pointer.x;
@@ -471,7 +472,7 @@ const TechText = ({
         targetX = view.left + (view.right - view.left) * (0.5 - 0.5 * Math.cos(clock * 0.45));
         targetY = view.top + (view.bottom - view.top) * (0.45 + 0.1 * Math.sin(clock * 0.8));
       }
-      const active = pointer.inside || sweeping || dragging >= 0;
+      const active = !paused && (pointer.inside || sweeping || dragging >= 0);
       if (active && !placed) {
         lens.x = targetX;
         lens.y = targetY;
