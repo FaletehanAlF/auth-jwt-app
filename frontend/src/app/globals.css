@@ -214,7 +214,9 @@ body {
   .app-shell-shift,
   .app-drawer-panel,
   .app-drawer-backdrop,
-  .app-menu-pop {
+  .app-menu-pop,
+  .animate-dash-rise,
+  .animate-pulse {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
@@ -376,4 +378,21 @@ body {
 .app-menu-pop {
   animation: app-pop-in 0.16s ease-out;
   transform-origin: top right;
+}
+
+/* ---- Dashboard entrance (rise + stagger via inline animation-delay) ----
+   GPU transform/opacity only; reduced-motion dimatikan di block di atas. */
+@keyframes dash-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-dash-rise {
+  animation: dash-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
