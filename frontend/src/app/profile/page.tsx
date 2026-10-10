@@ -3,8 +3,7 @@
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 import Image from "next/image";
-import SiteMenu from "../../components/SiteMenu";
-import Footer from "../../components/Footer";
+import AppShell from "../../components/AppShell";
 import Reveal from "../../components/Reveal";
 import SplitText from "../../components/SplitText";
 
@@ -92,31 +91,9 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-neutral-950 text-white">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-neutral-950" />
-        <div
-          className="absolute inset-0 opacity-[0.35]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
-            backgroundSize: "44px 44px",
-            maskImage: "radial-gradient(ellipse 90% 60% at 50% 0%, black 40%, transparent 75%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 90% 60% at 50% 0%, black 40%, transparent 75%)",
-          }}
-        />
-        <div className="absolute -top-32 left-1/2 h-96 w-[52rem] -translate-x-1/2 rounded-full bg-blue-700/25 blur-[120px]" />
-        <div className="absolute right-[-6rem] top-64 h-72 w-72 rounded-full bg-teal-500/15 blur-[100px]" />
-        <div className="absolute left-[-6rem] top-[32rem] h-72 w-72 rounded-full bg-indigo-600/20 blur-[100px]" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-neutral-950" />
-      </div>
-
-      <div className="relative">
-        <SiteMenu />
-
-        <main>
-          <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-24 sm:px-6 sm:pt-28">
+    <AppShell title="Profil Saya" subtitle="Kelola foto profilmu">
+      <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
+        <div>
             <Reveal direction="left" delay={0}>
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
@@ -325,11 +302,8 @@ export default function ProfilePage() {
               </div>
             </div>
             </Reveal>
-          </section>
-        </main>
-
-        <Footer />
+          </div>
       </div>
-    </div>
+    </AppShell>
   );
 }
