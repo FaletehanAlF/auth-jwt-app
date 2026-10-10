@@ -3,6 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* ---- JobTrack loading screen (sumber tunggal durasi) ----
+     CSS memakai var ini untuk animation/transition, dan JobTrackLoader
+     membacanya lewat getComputedStyle untuk timer JS. Satu sumber = tidak
+     mungkin durasi CSS dan timer JS berbeda. Block reduced-motion di bawah
+     menimpanya supaya JS & CSS otomatis ikut berubah. */
+  --jt-loader-spin-ms: 2000;
+  --jt-loader-hold-ms: 80;
+  --jt-loader-exit-ms: 2400;
 }
 
 @theme inline {
@@ -111,16 +120,37 @@ body {
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   will-change: transform;
-  /* transform-only (tanpa animasi border-radius) = full GPU-composite,
-     tidak repaint tiap frame → naiknya halus, tidak geter/jedag-jedug.
-     easeInOut = lepas landas & mendarat lembut, tidak ada sentakan awal. */
-  transition: transform 2.2s cubic-bezier(0.65, 0, 0.35, 1);
+  /* transform-only = full GPU-composite, tidak repaint tiap frame →
+     naiknya halus, tidak geter/jedag-jedug.
+     easeInOut = lepas landas & mendarat lembut, tidak ada sentakan awal.
+     Durasi mengikuti --jt-loader-exit-ms (pembaca timer JS juga). */
+  transition: transform calc(var(--jt-loader-exit-ms) * 1ms)
+    cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .jobtrack-loader--exit {
-  /* Terangkat ke atas hingga keluar viewport secara kontinu.
-     Sengaja persegi (tanpa radius) agar tetap ringan di semua device. */
+  /* Terangkat ke atas hingga keluar viewport secara kontinu. */
   transform: translate3d(0, -100%, 0);
+}
+
+/* Sudut bawah membulat saat panel bergerak. Sengaja elemen kecil terpisah:
+   hanya strip 40px ini yang di-repaint tiap frame, bukan layer putih
+   se layar penuh (sumber "jedag-jedug" pada versi lama). */
+.jobtrack-loader__cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 0;
+  pointer-events: none;
+  transition: border-radius calc(var(--jt-loader-exit-ms) * 1ms)
+    cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+.jobtrack-loader--exit .jobtrack-loader__cap {
+  border-radius: 0 0 28px 28px;
 }
 
 @keyframes jobtrack-loader-spin {
@@ -139,14 +169,16 @@ body {
   backface-visibility: hidden;
   transform: translateZ(0);
   transform-origin: center;
-  will-change: transform;
   pointer-events: none;
   opacity: 1;
 }
 
 .jobtrack-loader__logo--spin {
+  /* will-change hanya selama spin (hilang lagi saat logo diam). */
+  will-change: transform;
   /* Satu putaran perlahan (±2 detik), easing in-out halus tanpa sentakan. */
-  animation: jobtrack-loader-spin 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: jobtrack-loader-spin calc(var(--jt-loader-spin-ms) * 1ms)
+    cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* ---- Hero entrance kiri/kanan (setara AOS, ringan, GPU only) ---- */
