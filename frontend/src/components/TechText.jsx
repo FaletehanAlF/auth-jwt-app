@@ -57,6 +57,7 @@ const TechText = ({
   draggable = true,
   sweep = true,
   speed = 1,
+  paused = false,
   className = '',
   style
 }) => {
@@ -86,7 +87,8 @@ const TechText = ({
       labels,
       draggable,
       sweep,
-      speed
+      speed,
+      paused
     };
     wakeRef.current();
   });
