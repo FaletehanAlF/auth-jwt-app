@@ -228,6 +228,13 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Durasi loader dipendekkan di sini; JobTrackLoader membaca var yang sama
+     sehingga timer JS ikut menyesuaikan (tetap sinkron). */
+  :root {
+    --jt-loader-spin-ms: 0;
+    --jt-loader-hold-ms: 0;
+    --jt-loader-exit-ms: 200;
+  }
   .animate-jobtrack-splash,
   .animate-jobtrack-page,
   .animate-toast-in,
@@ -245,7 +252,11 @@ body {
     transform: none !important;
   }
   .jobtrack-loader {
-    transition: opacity 0.2s ease-out !important;
+    transition: opacity calc(var(--jt-loader-exit-ms) * 1ms) ease-out !important;
+  }
+  .jobtrack-loader__cap {
+    transition: none !important;
+    border-radius: 0 !important;
   }
   .jobtrack-loader--exit {
     transform: none !important;
