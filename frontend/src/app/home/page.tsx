@@ -2,9 +2,8 @@
 
 import { type ReactNode } from "react";
 import Link from "next/link";
-import SiteMenu from "../../components/SiteMenu";
+import AppShell from "../../components/AppShell";
 import FeatureCard from "../../components/FeatureCard";
-import Footer from "../../components/Footer";
 import Reveal from "../../components/Reveal";
 import SplitText from "../../components/SplitText";
 import CircularGallery, { type GalleryItem } from "../../components/CircularGallery";
@@ -109,11 +108,8 @@ const GALLERY_ITEMS: GalleryItem[] = [
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
-      <div className="relative w-full max-w-full overflow-x-clip overscroll-none">
-        {}
-        <SiteMenu />
-
+    <AppShell title="Dashboard" subtitle="Selamat datang kembali di JobTrack">
+      <div className="space-y-6">
         <main className="w-full max-w-full overflow-x-clip overscroll-none">
           {}
           {}
