@@ -110,10 +110,10 @@ export default function HomePage() {
   return (
     <AppShell title="Dashboard" subtitle="Selamat datang kembali di JobTrack">
       <div className="space-y-6">
-        <main className="w-full max-w-full overflow-x-clip overscroll-none">
+      <div className="w-full max-w-full overflow-x-clip overscroll-none">
           {}
           {}
-          <section className="relative flex min-h-[110svh] w-full max-w-full overflow-hidden">
+          <section className="relative flex min-h-[110svh] w-full max-w-full overflow-hidden rounded-2xl">
             {}
             <div aria-hidden="true" className="absolute inset-0">
               <img
@@ -182,7 +182,7 @@ export default function HomePage() {
           </section>
 
           {}
-          <section className="relative w-full max-w-full overflow-hidden bg-neutral-950">
+          <section className="relative w-full max-w-full overflow-hidden rounded-2xl bg-neutral-950">
             <div className="mx-auto w-full max-w-5xl px-4 pt-12 text-center sm:px-6">
               <Reveal direction="left" delay={0}>
                 <h2 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
@@ -213,7 +213,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <div className="relative w-full max-w-full bg-gradient-to-b from-neutral-950 via-blue-950 to-neutral-950">
+          <div className="relative w-full max-w-full overflow-hidden rounded-2xl bg-gradient-to-b from-neutral-950 via-blue-950 to-neutral-950">
             <section className="mx-auto w-full max-w-5xl px-4 pb-12 pt-12 sm:px-6 lg:pb-16">
             <Reveal direction="right" delay={0}>
               <h2 className="mx-auto w-fit max-w-full whitespace-nowrap text-center font-display text-[clamp(0.65rem,3.2vw,1.875rem)] font-semibold tracking-tight text-white">
@@ -297,10 +297,8 @@ export default function HomePage() {
             </Reveal>
           </section>
           </div>
-        </main>
-
-        <Footer />
+        </div>
       </div>
-    </div>
+    </AppShell>
   );
 }
