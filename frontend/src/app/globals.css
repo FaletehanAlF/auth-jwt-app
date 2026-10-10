@@ -44,22 +44,6 @@ body {
   overscroll-behavior: none;
 }
 
-@keyframes jobtrack-splash-out {
-  0% {
-    opacity: 1;
-    visibility: visible;
-  }
-  55% {
-    opacity: 1;
-    visibility: visible;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.05);
-    visibility: hidden;
-  }
-}
-
 @keyframes jobtrack-page-in {
   from {
     opacity: 0;
@@ -67,10 +51,6 @@ body {
   to {
     opacity: 1;
   }
-}
-
-.animate-jobtrack-splash {
-  animation: jobtrack-splash-out 0.8s ease-out forwards;
 }
 
 .animate-jobtrack-page {
@@ -199,21 +179,6 @@ body {
   animation: hero-enter-right 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes split-char-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.6em) rotate(4deg);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) rotate(0deg);
-  }
-}
-
-.animate-split-char {
-  animation: split-char-in 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
-}
-
 @media (prefers-reduced-motion: reduce) {
   /* Durasi loader dipendekkan di sini; JobTrackLoader membaca var yang sama
      sehingga timer JS ikut menyesuaikan (tetap sinkron). */
@@ -222,13 +187,11 @@ body {
     --jt-loader-hold-ms: 0;
     --jt-loader-exit-ms: 200;
   }
-  .animate-jobtrack-splash,
   .animate-jobtrack-page,
   .animate-toast-in,
   .animate-hero-fade-up,
   .animate-hero-from-left,
   .animate-hero-from-right,
-  .animate-split-char,
   .jobtrack-loader__logo--spin,
   .split-char,
   .split-text,

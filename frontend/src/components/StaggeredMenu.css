@@ -180,10 +180,6 @@
   will-change: transform;
 }
 
-.sm-line {
-  display: none !important;
-}
-
 .staggered-menu-panel {
   position: absolute;
   top: 0;
