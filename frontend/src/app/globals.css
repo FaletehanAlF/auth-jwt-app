@@ -22,6 +22,21 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+/* ---- JobTrack SaaS dashboard tokens (Tailwind v4) ----
+   Satu sumber warna/tipe untuk shell aplikasi. Halaman landing,
+   auth, dan animasi lama tidak memakai token ini. */
+@theme {
+  --color-brand-50: #eff4ff;
+  --color-brand-100: #dbe6fe;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-accent-600: #7c3aed;
+  --color-accent-700: #6d28d9;
+  --color-mist: #f5f7ff;
+  --color-ink-900: #0f172a;
+  --color-ink-500: #64748b;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -195,7 +210,11 @@ body {
   .jobtrack-loader__logo--spin,
   .split-char,
   .split-text,
-  .reveal {
+  .reveal,
+  .app-shell-shift,
+  .app-drawer-panel,
+  .app-drawer-backdrop,
+  .app-menu-pop {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
@@ -310,4 +329,51 @@ body {
   height: 100%;
   border: none;
   display: block;
+}
+
+/* ---- App shell (dashboard) motion: enter-only, GPU transform/opacity ----
+   Drawer/backdrop/menu di-mount hanya saat terbuka, jadi tidak ada
+   transisi exit; reduced-motion di atas mematikan keyframes ini. */
+@keyframes app-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes app-drawer-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-24px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes app-pop-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.app-drawer-backdrop {
+  animation: app-fade-in 0.2s ease-out;
+}
+
+.app-drawer-panel {
+  animation: app-drawer-in 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.app-menu-pop {
+  animation: app-pop-in 0.16s ease-out;
+  transform-origin: top right;
 }

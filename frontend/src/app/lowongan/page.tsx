@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import SiteMenu from "../../components/SiteMenu";
-import Footer from "../../components/Footer";
+import AppShell from "../../components/AppShell";
 import Reveal from "../../components/Reveal";
 import SplitText from "../../components/SplitText";
 import BorderGlow from "../../components/BorderGlow";
@@ -45,9 +44,8 @@ export default function LowonganPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
-      <SiteMenu />
-      <main className="mx-auto w-full max-w-5xl px-4 pb-16 pt-32 sm:px-6">
+    <AppShell title="Cari Lowongan" subtitle="Jelajahi lowongan yang tersedia">
+      <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <Reveal direction="left" delay={0}>
           <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             <SplitText
