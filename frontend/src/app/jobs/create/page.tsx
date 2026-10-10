@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import SiteMenu from "../../../components/SiteMenu";
 import Footer from "../../../components/Footer";
 import { apiFetch } from "../../../lib/api";
+import { isRecruiter } from "../../../lib/auth";
 
 export default function CreateJobPage() {
   const router = useRouter();
@@ -13,17 +14,7 @@ export default function CreateJobPage() {
   const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    let role: string | null = null;
-    if (token) {
-      try {
-        role = JSON.parse(atob(token.split(".")[1])).role ?? null;
-      } catch {
-        role = null;
-      }
-    }
-    setAllowed(role === "recruiter");
+    setAllowed(isRecruiter());
     setRoleChecked(true);
   }, []);
 

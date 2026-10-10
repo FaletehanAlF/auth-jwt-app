@@ -2,18 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { apiFetch } from "../lib/api";
-
-function isRecruiter(): boolean {
-  if (typeof window === "undefined") return false;
-  const token = localStorage.getItem("token");
-  if (!token) return false;
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload.role === "recruiter";
-  } catch {
-    return false;
-  }
-}
+import { isRecruiter } from "../lib/auth";
 
 export default function CreateJobWidget() {
   const [allowed, setAllowed] = useState(false);

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import StaggeredMenu, { type StaggeredMenuItem } from "./StaggeredMenu";
+import { getRoleFromToken, type UserRole } from "../lib/auth";
 
 const BASE_ITEMS: StaggeredMenuItem[] = [
   { label: "Home", ariaLabel: "Go to home page", link: "/home" },
@@ -9,19 +10,7 @@ const BASE_ITEMS: StaggeredMenuItem[] = [
   { label: "Profile", ariaLabel: "Go to profile page", link: "/profile" },
 ];
 
-function getRoleFromToken(): "jobseeker" | "recruiter" | null {
-  if (typeof window === "undefined") return null;
-  const token = localStorage.getItem("token");
-  if (!token) return null;
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload.role === "recruiter" ? "recruiter" : "jobseeker";
-  } catch {
-    return null;
-  }
-}
-
-function buildItems(role: "jobseeker" | "recruiter" | null): StaggeredMenuItem[] {
+function buildItems(role: UserRole | null): StaggeredMenuItem[] {
   if (role === "recruiter") {
     return [
       ...BASE_ITEMS,
