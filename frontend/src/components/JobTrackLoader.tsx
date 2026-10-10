@@ -21,7 +21,7 @@ export const JOBTRACK_LOADER_SEEN_KEY = "jobtrack-loader-seen";
 const HERO_LEAD_MS = 500;
 /**
  * Mount dijadwalkan sedikit setelah animasi CSS mulai, jadi panel bisa tertinggal
- * 1–2 frame dari timer JS. Guard ini menutup celah itu; panel sudah di luar
+ * 1-2 frame dari timer JS. Guard ini menutup celah itu; panel sudah di luar
  * viewport pada titik tersebut, jadi tidak terlihat, hanya mencegah "pop" akhir.
  */
 const EXIT_GUARD_MS = 90;
@@ -61,9 +61,9 @@ function readDurations(): Durations {
 }
 
 /**
- * JobTrackLoader — loading screen minimalis landing page.
+ * JobTrackLoader - loading screen minimalis landing page.
  * - Background putih polos, logo transparan tepat di tengah viewport.
- * - Logo berputar SATU kali dengan tenang (±2 detik), jeda singkat,
+ * - Logo berputar SATU kali dengan tenang (sekitar 2 detik), jeda singkat,
  *   lalu panel putih terangkat keluar dengan sudut bawah membulat.
  * - Scroll dikunci tanpa mengubah lebar layout: scrollbar yang hilang saat dikunci
  *   dicegah hilang, jadi hero tidak bergeser horizontal.
@@ -110,8 +110,8 @@ export default function JobTrackLoader({ onReveal, onDone }: JobTrackLoaderProps
     };
 
     // Scrollbar vertikal yang hilang saat scroll dikunci adalah PENYEBAB layar
-    // bergeser: viewport melebar ~15px, seluruh konten (hero, navbar, container
-    // query) ikut bergeser 7px tepat saat panel selesai terangkat.
+    // bergeser: viewport melebar sekitar 15px, seluruh konten (hero, navbar,
+    // container query) ikut bergeser 7px tepat saat panel selesai terangkat.
     //
     // Scrollbar klasik (lebar > 0): track-nya dipertahankan lewat
     // `overflow-y: scroll` supaya lebar layout tetap, dan scroll dikunci lewat
