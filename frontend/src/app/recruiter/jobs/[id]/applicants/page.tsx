@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import SiteMenu from "../../../../../components/SiteMenu";
-import Footer from "../../../../../components/Footer";
+import AppShell from "../../../../../components/AppShell";
 import { apiFetch } from "../../../../../lib/api";
 import type { Applicant } from "../../../../../lib/types";
 
@@ -60,12 +59,19 @@ export default function ApplicantsPage() {
   }, [id]);
 
   return (
-    <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
-      <SiteMenu />
-      <main className="mx-auto w-full max-w-3xl px-4 pb-16 pt-32 sm:px-6">
+    <AppShell title="Pelamar Lowongan" subtitle="Daftar pelamar untuk lowongan ini">
+      <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
           Pelamar Lowongan
         </h1>
+        <div className="mt-4">
+          <Link
+            href="/jobs/create"
+            className="inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-5 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+          >
+            Buat Lowongan
+          </Link>
+        </div>
 
         {loading && (
           <p className="mt-6 text-sm text-white/60">Memuat pelamar...</p>
@@ -111,8 +117,7 @@ export default function ApplicantsPage() {
         >
           Kembali ke Lowongan Saya
         </Link>
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </AppShell>
   );
 }

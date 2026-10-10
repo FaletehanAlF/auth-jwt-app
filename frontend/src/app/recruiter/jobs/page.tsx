@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import SiteMenu from "../../../components/SiteMenu";
-import Footer from "../../../components/Footer";
+import AppShell from "../../../components/AppShell";
 import Reveal from "../../../components/Reveal";
 import SplitText from "../../../components/SplitText";
 import { apiFetch } from "../../../lib/api";
@@ -105,14 +104,21 @@ export default function RecruiterJobsPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
-      <SiteMenu />
-      <main className="mx-auto w-full max-w-3xl px-4 pb-16 pt-32 sm:px-6">
+    <AppShell title="Lowongan Saya" subtitle="Kelola lowongan yang kamu publikasikan">
+      <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <Reveal direction="left" delay={0}>
           <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             <SplitText text="Lowongan" direction="left" charDelay={20} />
           </h1>
         </Reveal>
+        <div className="mt-4">
+          <Link
+            href="/jobs/create"
+            className="inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-5 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+          >
+            Buat Lowongan
+          </Link>
+        </div>
 
         {deleteSuccess && (
           <p className="mt-4 text-sm text-green-400">{deleteSuccess}</p>
@@ -195,9 +201,8 @@ export default function RecruiterJobsPage() {
             </div>
           </Reveal>
         )}
-      </main>
-      <Footer />
+      </div>
       <CreateJobWidget />
-    </div>
+    </AppShell>
   );
 }
