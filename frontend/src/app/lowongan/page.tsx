@@ -108,8 +108,7 @@ export default function LowonganPage() {
             </div>
           </Reveal>
         )}
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </AppShell>
   );
 }

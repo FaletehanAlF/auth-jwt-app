@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import SiteMenu from "../../../components/SiteMenu";
-import Footer from "../../../components/Footer";
+import AppShell from "../../../components/AppShell";
 import Reveal from "../../../components/Reveal";
 import SplitText from "../../../components/SplitText";
 import { apiFetch } from "../../../lib/api";
@@ -47,9 +46,8 @@ export default function JobDetailPage() {
   }, [id]);
 
   return (
-    <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
-      <SiteMenu />
-      <main className="mx-auto w-full max-w-3xl px-4 pb-16 pt-32 sm:px-6">
+    <AppShell title="Detail Lowongan" subtitle="Informasi lengkap lowongan">
+      <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <Link
           href="/lowongan"
           className="inline-flex text-sm text-blue-400 transition-colors hover:text-blue-300"
@@ -102,8 +100,7 @@ export default function JobDetailPage() {
         >
           Kembali ke Lowongan
         </Link>
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </AppShell>
   );
 }

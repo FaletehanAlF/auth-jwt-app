@@ -2,8 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import SiteMenu from "../../../components/SiteMenu";
-import Footer from "../../../components/Footer";
+import AppShell from "../../../components/AppShell";
 import { apiFetch } from "../../../lib/api";
 import { isRecruiter } from "../../../lib/auth";
 
@@ -74,9 +73,8 @@ export default function CreateJobPage() {
   };
 
   return (
-    <div className="relative min-h-screen w-full max-w-full overflow-x-clip overscroll-none bg-neutral-950 text-white">
-      <SiteMenu />
-      <main className="mx-auto w-full max-w-xl px-4 pb-16 pt-32 sm:px-6">
+    <AppShell title="Buat Lowongan" subtitle="Publikasikan lowongan baru">
+      <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
           Buat Lowongan
         </h1>
@@ -157,8 +155,7 @@ export default function CreateJobPage() {
           {error && <p className="text-sm text-red-400">{error}</p>}
         </form>
         )}
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </AppShell>
   );
 }
