@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { promises as fsPromises } from "fs";
 import path from "path";
 
+import { CV_DIR } from "../config";
 import db from "../database";
 import { MAX_CV_BYTES } from "../middleware/uploadCv";
 
