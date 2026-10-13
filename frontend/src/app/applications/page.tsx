@@ -180,14 +180,22 @@ export default function ApplicationsPage() {
             <section aria-label="Daftar lamaran" className="space-y-4">
               {list.map((app) => {
                 const applied = formatDate(app.created_at);
+                const status = getStatusInfo(app.status);
                 return (
                   <article
                     key={app.id}
                     className="animate-dash-rise rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md sm:p-6"
                   >
-                    <h2 className="font-display text-base font-semibold tracking-tight text-ink-900">
-                      {app.title}
-                    </h2>
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <h2 className="font-display min-w-0 text-base font-semibold tracking-tight text-ink-900">
+                        {app.title}
+                      </h2>
+                      <span
+                        className={`inline-flex shrink-0 items-center rounded-full px-3 py-1.5 text-xs font-medium ${status.badge}`}
+                      >
+                        {status.label}
+                      </span>
+                    </div>
                     <ul className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-500">
                       <li className="flex items-center gap-1.5">
                         <FaBuilding aria-hidden="true" className="h-4 w-4 shrink-0" />
