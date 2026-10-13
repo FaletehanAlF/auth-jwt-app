@@ -53,7 +53,6 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
 
   useEffect(() => {
     let cancelled = false;
-    console.log("[probe] RequireAuth effect run");
     (async () => {
       const allowed: UserRole[] | null = rolesKey
         ? (rolesKey.split(",") as UserRole[])
