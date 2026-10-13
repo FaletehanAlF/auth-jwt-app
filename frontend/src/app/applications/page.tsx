@@ -13,6 +13,7 @@ import {
 import AppShell from "../../components/AppShell";
 import RequireAuth from "../../components/RequireAuth";
 import { apiFetch } from "../../lib/api";
+import { getStatusInfo } from "../../lib/applicationStatus";
 import type { Application } from "../../lib/types";
 
 /** `created_at` nullable di skema — jangan pernah new Date(null). */

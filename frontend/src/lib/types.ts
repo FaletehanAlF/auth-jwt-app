@@ -14,7 +14,7 @@ export type Job = {
   created_at?: string;
 };
 
-/** GET /applications/me (join jobs). */
+/** GET /applications/me (join jobs). `status` ada sejak migrasi FASE 1. */
 export type Application = {
   id: number;
   job_id: number;
@@ -22,14 +22,16 @@ export type Application = {
   company: string;
   location: string;
   description?: string;
+  status?: string;
   created_at?: string;
 };
 
-/** GET /jobs/:id/applications (join users). */
+/** GET /jobs/:id/applications (join users). `status` ada sejak migrasi FASE 1. */
 export type Applicant = {
   id: number;
   job_id: number;
   jobseeker_id: number;
+  status?: string;
   created_at?: string;
   name?: string;
   email?: string;
