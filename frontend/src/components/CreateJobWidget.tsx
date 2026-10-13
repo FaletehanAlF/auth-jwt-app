@@ -80,63 +80,102 @@ export default function CreateJobWidget() {
       </button>
 
       {notice && (
-        <div className="fixed bottom-24 right-6 z-50 rounded-lg bg-green-600 px-4 py-3 text-sm text-white shadow-lg">
+        <div
+          role="status"
+          className="fixed bottom-24 right-6 z-50 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 shadow-lg"
+        >
           {notice}
         </div>
       )}
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="buat-lowongan-judul"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/40 p-4"
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl bg-neutral-900 p-6 text-white shadow-2xl"
             onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl"
           >
-            <h2 className="font-display text-xl font-semibold">Buat Lowongan</h2>
+            <h2
+              id="buat-lowongan-judul"
+              className="font-display text-xl font-semibold tracking-tight text-ink-900"
+            >
+              Buat Lowongan
+            </h2>
             <form onSubmit={handleSubmit} className="mt-5 space-y-3">
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Judul"
-                className="w-full rounded-lg border border-white/10 bg-neutral-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
-              />
-              <input
-                type="text"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                placeholder="Perusahaan"
-                className="w-full rounded-lg border border-white/10 bg-neutral-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
-              />
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Lokasi"
-                className="w-full rounded-lg border border-white/10 bg-neutral-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
-              />
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Deskripsi"
-                rows={4}
-                className="w-full rounded-lg border border-white/10 bg-neutral-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
-              />
-              {error && <p className="text-sm text-red-400">{error}</p>}
-              <div className="flex gap-3">
+              <div>
+                <label htmlFor="cj-title" className="sr-only">
+                  Judul lowongan
+                </label>
+                <input
+                  id="cj-title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Judul"
+                  className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-ink-900 placeholder:text-ink-500 focus-visible:border-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
+                />
+              </div>
+              <div>
+                <label htmlFor="cj-company" className="sr-only">
+                  Nama perusahaan
+                </label>
+                <input
+                  id="cj-company"
+                  type="text"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  placeholder="Perusahaan"
+                  className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-ink-900 placeholder:text-ink-500 focus-visible:border-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
+                />
+              </div>
+              <div>
+                <label htmlFor="cj-location" className="sr-only">
+                  Lokasi lowongan
+                </label>
+                <input
+                  id="cj-location"
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Lokasi"
+                  className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-ink-900 placeholder:text-ink-500 focus-visible:border-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
+                />
+              </div>
+              <div>
+                <label htmlFor="cj-description" className="sr-only">
+                  Deskripsi lowongan
+                </label>
+                <textarea
+                  id="cj-description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Deskripsi"
+                  rows={4}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-500 focus-visible:border-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
+                />
+              </div>
+              {error && (
+                <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+                  {error}
+                </p>
+              )}
+              <div className="flex flex-col-reverse gap-2 pt-1 sm:flex-row">
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="inline-flex h-10 flex-1 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {submitting ? "Membuat Lowongan..." : "Buat Lowongan"}
                 </button>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="inline-flex h-10 items-center justify-center rounded-lg border border-white/10 px-4 text-sm text-white/70 hover:text-white"
+                  className="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
                 >
                   Batal
                 </button>
