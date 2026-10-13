@@ -518,8 +518,7 @@ export default function RecruiterJobsPage() {
             <EmptyState
               icon={FaInbox}
               title="Belum ada lowongan"
-              desc="Buat lowongan pertamamu supaya kandidat bisa menemukan dan melamar posisi yang kamu buka."
-              action={createCta}
+              desc="Buat lowongan pertamamu supaya kandidat bisa menemukan dan melamar posisi yang kamu buka. Gunakan tombol “Buat Lowongan” di bagian atas halaman ini."
             />
           )}
 
