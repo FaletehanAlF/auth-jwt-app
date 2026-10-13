@@ -604,7 +604,6 @@ export default function RecruiterJobsPage() {
         </div>
       )}
 
-      <CreateJobWidget />
     </RequireAuth>
   );
 }
