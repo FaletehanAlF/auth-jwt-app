@@ -1,13 +1,29 @@
 "use client";
 
-import type { ChangeEvent } from "react";
-import { useState } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import {
+  FaCamera,
+  FaEnvelope,
+  FaExclamationTriangle,
+  FaIdCard,
+  FaSignOutAlt,
+  FaTrashAlt,
+  FaUserTag,
+} from "react-icons/fa";
 import AppShell from "../../components/AppShell";
 import RequireAuth from "../../components/RequireAuth";
-import Reveal from "../../components/Reveal";
-import SplitText from "../../components/SplitText";
+import { apiFetch } from "../../lib/api";
+import type { UserRole } from "../../lib/auth";
 
+/* ------------------------------------------------------------------ *
+ * Konfigurasi Cloudinary — dipertahankan persis seperti sebelumnya.
+ * Upload unsigned memakai preset publik `jobtrack`; tidak ada API
+ * secret yang dikirim ke browser (cloud name + preset memang publik
+ * by design untuk unsigned upload). Batas 5 MB, format JPG/PNG/WebP.
+ * ------------------------------------------------------------------ */
 const CLOUDINARY_CLOUD_NAME = "bsu3p6yn";
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -19,17 +35,105 @@ type CloudinaryResponse = {
   };
 };
 
+type ProfileResponse = {
+  success: boolean;
+  message?: string;
+  user?: { id: number; email: string; role: string };
+};
+
+type TabId = "akun" | "keamanan";
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: "akun", label: "Informasi Akun" },
+  { id: "keamanan", label: "Keamanan" },
+];
+
+const ROLE_LABEL: Record<UserRole, string> = {
+  recruiter: "Recruiter",
+  jobseeker: "Jobseeker",
+};
+
+/** Inisial avatar dari email — logika yang sama dipakai UserAvatar. */
+function initialFromEmail(email: string | null): string {
+  return (email?.trim().charAt(0) || "?").toUpperCase();
+}
+
+function readableError(message: string | undefined, fallback: string): string {
+  if (message === "Token tidak ditemukan" || message === "Token tidak valid atau sudah expired") {
+    return "Sesi kamu sudah berakhir. Silakan masuk kembali.";
+  }
+  return message ?? fallback;
+}
+
 export default function ProfilePage() {
+  const [activeTab, setActiveTab] = useState<TabId>("akun");
+
+  /* Foto: pratinjau sesi saja. Backend tidak punya kolom avatar maupun
+     endpoint penyimpanan, jadi URL TIDAK persisten setelah refresh —
+     halaman ini jujur menyatakannya, bukan mengklaim tersimpan. */
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
+
+  /* Info akun: sumber kebenaran dari backend GET /profile (id, email,
+     role sesuai isi JWT). Nama tidak ditampilkan karena tidak ada di
+     respons endpoint ini dan tidak ada mekanisme penyimpanan nama. */
+  const [account, setAccount] = useState<{ id: number; email: string; role: string } | null>(null);
+  const [accountError, setAccountError] = useState<string | null>(null);
+  const [accountAttempt, setAccountAttempt] = useState(0);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cancelClearRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch<ProfileResponse>("/profile");
+        if (cancelled) return;
+        if (res.success && res.user) {
+          setAccountError(null);
+          setAccount(res.user);
+        } else {
+          setAccountError(readableError(res.message, "Gagal mengambil informasi akun."));
+        }
+      } catch {
+        if (!cancelled) setAccountError("Gagal menghubungi server. Periksa koneksi lalu coba lagi.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [accountAttempt]);
+
+  useEffect(() => {
+    if (!confirmClear) return;
+    cancelClearRef.current?.focus();
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") setConfirmClear(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [confirmClear]);
+
+  function handleTabKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+    event.preventDefault();
+    const index = TABS.findIndex((tab) => tab.id === activeTab);
+    const next =
+      event.key === "ArrowRight"
+        ? TABS[(index + 1) % TABS.length]
+        : TABS[(index - 1 + TABS.length) % TABS.length];
+    setActiveTab(next.id);
+    document.getElementById(`tab-${next.id}`)?.focus();
+  }
 
   async function handleProfilePictureUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
 
-    if (!file) {
+    if (!file || isUploading) {
       return;
     }
 
@@ -61,9 +165,7 @@ export default function ProfilePage() {
       const result = (await response.json()) as CloudinaryResponse;
 
       if (!response.ok) {
-        throw new Error(
-          result.error?.message ?? "Upload ke Cloudinary gagal.",
-        );
+        throw new Error(result.error?.message ?? "Upload ke Cloudinary gagal.");
       }
 
       if (!result.secure_url) {
@@ -72,241 +174,356 @@ export default function ProfilePage() {
 
       setProfileImageUrl(result.secure_url);
     } catch (error) {
-      setUploadError(
-        error instanceof Error ? error.message : "Upload gambar gagal.",
-      );
+      setUploadError(error instanceof Error ? error.message : "Upload gambar gagal.");
     } finally {
       setIsUploading(false);
     }
   }
 
-  async function handleCopyUrl() {
-    if (!profileImageUrl) return;
-    try {
-      await navigator.clipboard.writeText(profileImageUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      setCopied(false);
-    }
-  }
+  const email = account?.email ?? null;
+  const role: UserRole | null = account?.role === "recruiter" ? "recruiter" : account ? "jobseeker" : null;
 
   return (
     <RequireAuth>
-    <AppShell title="Profil Saya" subtitle="Kelola foto profilmu">
-      <div className="rounded-2xl bg-neutral-950 p-6 text-white sm:p-8">
-        <div>
-            <Reveal direction="left" delay={0}>
-              <div className="flex flex-wrap items-end justify-between gap-4">
-                <div>
-                  <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-teal-200">
-                    <span className="h-1.5 w-1.5 rounded-full bg-teal-300" />
-                    Profil Pengguna
-                  </p>
-                  <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                    <SplitText
-                      text="Kelola foto profilmu"
-                      direction="left"
-                      charDelay={12}
+      <AppShell title="Profil Saya" subtitle="Kelola informasi akun dan foto profil kamu">
+        <div className="mx-auto w-full max-w-3xl space-y-6">
+          <header>
+            <h1 className="font-display text-2xl font-semibold tracking-tight text-ink-900">
+              Profil Saya
+            </h1>
+            <p className="mt-1 text-sm text-ink-500">
+              Kelola informasi akun dan foto profil kamu.
+            </p>
+          </header>
+
+          {/* ---- Panel pengaturan ---- */}
+          <div className="animate-dash-rise overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div
+              role="tablist"
+              aria-label="Pengaturan profil"
+              onKeyDown={handleTabKeyDown}
+              className="flex gap-1 border-b border-slate-200 px-3 pt-3 sm:px-4"
+            >
+              {TABS.map((tab) => {
+                const selected = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    id={`tab-${tab.id}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    aria-controls={`panel-${tab.id}`}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`relative h-11 shrink-0 rounded-t-xl px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 ${
+                      selected ? "text-brand-700" : "text-ink-500 hover:text-ink-900"
+                    }`}
+                  >
+                    {tab.label}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-brand-600 transition-opacity ${
+                        selected ? "opacity-100" : "opacity-0"
+                      }`}
                     />
-                  </h1>
-                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/60">
-                    Upload gambar ke Cloudinary. URL hasil upload hanya disimpan
-                    di state frontend dan langsung tampil sebagai pratinjau.
-                  </p>
-                </div>
-              <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-white/70">
-                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-3.5 w-3.5 text-teal-300">
-                  <path d="M8 1.5 9.7 5l3.8.3-2.9 2.5.9 3.7L8 9.6 4.5 11.5l.9-3.7L2.5 5.3 6.3 5 8 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
-                </svg>
-                {profileImageUrl ? "Foto terpasang" : "Belum ada foto"}
-              </div>
+                  </button>
+                );
+              })}
             </div>
-            </Reveal>
 
-            <Reveal direction="right" delay={120}>
-              <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/80 shadow-2xl shadow-black/40 backdrop-blur">
-              <div className="relative h-36 sm:h-44">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-800 via-indigo-700 to-teal-600" />
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 opacity-40"
-                  style={{
-                    backgroundImage: "radial-gradient(rgba(255,255,255,0.35) 1px, transparent 1px)",
-                    backgroundSize: "18px 18px",
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/70 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-5 flex items-center gap-2 text-xs text-white/80 sm:left-8">
-                  <span className="rounded-full border border-white/20 bg-black/30 px-3 py-1 backdrop-blur">
-                    JobTrack Member
-                  </span>
-                  <span className="hidden rounded-full border border-white/20 bg-black/30 px-3 py-1 backdrop-blur sm:inline">
-                    JPG • PNG • WebP — maks 5 MB
-                  </span>
-                </div>
-              </div>
-
-              <div className="px-5 pb-6 sm:px-8 sm:pb-8">
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-                  <div className="-mt-12 flex items-end gap-4">
-                    <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-neutral-800 text-xl font-semibold text-white ring-4 ring-neutral-900 sm:h-28 sm:w-28">
-                      {profileImageUrl ? (
-                        <Image
-                          src={profileImageUrl}
-                          alt="Profile picture"
-                          width={112}
-                          height={112}
-                          unoptimized
-                          className="h-full w-full object-cover"
+            {activeTab === "akun" && (
+              <div id="panel-akun" role="tabpanel" aria-labelledby="tab-akun" className="p-5 sm:p-6">
+                {/* ---- Foto profil ---- */}
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full bg-brand-600 text-2xl font-semibold text-white ring-1 ring-slate-200">
+                    {profileImageUrl ? (
+                      <Image
+                        src={profileImageUrl}
+                        alt="Pratinjau foto profil"
+                        width={96}
+                        height={96}
+                        unoptimized
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <span aria-hidden="true" className="flex h-full w-full items-center justify-center">
+                        {initialFromEmail(email)}
+                      </span>
+                    )}
+                    {isUploading && (
+                      <span className="absolute inset-0 flex items-center justify-center bg-white/70">
+                        <span
+                          aria-hidden="true"
+                          className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-brand-600"
                         />
-                      ) : (
-                        <span className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-700 to-slate-900 text-2xl font-bold tracking-tight">
-                          JT
-                        </span>
-                      )}
-                      {isUploading && (
-                        <span className="absolute inset-0 flex items-center justify-center bg-black/60">
-                          <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-                        </span>
-                      )}
-                    </div>
-                    <div className="pb-1">
-                      <h2 className="font-display text-lg font-semibold text-white">
-                        Foto Profil
-                      </h2>
-                      <p className="mt-0.5 text-[13px] text-white/55">
-                        {isUploading
-                          ? "Mengunggah gambar…"
-                          : profileImageUrl
-                            ? "Pratinjau hasil upload Cloudinary"
-                            : "Inisial default ditampilkan"}
-                      </p>
-                    </div>
+                      </span>
+                    )}
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2">
-                    <label
-                      htmlFor="profile-picture"
-                      className={`inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl bg-white px-4 text-sm font-medium text-neutral-900 transition-colors hover:bg-slate-100 focus-within:ring-2 focus-within:ring-white focus-within:ring-offset-2 focus-within:ring-offset-neutral-900 ${isUploading ? "pointer-events-none opacity-60" : ""}`}
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-ink-900">
+                      {email ?? (account === null && !accountError ? "Memuat…" : "Email tidak tersedia")}
+                    </p>
+                    {role && (
+                      <p className="mt-1.5">
+                        <span className="inline-flex items-center rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-600/15">
+                          {ROLE_LABEL[role]}
+                        </span>
+                      </p>
+                    )}
+                    <p className="mt-1.5 text-xs leading-relaxed text-ink-500">
+                      JPG, PNG, atau WebP — maksimal 5 MB.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col gap-2 sm:w-auto sm:shrink-0">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={handleProfilePictureUpload}
+                      disabled={isUploading}
+                      className="hidden"
+                      aria-hidden="true"
+                      tabIndex={-1}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isUploading}
+                      className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-4 w-4">
-                        <path d="M8 10.5V2.5M5 5.5 8 2.5l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M2.5 10.5v2a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      </svg>
-                      {profileImageUrl ? "Ganti foto" : "Upload foto"}
-                    </label>
-                    {profileImageUrl && (
+                      <FaCamera aria-hidden="true" className="h-4 w-4" />
+                      {isUploading ? "Mengunggah…" : profileImageUrl ? "Ganti Foto" : "Upload Foto"}
+                    </button>
+                    {profileImageUrl && !isUploading && (
                       <button
                         type="button"
-                        onClick={() => setProfileImageUrl("")}
-                        className="inline-flex h-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-4 text-sm font-medium text-white/80 transition-colors hover:border-white/30 hover:text-white"
+                        onClick={() => setConfirmClear(true)}
+                        className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
                       >
-                        Hapus
+                        <FaTrashAlt aria-hidden="true" className="h-4 w-4" />
+                        Hapus Foto
                       </button>
                     )}
                   </div>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                    <p className="text-sm font-medium text-white">Upload gambar</p>
-                    <p className="mt-1 text-[13px] leading-relaxed text-white/55">
-                      Pilih file dari perangkatmu. Validasi tipe & ukuran
-                      dilakukan sebelum upload.
-                    </p>
-                    <input
-                      id="profile-picture"
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp"
-                      onChange={handleProfilePictureUpload}
-                      disabled={isUploading}
-                      className="mt-4 block w-full cursor-pointer rounded-xl border border-dashed border-white/20 bg-neutral-950/60 px-3 py-3 text-sm text-white/75 file:mr-3 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-[13px] file:font-medium file:text-white hover:border-white/35 disabled:cursor-not-allowed disabled:opacity-60"
+                {isUploading && (
+                  <p role="status" className="mt-4 flex items-center gap-2 text-sm text-ink-500">
+                    <span
+                      aria-hidden="true"
+                      className="h-4 w-4 animate-spin rounded-full border-2 border-slate-200 border-t-brand-600"
                     />
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                      {["JPG", "PNG", "WebP"].map((f) => (
-                        <span key={f} className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-white/65">
-                          {f}
-                        </span>
+                    Mengunggah gambar ke Cloudinary…
+                  </p>
+                )}
+
+                {uploadError && (
+                  <p
+                    role="alert"
+                    className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-[13px] leading-relaxed text-red-700"
+                  >
+                    {uploadError}
+                  </p>
+                )}
+
+                {!uploadError && !isUploading && profileImageUrl && (
+                  <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5 text-[13px] text-emerald-700">
+                    Upload berhasil. Foto ini hanya pratinjau di halaman ini dan akan hilang setelah
+                    refresh karena belum ada penyimpanan permanen.
+                  </p>
+                )}
+
+                {/* ---- Form informasi akun ---- */}
+                <div className="mt-6 border-t border-slate-200 pt-6">
+                  <h2 className="font-display text-base font-semibold tracking-tight text-ink-900">
+                    Informasi Akun
+                  </h2>
+                  <p className="mt-1 text-sm text-ink-500">
+                    Data akun dari server. Tidak dapat diubah dari halaman ini.
+                  </p>
+
+                  {account === null && !accountError && (
+                    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2" role="status" aria-label="Memuat informasi akun">
+                      <div className="animate-pulse rounded-xl bg-slate-100 px-4 py-4 sm:col-span-2">
+                        <div className="h-4 w-1/4 rounded bg-slate-200" />
+                        <div className="mt-2 h-3 w-2/3 rounded bg-slate-200" />
+                      </div>
+                      {[0, 1].map((i) => (
+                        <div key={i} className="animate-pulse rounded-xl bg-slate-100 px-4 py-4">
+                          <div className="h-4 w-1/3 rounded bg-slate-200" />
+                          <div className="mt-2 h-3 w-1/2 rounded bg-slate-200" />
+                        </div>
                       ))}
-                      <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-white/65">
-                        Maks 5 MB
+                    </div>
+                  )}
+
+                  {accountError && (
+                    <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
+                      <span
+                        aria-hidden="true"
+                        className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-red-100 text-red-600"
+                      >
+                        <FaExclamationTriangle className="h-6 w-6" />
                       </span>
-                    </div>
-
-                    {isUploading && (
-                      <p role="status" className="mt-4 flex items-center gap-2 text-sm text-white/70">
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-teal-300" />
-                        Mengunggah gambar ke Cloudinary…
+                      <p className="mt-4 font-display text-base font-semibold tracking-tight text-ink-900">
+                        Gagal memuat informasi akun
                       </p>
-                    )}
-
-                    {uploadError && (
-                      <p role="alert" className="mt-4 rounded-xl border border-red-500/25 bg-red-500/10 px-3.5 py-2.5 text-[13px] leading-relaxed text-red-300">
-                        {uploadError}
+                      <p className="mx-auto mt-1 max-w-sm text-sm leading-relaxed text-ink-500">
+                        {accountError}
                       </p>
-                    )}
-
-                    {!uploadError && !isUploading && profileImageUrl && (
-                      <p className="mt-4 rounded-xl border border-teal-400/25 bg-teal-400/10 px-3.5 py-2.5 text-[13px] text-teal-200">
-                        Upload berhasil. Pratinjau di atas sudah memakai URL terbaru.
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col gap-4">
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                      <p className="text-sm font-medium text-white">URL hasil upload</p>
-                      {profileImageUrl ? (
-                        <>
-                          <p className="mt-2 break-all rounded-lg bg-black/40 p-2.5 font-mono text-[11px] leading-relaxed text-teal-200/90">
-                            {profileImageUrl}
-                          </p>
-                          <button
-                            type="button"
-                            onClick={handleCopyUrl}
-                            className="mt-3 inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/5 px-3.5 text-[13px] font-medium text-white/85 transition-colors hover:border-white/30 hover:text-white"
-                          >
-                            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-3.5 w-3.5">
-                              <rect x="5.5" y="5.5" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.4" />
-                              <path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" stroke="currentColor" strokeWidth="1.4" />
-                            </svg>
-                            {copied ? "Tersalin!" : "Salin URL"}
-                          </button>
-                        </>
-                      ) : (
-                        <p className="mt-2 text-[13px] leading-relaxed text-white/50">
-                          Belum ada URL. Upload foto dulu, link Cloudinary akan
-                          muncul di sini.
-                        </p>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAccount(null);
+                          setAccountError(null);
+                          setAccountAttempt((n) => n + 1);
+                        }}
+                        className="mt-5 inline-flex h-10 items-center justify-center rounded-xl bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+                      >
+                        Coba Lagi
+                      </button>
                     </div>
+                  )}
 
-                    <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-5">
-                      <p className="text-sm font-medium text-white">Tips foto yang bagus</p>
-                      <ul className="mt-2.5 space-y-2 text-[13px] leading-relaxed text-white/60">
-                        <li className="flex gap-2">
-                          <span aria-hidden="true" className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-teal-300" />
-                          Gunakan foto wajah yang jelas menghadap kamera.
-                        </li>
-                        <li className="flex gap-2">
-                          <span aria-hidden="true" className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-teal-300" />
-                          Pilih background polos agar terlihat profesional.
-                        </li>
-                        <li className="flex gap-2">
-                          <span aria-hidden="true" className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-teal-300" />
-                          Ukuran persegi (1:1) tampil paling rapi.
-                        </li>
-                      </ul>
+                  {account && (
+                    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div className="sm:col-span-2">
+                        <label htmlFor="akun-email" className="block text-sm font-medium text-ink-900">
+                          Email
+                        </label>
+                        <div className="relative mt-1.5">
+                          <FaEnvelope
+                            aria-hidden="true"
+                            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-500"
+                          />
+                          <input
+                            id="akun-email"
+                            type="email"
+                            value={account.email}
+                            readOnly
+                            className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="akun-role" className="block text-sm font-medium text-ink-900">
+                          Role
+                        </label>
+                        <div className="relative mt-1.5">
+                          <FaUserTag
+                            aria-hidden="true"
+                            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-500"
+                          />
+                          <input
+                            id="akun-role"
+                            type="text"
+                            value={ROLE_LABEL[account.role === "recruiter" ? "recruiter" : "jobseeker"]}
+                            readOnly
+                            className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="akun-id" className="block text-sm font-medium text-ink-900">
+                          ID Pengguna
+                        </label>
+                        <div className="relative mt-1.5">
+                          <FaIdCard
+                            aria-hidden="true"
+                            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-500"
+                          />
+                          <input
+                            id="akun-id"
+                            type="text"
+                            value={String(account.id)}
+                            readOnly
+                            className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
-            </div>
-            </Reveal>
+            )}
+
+            {activeTab === "keamanan" && (
+              <div id="panel-keamanan" role="tabpanel" aria-labelledby="tab-keamanan" className="p-5 sm:p-6">
+                <h2 className="font-display text-base font-semibold tracking-tight text-ink-900">
+                  Keamanan
+                </h2>
+                <p className="mt-1 text-sm text-ink-500">
+                  Keluar dari akun ini di perangkat yang sedang dipakai.
+                </p>
+                <Link
+                  href="/login"
+                  onClick={() => {
+                    try {
+                      localStorage.removeItem("token");
+                    } catch {
+                      /* abaikan: storage tak tersedia */
+                    }
+                  }}
+                  className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 sm:w-auto"
+                >
+                  <FaSignOutAlt aria-hidden="true" className="h-4 w-4" />
+                  Keluar
+                </Link>
+              </div>
+            )}
           </div>
-      </div>
-    </AppShell>
+        </div>
+      </AppShell>
+
+      {confirmClear && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="hapus-foto-judul"
+          aria-describedby="hapus-foto-deskripsi"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/40 p-4"
+          onClick={() => setConfirmClear(false)}
+        >
+          <div
+            onClick={(event) => event.stopPropagation()}
+            className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl"
+          >
+            <h2
+              id="hapus-foto-judul"
+              className="font-display text-base font-semibold tracking-tight text-ink-900"
+            >
+              Hapus foto?
+            </h2>
+            <p id="hapus-foto-deskripsi" className="mt-2 text-sm leading-relaxed text-ink-500">
+              Pratinjau di halaman ini akan dihapus dan kembali ke inisial email. File yang sudah
+              terupload di Cloudinary tidak ikut dihapus.
+            </p>
+            <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+              <button
+                ref={cancelClearRef}
+                type="button"
+                onClick={() => setConfirmClear(false)}
+                className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setProfileImageUrl("");
+                  setConfirmClear(false);
+                }}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
+              >
+                <FaTrashAlt aria-hidden="true" className="h-4 w-4" />
+                Hapus foto
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </RequireAuth>
   );
 }
