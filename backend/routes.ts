@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { register, login } from "./controllers/authController";
 import { createJob, getJobs, getJobById, updateJob, deleteJob, getMyJobs } from "./controllers/jobController";
-import { applyJob, getMyApplications, getJobApplications, updateApplicationStatus } from "./controllers/applicationController";
+import { applyJob, getMyApplications, getJobApplications, updateApplicationStatus, getApplicationCv } from "./controllers/applicationController";
 import { verifyToken } from "./middleware/authMiddleware";
 import { authorize } from "./middleware/authorizeMiddleware";
 import { uploadCvSingle } from "./middleware/uploadCv";
@@ -30,6 +30,8 @@ router.get("/jobs/:id/applications", verifyToken, authorize("recruiter"), getJob
 router.get("/applications/me", verifyToken, authorize("jobseeker"), getMyApplications);
 
 router.patch("/applications/:id", verifyToken, authorize("recruiter"), updateApplicationStatus);
+
+router.get("/applications/:id/cv", verifyToken, authorize("recruiter"), getApplicationCv);
 
 router.get("/profile", verifyToken, (req, res) => {
   res.json({

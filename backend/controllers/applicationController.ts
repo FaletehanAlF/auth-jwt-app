@@ -86,7 +86,8 @@ export const getJobApplications = async (req: Request, res: Response) => {
 
     const [rows] = await db.execute(
       `SELECT applications.id AS id, applications.job_id, applications.jobseeker_id, applications.status, applications.created_at,
-              users.name AS jobseeker_name, users.email AS jobseeker_email
+              users.name AS jobseeker_name, users.email AS jobseeker_email,
+              (applications.cv_path IS NOT NULL AND applications.cv_path <> '') AS has_cv
        FROM applications
        JOIN users ON users.id = applications.jobseeker_id
        WHERE applications.job_id = ?
@@ -316,6 +317,99 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       message: "Gagal memperbarui status lamaran",
+    });
+  }
+};
+export const getApplicationCv = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const recruiterId = req.user!.id;
+
+    const [appRows] = await db.execute(
+      `SELECT applications.id AS id,
+              applications.cv_path AS cv_path,
+              applications.cv_original_name AS cv_original_name,
+              applications.cv_mime AS cv_mime,
+              jobs.recruiter_id AS recruiter_id
+       FROM applications
+       JOIN jobs ON jobs.id = applications.job_id
+       WHERE applications.id = ?`,
+      [id]
+    );
+    const application = (appRows as any[])[0];
+
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Lamaran tidak ditemukan",
+      });
+    }
+
+    if (application.recruiter_id !== recruiterId) {
+      return res.status(403).json({
+        success: false,
+        message: "Anda tidak memiliki akses ke lamaran ini",
+      });
+    }
+
+    const cvPath = application.cv_path;
+    if (!cvPath) {
+      return res.status(404).json({
+        success: false,
+        message: "CV tidak tersedia",
+      });
+    }
+
+    const resolvedCvDir = path.resolve(CV_DIR);
+    const resolvedFile = path.resolve(String(cvPath));
+    const insideDir =
+      resolvedFile === resolvedCvDir ||
+      resolvedFile.startsWith(resolvedCvDir + path.sep);
+    if (!insideDir) {
+      return res.status(404).json({
+        success: false,
+        message: "CV tidak tersedia",
+      });
+    }
+
+    let stat;
+    try {
+      stat = await fsPromises.stat(resolvedFile);
+    } catch {
+      return res.status(404).json({
+        success: false,
+        message: "CV tidak tersedia",
+      });
+    }
+
+    if (!stat.isFile()) {
+      return res.status(404).json({
+        success: false,
+        message: "CV tidak tersedia",
+      });
+    }
+
+    const rawOriginal = application.cv_original_name
+      ? path.basename(String(application.cv_original_name))
+      : `cv-${application.id}.pdf`;
+    let safeName = rawOriginal.replace(/[^A-Za-z0-9._\-() ]/g, "_").trim();
+    if (!safeName) safeName = `cv-${application.id}.pdf`;
+    if (!/\.pdf$/i.test(safeName)) safeName = `${safeName}.pdf`;
+
+    res.type(application.cv_mime || "application/pdf");
+    return res.download(resolvedFile, safeName, (err) => {
+      if (err && !res.headersSent) {
+        res.status(404).json({
+          success: false,
+          message: "CV tidak tersedia",
+        });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Gagal mengambil CV",
     });
   }
 };
