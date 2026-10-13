@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { apiFetch } from "../lib/api";
 import { isRecruiter } from "../lib/auth";
 
