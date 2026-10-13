@@ -2,8 +2,8 @@ import type { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import db from "../database";
-import { registerSchema, loginSchema } from "../validation";
+import db from "../config/database";
+import { registerSchema, loginSchema } from "../validators/validation";
 
 const JWT_SECRET = process.env.JWT_SECRET || "rahasia-jwt-project";
 

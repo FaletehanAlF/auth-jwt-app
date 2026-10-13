@@ -3,7 +3,7 @@ import crypto from "crypto";
 import fs from "fs";
 import multer from "multer";
 import path from "path";
-import { CV_DIR } from "../config";
+import { CV_DIR } from "../config/config";
 
 export const CV_FIELD = "cv";
 export const MAX_CV_BYTES = 5 * 1024 * 1024;

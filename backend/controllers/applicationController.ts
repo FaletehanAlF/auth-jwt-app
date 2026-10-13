@@ -2,9 +2,10 @@ import type { Request, Response } from "express";
 import { promises as fsPromises } from "fs";
 import path from "path";
 
-import { CV_DIR } from "../config";
-import db from "../database";
+import { CV_DIR } from "../config/config";
+import db from "../config/database";
 import { MAX_CV_BYTES } from "../middleware/uploadCv";
+import { emitToUser } from "../sockets/socket";
 
 /** Nilai status lamaran yang diizinkan (FASE 1). Harus sama dengan
  *  daftar ENUM pada migrasi backend/migrations/001-application-status.sql. */
@@ -163,7 +164,7 @@ export const applyJob = async (req: Request, res: Response) => {
     transactionActive = true;
 
     const [jobRows] = await connection.execute(
-      "SELECT id FROM jobs WHERE id = ?",
+      "SELECT id, recruiter_id, title FROM jobs WHERE id = ?",
       [id]
     );
     const job = (jobRows as any[])[0];
@@ -223,9 +224,46 @@ export const applyJob = async (req: Request, res: Response) => {
     );
     const application = (rows as any[])[0];
 
-    // Commit hanya setelah SELECT respons berhasil; jika gagal, catch akan rollback.
+    let notificationId = 0;
+    if (job?.recruiter_id) {
+      const [notificationInsertResult] = await connection.execute(
+        `INSERT INTO notifications
+         (user_id, type, title, message, entity_type, entity_id)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          job.recruiter_id,
+          "new_application",
+          "Lamaran baru masuk",
+          `Ada lamaran baru untuk lowongan: ${job.title}`,
+          "application",
+          insertId,
+        ]
+      );
+      notificationId = (notificationInsertResult as any)?.insertId ?? 0;
+    }
+
+    // Commit hanya setelah pembaruan data lamaran dan notifikasi berhasil.
     await connection.commit();
     transactionActive = false;
+
+    if (notificationId > 0 && job?.recruiter_id) {
+      try {
+        emitToUser(job.recruiter_id, "notification:new", {
+          id: notificationId,
+          user_id: job.recruiter_id,
+          type: "new_application",
+          title: "Lamaran baru masuk",
+          message: `Ada lamaran baru untuk lowongan: ${job.title}`,
+          entity_type: "application",
+          entity_id: insertId,
+          is_read: 0,
+          created_at: new Date().toISOString(),
+        });
+      } catch (socketError) {
+        console.error(socketError);
+      }
+    }
+
 
     return res.status(201).json({
       success: true,
@@ -261,23 +299,31 @@ export const applyJob = async (req: Request, res: Response) => {
 };
 
 export const updateApplicationStatus = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const recruiterId = req.user!.id;
+  const { status } = req.body as { status?: unknown };
+
+  if (typeof status !== "string" || !(APPLICATION_STATUSES as readonly string[]).includes(status)) {
+    return res.status(400).json({
+      success: false,
+      message: `Status tidak valid. Nilai yang diterima: ${APPLICATION_STATUSES.join(", ")}.`,
+    });
+  }
+
+  const connection = await db.getConnection();
+  let transactionActive = false;
+  let jobseekerId: number | null = null;
+  let jobTitle: string | null = null;
+  let oldStatus: string | null = null;
+  let notificationId = 0;
+
   try {
-    const { id } = req.params;
-    const recruiterId = req.user!.id;
-    const { status } = req.body as { status?: unknown };
+    await connection.beginTransaction();
+    transactionActive = true;
 
-    if (typeof status !== "string" || !(APPLICATION_STATUSES as readonly string[]).includes(status)) {
-      return res.status(400).json({
-        success: false,
-        message: `Status tidak valid. Nilai yang diterima: ${APPLICATION_STATUSES.join(", ")}.`,
-      });
-    }
-
-    // Ambil lamaran sekaligus pemilik lowongannya dalam satu query.
-    // Identitas recruiter selalu dari JWT yang sudah diverifikasi,
-    // tidak pernah dari input frontend.
-    const [appRows] = await db.execute(
-      `SELECT applications.id AS id, jobs.recruiter_id AS recruiter_id
+    const [appRows] = await connection.execute(
+      `SELECT applications.jobseeker_id AS jobseeker_id, applications.status AS old_status,
+              jobs.recruiter_id AS recruiter_id, jobs.title AS job_title
        FROM applications
        JOIN jobs ON jobs.id = applications.job_id
        WHERE applications.id = ?`,
@@ -286,6 +332,8 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
     const application = (appRows as any[])[0];
 
     if (!application) {
+      await connection.rollback();
+      transactionActive = false;
       return res.status(404).json({
         success: false,
         message: "Lamaran tidak ditemukan",
@@ -293,33 +341,101 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
     }
 
     if (application.recruiter_id !== recruiterId) {
+      await connection.rollback();
+      transactionActive = false;
       return res.status(403).json({
         success: false,
         message: "Anda tidak memiliki akses ke lamaran ini",
       });
     }
 
-    // WHERE hanya pada id lamaran yang dimaksud — tidak menyentuh baris lain.
-    await db.execute("UPDATE applications SET status = ? WHERE id = ?", [status, id]);
+    jobseekerId = application.jobseeker_id;
+    jobTitle = application.job_title;
+    oldStatus = application.old_status;
 
-    const [rows] = await db.execute(
+    if (oldStatus === status) {
+      await connection.rollback();
+      transactionActive = false;
+      return res.status(400).json({
+        success: false,
+        message: "Status lamaran sudah sesuai",
+      });
+    }
+
+    await connection.execute("UPDATE applications SET status = ? WHERE id = ?", [status, id]);
+
+    const [rows] = await connection.execute(
       "SELECT id, job_id, jobseeker_id, status, created_at FROM applications WHERE id = ?",
       [id]
     );
+    const updatedApplication = (rows as any[])[0];
+
+    if (jobseekerId) {
+      const [notificationInsertResult] = await connection.execute(
+        `INSERT INTO notifications
+         (user_id, type, title, message, entity_type, entity_id)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          jobseekerId,
+          "application_status_updated",
+          "Status lamaran diperbarui",
+          `Status lamaran Anda untuk lowongan "${jobTitle}" diubah menjadi ${status}`,
+          "application",
+          Number(id),
+        ]
+      );
+      notificationId = (notificationInsertResult as any)?.insertId ?? 0;
+    }
+
+    await connection.commit();
+    transactionActive = false;
+
+    if (notificationId > 0 && jobseekerId) {
+      try {
+        emitToUser(jobseekerId, "notification:new", {
+          id: notificationId,
+          user_id: jobseekerId,
+          type: "application_status_updated",
+          title: "Status lamaran diperbarui",
+          message: `Status lamaran Anda untuk lowongan "${jobTitle}" diubah menjadi ${status}`,
+          entity_type: "application",
+          entity_id: Number(id),
+          is_read: 0,
+          created_at: new Date().toISOString(),
+        });
+      } catch (socketError) {
+        console.error(socketError);
+      }
+    }
 
     return res.status(200).json({
       success: true,
       message: "Status lamaran berhasil diperbarui",
-      application: (rows as any[])[0],
+      application: updatedApplication,
     });
   } catch (error) {
+    if (transactionActive) {
+      try {
+        await connection.rollback();
+      } catch {
+        // Abaikan error rollback agar error utama tetap dilaporkan.
+      }
+      transactionActive = false;
+    }
     console.error(error);
     return res.status(500).json({
       success: false,
       message: "Gagal memperbarui status lamaran",
     });
+  } finally {
+    try {
+      connection.release();
+    } catch {
+      // Abaikan error release koneksi agar respons tetap dikirim.
+    }
   }
 };
+
 export const getApplicationCv = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

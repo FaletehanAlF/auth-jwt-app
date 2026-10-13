@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 
-import db from "../database";
+import db from "../config/database";
 
 export const createJob = async (req: Request, res: Response) => {
   try {

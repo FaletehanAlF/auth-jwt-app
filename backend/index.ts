@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import routes from "./routes";
 import { createServer } from "http";
-import { Server } from "socket.io";
+import { initSocket } from "./sockets/socket";
 
 const app = express();
 
@@ -39,6 +39,9 @@ app.use((_req, res) => {
   res.status(404).json({ success: false, message: "Endpoint tidak ditemukan" });
 });
 
-app.listen(PORT, () => {
+const httpServer = createServer(app);
+initSocket(httpServer, ALLOWED_ORIGINS);
+
+httpServer.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`);
 });

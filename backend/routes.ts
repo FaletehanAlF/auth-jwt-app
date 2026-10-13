@@ -2,9 +2,11 @@ import { Router } from "express";
 import { register, login } from "./controllers/authController";
 import { createJob, getJobs, getJobById, updateJob, deleteJob, getMyJobs } from "./controllers/jobController";
 import { applyJob, getMyApplications, getJobApplications, updateApplicationStatus, getApplicationCv } from "./controllers/applicationController";
+import { getNotifications, getUnreadNotificationCount, markNotificationRead, markAllNotificationsRead } from "./controllers/notificationController";
 import { verifyToken } from "./middleware/authMiddleware";
 import { authorize } from "./middleware/authorizeMiddleware";
 import { uploadCvSingle } from "./middleware/uploadCv";
+
 
 const router = Router();
 
@@ -40,5 +42,13 @@ router.get("/profile", verifyToken, (req, res) => {
     user: req.user,
   });
 });
+
+router.get("/notifications", verifyToken, getNotifications);
+
+router.get("/notifications/unread-count", verifyToken, getUnreadNotificationCount);
+
+router.patch("/notifications/read-all", verifyToken, markAllNotificationsRead);
+
+router.patch("/notifications/:id/read", verifyToken, markNotificationRead);
 
 export default router;
