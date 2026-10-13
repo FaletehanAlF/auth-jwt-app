@@ -380,7 +380,7 @@ export default function RecruiterJobsPage() {
   };
 
   const loading = jobs === null;
-  const list = jobs ?? [];
+  const list = useMemo(() => jobs ?? [], [jobs]);
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -395,7 +395,9 @@ export default function RecruiterJobsPage() {
     const values = Object.values(counts);
     if (values.length === 0) return 0;
     // Semua request gagal -> jangan tampilkan "0" yang menyesatkan.
-    return values.every((value) => value === null) ? null : values.reduce<number>((sum, value) => sum + (value ?? 0), 0);
+    return values.every((value) => value === null)
+      ? null
+      : values.reduce<number>((sum, value) => sum + (value ?? 0), 0);
   }, [counts]);
 
   const locationCount = useMemo(

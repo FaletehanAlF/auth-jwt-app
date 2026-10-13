@@ -5,7 +5,10 @@ import { apiFetch } from "../lib/api";
 import { isRecruiter } from "../lib/auth";
 
 export default function CreateJobWidget() {
-  const [allowed, setAllowed] = useState(false);
+  // Lazy initializer, bukan effect: widget ini hanya dirender di dalam
+  // RequireAuth, jadi render pertamanya selalu di sisi klien dan
+  // tidak ada risiko hydration mismatch. Menghindari cascading render.
+  const [allowed] = useState(() => isRecruiter());
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
@@ -14,10 +17,6 @@ export default function CreateJobWidget() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-
-  useEffect(() => {
-    setAllowed(isRecruiter());
-  }, []);
 
   if (!allowed) return null;
 
