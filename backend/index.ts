@@ -2,6 +2,8 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import routes from "./routes";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 const app = express();
 
