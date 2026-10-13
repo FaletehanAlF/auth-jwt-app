@@ -4,6 +4,16 @@
   --background: #ffffff;
   --foreground: #171717;
 
+  /* JobTrack tidak punya tema gelap: seluruh UI (dashboard, landing,
+     auth) didesain terang dengan token eksplisit per komponen. Blok
+     `prefers-color-scheme: dark` bawaan create-next-app yang dulu menimpa
+     --background jadi #0a0a0a sudah dihapus: canvas di belakang elemen
+     jadi hitam, dan begitu ada satu halaman yang background-nya tidak
+     menutup tinggi dokumen penuh, area hitam itu langsung terlihat
+     (lihat catatan shrink-0 di AppShell). `color-scheme: light`
+     menjaga scrollbar & kontrol form UA tetap terang juga. */
+  color-scheme: light;
+
   /* ---- JobTrack loading screen (sumber tunggal durasi) ----
      CSS memakai var ini untuk animation/transition, dan JobTrackLoader
      membacanya lewat getComputedStyle untuk timer JS. Satu sumber = tidak
@@ -13,6 +23,7 @@
   --jt-loader-hold-ms: 80;
   --jt-loader-exit-ms: 2400;
 }
+
 
 @theme inline {
   --color-background: var(--background);
@@ -37,12 +48,9 @@
   --color-ink-500: #64748b;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Catatan: tidak ada blok `prefers-color-scheme: dark` lagi. JobTrack
+   light-only, dan canvas gelap hanya memunculkan area hitam pada
+   halaman yang background-nya tidak menutup tinggi dokumen penuh. */
 
 body {
   background: var(--background);
