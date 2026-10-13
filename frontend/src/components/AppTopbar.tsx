@@ -62,7 +62,7 @@ export default function AppTopbar({
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200/70 bg-white/90 px-4 backdrop-blur-sm sm:px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 bg-white px-4 sm:px-6">
       <button
         type="button"
         id={menuButtonId}

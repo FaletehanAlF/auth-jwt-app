@@ -21,7 +21,6 @@ import {
 } from "react-icons/fa";
 import AppShell from "../../../components/AppShell";
 import RequireAuth from "../../../components/RequireAuth";
-import CreateJobWidget from "../../../components/CreateJobWidget";
 import { apiFetch } from "../../../lib/api";
 import type { Applicant, Job } from "../../../lib/types";
 
@@ -80,7 +79,7 @@ function StatCard({
   pending?: boolean;
 }) {
   return (
-    <div className="animate-dash-rise rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm">
+    <div className="animate-dash-rise rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="flex items-center gap-3">
         <span
           aria-hidden="true"
@@ -90,7 +89,10 @@ function StatCard({
         </span>
         <p className="text-sm font-medium text-ink-500">{label}</p>
       </div>
-      <p className="mt-3 font-display text-2xl font-semibold tracking-tight text-ink-900">
+      <p
+        aria-live="polite"
+        className="mt-3 font-display text-2xl font-semibold tracking-tight text-ink-900"
+      >
         {pending ? "…" : value}
       </p>
     </div>
@@ -101,7 +103,7 @@ function SkeletonList() {
   return (
     <div className="space-y-4" aria-hidden="true">
       {[0, 1, 2].map((i) => (
-        <div key={i} className="animate-pulse rounded-2xl border border-slate-200/70 bg-white p-5">
+        <div key={i} className="animate-pulse rounded-2xl border border-slate-200 bg-white p-5">
           <div className="h-5 w-2/5 rounded bg-slate-100" />
           <div className="mt-3 h-4 w-1/4 rounded bg-slate-100" />
           <div className="mt-4 h-4 w-3/4 rounded bg-slate-100" />
@@ -160,7 +162,7 @@ function JobCard({
       : `${applicantCount} pelamar`;
 
   return (
-    <article className="animate-dash-rise rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md sm:p-6">
+    <article className="animate-dash-rise rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="font-display text-base font-semibold tracking-tight text-ink-900">
@@ -408,7 +410,7 @@ export default function RecruiterJobsPage() {
   const createCta = (
     <Link
       href="/jobs/create"
-      className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+      className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 sm:w-auto"
     >
       <FaPlus aria-hidden="true" className="h-4 w-4" />
       Buat Lowongan
@@ -418,9 +420,7 @@ export default function RecruiterJobsPage() {
   return (
     <RequireAuth roles={["recruiter"]}>
       <AppShell title="Lowongan Saya" subtitle="Kelola lowongan dan pantau kandidat yang melamar">
-        {/* pb-24 menyisakan ruang untuk tombol mengambang CreateJobWidget
-            (fixed bottom-6 right-6) supaya tidak menutupi card terakhir. */}
-        <div className="space-y-6 pb-24">
+        <div className="space-y-6">
           <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="font-display text-2xl font-semibold tracking-tight text-ink-900">
@@ -507,7 +507,7 @@ export default function RecruiterJobsPage() {
               <button
                 type="button"
                 onClick={() => setAttempt((n) => n + 1)}
-                className="mt-5 inline-flex h-10 items-center justify-center rounded-xl bg-ink-900 px-5 text-sm font-medium text-white transition-colors hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-900 focus-visible:ring-offset-2"
+                className="mt-5 inline-flex h-10 items-center justify-center rounded-xl bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
               >
                 Coba Lagi
               </button>

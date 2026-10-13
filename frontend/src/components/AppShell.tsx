@@ -66,15 +66,19 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
   // shrink-0, kotak shell dipaksa mentok di `min-h-dvh` (tinggi
   // viewport) sementara isinya jauh lebih tinggi — konten meluber keluar
   // kotak dan `bg-mist` hanya melukis 1 viewport pertama. Sisanya
-  // memperlihatkan canvas di belakangnya: area hitam besar tepat di
+  // memperlihatkan canvas di belakangnya: area gelap besar tepat di
   // belakang card paling bawah. Dengan shrink-0, shell setinggi
   // isinya dan background-nya menutup dokumen penuh, termasuk saat
   // halaman digulir dan saat kontennya pendek.
+  // Tambahan (audit 2026): token --background dan --color-mist kini
+  // sama-sama #F8FAFC supaya body/shell/RequireAuth satu warna —
+  // sebelumnya body putih vs shell mist (#F5F7FF) menyisakan seam dua
+  // warna terang saat konten pendek atau saat overscroll.
   return (
     <div className="min-h-dvh shrink-0 bg-mist font-sans text-ink-900 antialiased">
       <aside
         aria-label="Sidebar navigasi"
-        className={`app-shell-shift fixed inset-y-0 left-0 z-40 hidden border-r border-slate-200/70 transition-[width] duration-300 ease-out lg:block ${
+        className={`app-shell-shift fixed inset-y-0 left-0 z-40 hidden border-r border-slate-200 bg-white transition-[width] duration-300 ease-out lg:block ${
           collapsed ? "w-[76px]" : "w-64"
         }`}
       >

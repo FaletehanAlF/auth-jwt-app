@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f8fafc;
   --foreground: #171717;
 
   /* JobTrack tidak punya tema gelap: seluruh UI (dashboard, landing,
@@ -11,7 +11,10 @@
      jadi hitam, dan begitu ada satu halaman yang background-nya tidak
      menutup tinggi dokumen penuh, area hitam itu langsung terlihat
      (lihat catatan shrink-0 di AppShell). `color-scheme: light`
-     menjaga scrollbar & kontrol form UA tetap terang juga. */
+     menjaga scrollbar & kontrol form UA tetap terang juga.
+     --background disamakan dengan background AppShell (#F8FAFC) supaya
+     tidak ada sambungan dua warna terang (putih body vs mist) saat
+     konten pendek, saat scrolling, maupun saat overscroll. */
   color-scheme: light;
 
   /* ---- JobTrack loading screen (sumber tunggal durasi) ----
@@ -35,7 +38,10 @@
 
 /* ---- JobTrack SaaS dashboard tokens (Tailwind v4) ----
    Satu sumber warna/tipe untuk shell aplikasi. Halaman landing,
-   auth, dan animasi lama tidak memakai token ini. */
+   auth, dan animasi lama tidak memakai token ini.
+   --color-mist = background utama dashboard (#F8FAFC, slate-50):
+   dipakai AppShell + RequireAuth agar body, shell, dan layar
+   loading selalu satu warna — tidak ada seam antar-section. */
 @theme {
   --color-brand-50: #eff4ff;
   --color-brand-100: #dbe6fe;
@@ -43,7 +49,7 @@
   --color-brand-700: #1d4ed8;
   --color-accent-600: #7c3aed;
   --color-accent-700: #6d28d9;
-  --color-mist: #f5f7ff;
+  --color-mist: #f8fafc;
   --color-ink-900: #0f172a;
   --color-ink-500: #64748b;
 }
