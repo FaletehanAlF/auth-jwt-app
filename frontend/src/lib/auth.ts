@@ -5,7 +5,8 @@ export type UserRole = "jobseeker" | "recruiter";
  * signature — hanya untuk gating UI. Otorisasi sesungguhnya tetap di
  * backend (verifyToken + authorize).
  *
- * Perilaku disamakan dengan implementasi asal di SiteMenu:
+ * Perilaku disamakan dengan implementasi asal:
+
  * token valid dengan role "recruiter" -> "recruiter",
  * token valid dengan role lain/hilang -> "jobseeker",
  * tanpa token / gagal decode -> null.

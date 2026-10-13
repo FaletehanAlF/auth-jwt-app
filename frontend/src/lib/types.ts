@@ -37,4 +37,5 @@ export type Applicant = {
   email?: string;
   jobseeker_name?: string;
   jobseeker_email?: string;
+  has_cv?: boolean | number;
 };

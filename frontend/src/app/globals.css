@@ -241,7 +241,8 @@ html {
   .app-drawer-backdrop,
   .app-menu-pop,
   .animate-dash-rise,
-  .animate-pulse {
+  .animate-pulse,
+  .animate-jobtrack-success {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
@@ -441,4 +442,13 @@ html {
 
 .sidebar-tip {
   animation: sidebar-tip-in 0.14s ease-out both;
+}
+
+@keyframes jobtrack-success-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-jobtrack-success {
+  animation: jobtrack-success-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }

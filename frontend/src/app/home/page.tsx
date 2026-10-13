@@ -611,15 +611,20 @@ function RecruiterDashboard({ email }: { email: string | null }) {
   const loadingCounts = counts === null;
 
   const createCta = (
-    <Link
-      href="/jobs/create"
-      className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-    >
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-4 w-4">
-        <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      </svg>
-      Buat Lowongan
-    </Link>
+    <div className="flex flex-col items-start gap-1">
+      <Link
+        href="/recruiter/jobs"
+        className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-4 w-4">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        Buat Lowongan
+      </Link>
+      <p className="text-xs text-ink-500">
+        Buat dan kelola lowongan pekerjaan untuk menarik kandidat yang sesuai.
+      </p>
+    </div>
   );
 
   if (error) {
@@ -729,7 +734,7 @@ function RecruiterDashboard({ email }: { email: string | null }) {
               <EmptyState
                 title="Belum ada lowongan"
                 desc="Buat lowongan pertamamu — pelamar yang masuk akan tercatat di dashboard ini."
-                href="/jobs/create"
+                href="/recruiter/jobs"
                 actionLabel="Buat Lowongan"
               />
             </div>
@@ -790,7 +795,7 @@ function RecruiterDashboard({ email }: { email: string | null }) {
           </h2>
           <div className="mt-4 space-y-3">
             <Link
-              href="/jobs/create"
+              href="/recruiter/jobs"
               className="flex items-center gap-3 rounded-xl border border-slate-200/70 p-4 transition-colors hover:border-brand-600/30 hover:bg-brand-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
             >
               <span

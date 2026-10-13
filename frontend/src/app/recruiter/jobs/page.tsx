@@ -20,6 +20,7 @@ import {
   FaUsers,
 } from "react-icons/fa";
 import AppShell from "../../../components/AppShell";
+import JobFormModal from "../../../components/JobFormModal";
 import RequireAuth from "../../../components/RequireAuth";
 import { apiFetch } from "../../../lib/api";
 import type { Applicant, Job } from "../../../lib/types";
@@ -146,12 +147,14 @@ function EmptyState({
 function JobCard({
   job,
   applicantCount,
+  onEdit,
   onRequestDelete,
   deleteDisabled,
 }: {
   job: Job;
-  /** null = belum termuat / gagal dimuat. Tampilkan "—", jangan "0". */
+  /** null = belum termuat / gagal dimuat. Tampilkan "�?"", jangan "0". */
   applicantCount: number | null | undefined;
+  onEdit: (job: Job) => void;
   onRequestDelete: (job: Job, trigger: HTMLButtonElement) => void;
   deleteDisabled: boolean;
 }) {
@@ -213,13 +216,14 @@ function JobCard({
             <FaUserFriends aria-hidden="true" className="h-4 w-4" />
             Lihat Pelamar
           </Link>
-          <Link
-            href={`/recruiter/jobs/${job.id}/edit`}
+          <button
+            type="button"
+            onClick={() => onEdit(job)}
             className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
           >
             <FaPencilAlt aria-hidden="true" className="h-4 w-4" />
             Edit Lowongan
-          </Link>
+          </button>
           <Link
             href={`/jobs/${job.id}`}
             className="inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-ink-500 transition-colors hover:bg-slate-50 hover:text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
@@ -250,6 +254,9 @@ export default function RecruiterJobsPage() {
   const [error, setError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
   const [query, setQuery] = useState("");
+
+  const [createOpen, setCreateOpen] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Job | null>(null);
@@ -408,13 +415,14 @@ export default function RecruiterJobsPage() {
   );
 
   const createCta = (
-    <Link
-      href="/jobs/create"
+    <button
+      type="button"
+      onClick={() => setCreateOpen(true)}
       className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 sm:w-auto"
     >
       <FaPlus aria-hidden="true" className="h-4 w-4" />
-      Buat Lowongan
-    </Link>
+      + Buat Lowongan
+    </button>
   );
 
   return (
@@ -427,7 +435,7 @@ export default function RecruiterJobsPage() {
                 Lowongan Saya
               </h1>
               <p className="mt-1 text-sm text-ink-500">
-                Kelola lowongan dan pantau kandidat yang melamar.
+                Kelola lowongan, perbarui informasi, dan pantau pelamar dari satu tempat.
               </p>
             </div>
             {createCta}
@@ -518,7 +526,17 @@ export default function RecruiterJobsPage() {
             <EmptyState
               icon={FaInbox}
               title="Belum ada lowongan"
-              desc="Buat lowongan pertamamu supaya kandidat bisa menemukan dan melamar posisi yang kamu buka. Gunakan tombol “Buat Lowongan” di bagian atas halaman ini."
+              desc="Buat lowongan pertamamu supaya kandidat bisa menemukan dan melamar posisi yang kamu buka. Gunakan tombol �?oBuat Lowongan�?? di bagian atas halaman ini."
+              action={
+                <button
+                  type="button"
+                  onClick={() => setCreateOpen(true)}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+                >
+                  <FaPlus aria-hidden="true" className="h-4 w-4" />
+                  Buat Lowongan
+                </button>
+              }
             />
           )}
 
@@ -547,6 +565,7 @@ export default function RecruiterJobsPage() {
                   job={job}
                   applicantCount={counts ? (counts[job.id] ?? null) : null}
                   deleteDisabled={deletingId === job.id}
+                  onEdit={(target) => setEditingId(target.id)}
                   onRequestDelete={(target, trigger) => {
                     deleteTriggerRef.current = trigger;
                     setPendingDelete(target);
@@ -604,6 +623,30 @@ export default function RecruiterJobsPage() {
         </div>
       )}
 
+      {createOpen && (
+        <JobFormModal
+          open
+          mode="create"
+          onClose={() => setCreateOpen(false)}
+          onSuccess={() => {
+            setAttempt((n) => n + 1);
+            showNotice("success", "Lowongan berhasil dibuat!");
+          }}
+        />
+      )}
+
+      {editingId !== null && (
+        <JobFormModal
+          open
+          mode="edit"
+          jobId={editingId}
+          onClose={() => setEditingId(null)}
+          onSuccess={() => {
+            setAttempt((n) => n + 1);
+            showNotice("success", "Perubahan berhasil disimpan.");
+          }}
+        />
+      )}
     </RequireAuth>
   );
 }

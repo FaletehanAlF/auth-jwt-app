@@ -64,3 +64,32 @@ export async function apiFetchWithStatus<T>(
 
   return { status: response.status, data };
 }
+
+/**
+ * Helper untuk respons biner/PDF: tetap memakai base URL dan JWT yang sama
+ * dengan `apiFetch`, tetapi tidak memaksa JSON. Mengembalikan status + blob
+ * agar pemanggil bisa membedakan error JSON dari file yang berhasil.
+ */
+export async function apiFetchBlob(
+  path: string,
+  init?: RequestInit,
+): Promise<{ ok: boolean; status: number; blob: Blob | null; message?: string }> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...init,
+    headers: buildHeaders(init),
+  });
+
+  if (!response.ok) {
+    let message: string | undefined;
+    try {
+      const data = (await response.json()) as { message?: string };
+      message = data?.message;
+    } catch {
+      // Body bukan JSON; biarkan message kosong.
+    }
+    return { ok: false, status: response.status, blob: null, message };
+  }
+
+  const blob = await response.blob();
+  return { ok: true, status: response.status, blob };
+}

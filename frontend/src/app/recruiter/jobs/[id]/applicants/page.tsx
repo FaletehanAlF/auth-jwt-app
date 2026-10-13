@@ -6,13 +6,14 @@ import { useParams } from "next/navigation";
 import {
   FaArrowLeft,
   FaExclamationTriangle,
+  FaEye,
   FaInbox,
   FaPlus,
   FaUsers,
 } from "react-icons/fa";
 import AppShell from "../../../../../components/AppShell";
 import RequireAuth from "../../../../../components/RequireAuth";
-import { apiFetch } from "../../../../../lib/api";
+import { apiFetch, apiFetchBlob } from "../../../../../lib/api";
 import { APPLICATION_STATUSES, getStatusInfo } from "../../../../../lib/applicationStatus";
 import type { Applicant } from "../../../../../lib/types";
 
@@ -25,6 +26,9 @@ function readableError(message: string | undefined, fallback: string): string {
   }
   if (message === "Lamaran tidak ditemukan") {
     return "Lamaran tidak ditemukan. Mungkin sudah dihapus.";
+  }
+  if (message === "CV tidak tersedia") {
+    return "CV tidak tersedia untuk lamaran ini.";
   }
   return message ?? fallback;
 }
@@ -67,6 +71,7 @@ export default function ApplicantsPage() {
   // pembaruan satu kartu tidak pernah menyentuh kartu lain.
   const [savingIds, setSavingIds] = useState<ReadonlySet<number>>(new Set());
   const [itemErrors, setItemErrors] = useState<Record<number, string>>({});
+  const [viewingIds, setViewingIds] = useState<ReadonlySet<number>>(new Set());
 
   useEffect(() => {
     if (!id) return;
@@ -163,6 +168,53 @@ export default function ApplicantsPage() {
       }));
     } finally {
       setSavingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(applicantId);
+        return next;
+      });
+    }
+  };
+
+
+  const handleViewCv = async (applicantId: number) => {
+    if (viewingIds.has(applicantId)) return;
+
+    setViewingIds((prev) => new Set(prev).add(applicantId));
+    setItemErrors((prev) => {
+      const rest = { ...prev };
+      delete rest[applicantId];
+      return rest;
+    });
+
+    try {
+      const result = await apiFetchBlob(`/applications/${applicantId}/cv`);
+
+      if (!result.ok || !result.blob) {
+        setItemErrors((prev) => ({
+          ...prev,
+          [applicantId]: readableError(result.message, "Gagal membuka CV."),
+        }));
+        return;
+      }
+
+      const url = URL.createObjectURL(result.blob);
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if (!opened) {
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `cv-${applicantId}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+      window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } catch {
+      setItemErrors((prev) => ({
+        ...prev,
+        [applicantId]: "Gagal menghubungi server. Periksa koneksi lalu coba lagi.",
+      }));
+    } finally {
+      setViewingIds((prev) => {
         const next = new Set(prev);
         next.delete(applicantId);
         return next;
@@ -321,6 +373,34 @@ export default function ApplicantsPage() {
                           </>
                         )}
                       </p>
+                    </div>
+
+                    <div className="mt-3 flex items-center gap-3">
+                      {app.has_cv ? (
+                        <button
+                          type="button"
+                          onClick={() => handleViewCv(app.id)}
+                          disabled={viewingIds.has(app.id)}
+                          className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-medium text-ink-700 transition-colors hover:border-brand-600/40 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                          {viewingIds.has(app.id) ? (
+                            <>
+                              <span
+                                aria-hidden="true"
+                                className="h-4 w-4 animate-spin rounded-full border-2 border-slate-200 border-t-brand-600"
+                              />
+                              Membuka...
+                            </>
+                          ) : (
+                            <>
+                              <FaEye aria-hidden="true" className="h-4 w-4" />
+                              Lihat CV
+                            </>
+                          )}
+                        </button>
+                      ) : (
+                        <p className="text-xs text-ink-500">CV tidak tersedia</p>
+                      )}
                     </div>
 
                     {itemError && (
