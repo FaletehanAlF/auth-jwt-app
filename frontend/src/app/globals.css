@@ -59,6 +59,15 @@ body {
   overscroll-behavior: none;
 }
 
+/* Selalu sisakan ruang scrollbar di sisi kanan viewport.
+   Tanpa ini, transisi halaman pendek -> panjang (mis. setelah klik
+   menu sidebar lalu skeleton selesai dimuat) memunculkan scrollbar
+   yang menggeser konten yang terpusat beberapa piksel ke kiri:
+   itulah "layar geter" saat pindah halaman. */
+html {
+  scrollbar-gutter: stable;
+}
+
 @keyframes jobtrack-page-in {
   from {
     opacity: 0;
@@ -212,6 +221,8 @@ body {
   .split-text,
   .reveal,
   .app-shell-shift,
+  .app-sidebar-shift,
+  .sidebar-tip,
   .app-drawer-panel,
   .app-drawer-backdrop,
   .app-menu-pop,
@@ -395,4 +406,25 @@ body {
 
 .animate-dash-rise {
   animation: dash-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---- Tooltip label sidebar yang sedang dicutkan ----
+   Muncul halus tanpa "delay title" bawaan browser (yang muncul
+   mendadak, tidak bisa di-style, dan sering nabrak sama state
+   hover item). Offset horizontal lewat `transform`, vertikal lewat
+   properti `translate` Tailwind (-translate-y-1/2) supaya keduanya
+   tetap komposisi dan tidak saling menimpa. */
+@keyframes sidebar-tip-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-6px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.sidebar-tip {
+  animation: sidebar-tip-in 0.14s ease-out both;
 }

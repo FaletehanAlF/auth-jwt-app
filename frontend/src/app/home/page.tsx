@@ -323,7 +323,7 @@ function JobseekerDashboard({ email }: { email: string | null }) {
           actions={
             <Link
               href="/lowongan"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-600 to-accent-600 px-6 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
             >
               Cari Lowongan
               <span aria-hidden="true">→</span>
@@ -345,7 +345,7 @@ function JobseekerDashboard({ email }: { email: string | null }) {
           actions={
             <Link
               href="/lowongan"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-600 to-accent-600 px-6 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
             >
               Cari Lowongan
               <span aria-hidden="true">→</span>
@@ -378,7 +378,7 @@ function JobseekerDashboard({ email }: { email: string | null }) {
           <>
             <Link
               href="/lowongan"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-600 to-accent-600 px-6 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
             >
               Cari Lowongan
               <span aria-hidden="true">→</span>
@@ -613,7 +613,7 @@ function RecruiterDashboard({ email }: { email: string | null }) {
   const createCta = (
     <Link
       href="/jobs/create"
-      className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-600 to-accent-600 px-6 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+      className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
     >
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-4 w-4">
         <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -795,7 +795,7 @@ function RecruiterDashboard({ email }: { email: string | null }) {
             >
               <span
                 aria-hidden="true"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 to-accent-600 text-white"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white"
               >
                 <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
                   <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -864,7 +864,7 @@ function WelcomeBanner({
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gradient-to-br from-brand-600/15 to-accent-600/15 blur-2xl"
+        className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-brand-100/70 blur-2xl"
       />
       <div className="relative">
         <p className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-600/15">

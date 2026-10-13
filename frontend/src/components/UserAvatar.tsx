@@ -15,7 +15,7 @@ export default function UserAvatar({ email, size = "sm" }: UserAvatarProps) {
     <span
       aria-hidden="true"
       title={email ?? "Pengguna"}
-      className={`flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-600 to-accent-600 font-semibold text-white ring-1 ring-black/5 ${dims}`}
+      className={`flex shrink-0 items-center justify-center rounded-full bg-brand-600 font-semibold text-white ring-1 ring-black/5 ${dims}`}
     >
       {initial}
     </span>

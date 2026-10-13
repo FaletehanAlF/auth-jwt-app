@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { UserRole } from "../lib/auth";
 import { getEmailFromToken, getRoleFromToken } from "../lib/auth";
+import { readSidebarCollapsed, writeSidebarCollapsed } from "../lib/sidebar";
 import AppSidebar from "./AppSidebar";
 import AppTopbar from "./AppTopbar";
 
@@ -17,19 +18,29 @@ const MENU_BUTTON_ID = "app-menu-button";
 
 /**
  * Shell dashboard (fondasi visual, belum dipakai halaman mana pun).
- * - Desktop (lg+): sidebar statis, bisa diciutkan (state in-memory).
+ * - Desktop (lg+): sidebar statis, bisa diciutkan. State disimpan di
+ *   localStorage (lihat lib/sidebar) sehingga pilihan pengguna
+ *   bertahan saat pindah halaman maupun reload.
  * - Mobile: drawer overlay + backdrop, Escape/backdrop/X menutup.
  * - Role & email dibaca sekali dari token lokal (lazy initializer,
  *   tanpa effect) — otorisasi tetap di backend.
+ *
+ * AppShell dirender hanya setelah RequireAuth meluluskan sesi (selalu
+ * di sisi klien), jadi lazy initializer yang menyentuh localStorage
+ * tidak memicu hydration mismatch.
  */
 export default function AppShell({ title, subtitle, children }: AppShellProps) {
   const [role] = useState<UserRole | null>(() => getRoleFromToken());
   const [email] = useState<string | null>(() => getEmailFromToken());
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(readSidebarCollapsed);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerCloseRef = useRef<HTMLButtonElement>(null);
 
   const closeDrawer = () => setDrawerOpen(false);
+
+  useEffect(() => {
+    writeSidebarCollapsed(collapsed);
+  }, [collapsed]);
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -53,7 +64,7 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
     <div className="min-h-dvh bg-mist font-sans text-ink-900 antialiased">
       <aside
         aria-label="Sidebar navigasi"
-        className={`app-shell-shift fixed inset-y-0 left-0 z-40 hidden border-r border-slate-200/70 transition-[width] duration-200 ease-out lg:block ${
+        className={`app-shell-shift fixed inset-y-0 left-0 z-40 hidden border-r border-slate-200/70 transition-[width] duration-300 ease-out lg:block ${
           collapsed ? "w-[76px]" : "w-64"
         }`}
       >
@@ -96,7 +107,7 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
       )}
 
       <div
-        className={`app-shell-shift transition-[padding-left] duration-200 ease-out ${
+        className={`app-shell-shift transition-[padding-left] duration-300 ease-out ${
           collapsed ? "lg:pl-[76px]" : "lg:pl-64"
         }`}
       >
@@ -110,7 +121,12 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
           menuButtonId={MENU_BUTTON_ID}
           onMenuClick={() => setDrawerOpen(true)}
         />
-        <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">
+        {/* min-y menjaga tinggi area konten tetap stabil saat pindah
+            halaman: tanpa ini, halaman lama -> skeleton -> halaman baru
+            membuat tinggi dokumen ikut turun-naik dan layout "melompat".
+            Pasangkan dengan `scrollbar-gutter: stable` di globals.css
+            yang menahan pergeseran horizontalnya. */}
+        <main className="mx-auto min-h-[calc(100dvh-4rem)] w-full max-w-6xl px-4 py-6 sm:px-6">
           {children}
         </main>
       </div>

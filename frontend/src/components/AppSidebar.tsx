@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { NavIconKind, NavItem } from "../lib/nav";
 import type { UserRole } from "../lib/auth";
 import { getNavItems } from "../lib/nav";
+import SidebarTooltip from "./SidebarTooltip";
 
 function NavIcon({ kind }: { kind: NavIconKind }) {
   const cls = "h-5 w-5 shrink-0";
@@ -59,6 +61,40 @@ type AppSidebarProps = {
   onNavigate?: () => void;
 };
 
+/**
+ * Kelas untuk tiap label yang ikut menyusut saat sidebar dicutkan.
+ *
+ * `max-width` (bukan conditional render) supaya teks melebar/mempipit
+ * ikut dianimasikan — kalau labelnya di `{collapsed && ...}`, teksnya
+ * "melompat" hilang dadakan di tengah animasi.
+ *
+ * Dua kecepatan, dan itu disengaja:
+ * - menutup: label menyusut lebih cepat (150ms, ease-in) dari rel
+ *   (300ms, ease-out) -> label sudah lenyap sebelum rel sempit, jadi
+ *   teksnya tidak pernah mengintip keluar dari kotaknya di tengah
+ *   animasi;
+ * - membuka: label melebar seiring rel (300ms, ease-out) supaya teks
+ *   muncul pas Growing, bukan "nempel" dulu lalu melebar.
+ *
+ * `max-w` 8rem dipilih karena sisa ruang di dalam rel 256px perlu
+ * menyisakan ruang untuk `px` + ikon + `ml` yang ikut bergeser.
+ *
+ * `ml-3` menggantikan `gap-3` pada flex induknya: gap tetap ada
+ * walau elemennya 0px, jadi ikon tidak pernah benar-benar di tengah.
+ */
+function labelClasses(collapsed: boolean, extra = "") {
+  return [
+    "app-sidebar-shift truncate",
+    "transition-[max-width,opacity,margin-left]",
+    collapsed
+      ? "ml-0 max-w-0 opacity-0 duration-150 ease-in"
+      : "ml-3 max-w-[8rem] opacity-100 duration-300 ease-out",
+    extra,
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
 function NavList({
   items,
   pathname,
@@ -70,41 +106,83 @@ function NavList({
   collapsed: boolean;
   onNavigate?: () => void;
 }) {
+  const [tip, setTip] = useState<{ label: string; rect: DOMRect } | null>(null);
+  const tipTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const hideTip = useCallback(() => {
+    if (tipTimer.current !== null) {
+      clearTimeout(tipTimer.current);
+      tipTimer.current = null;
+    }
+    setTip(null);
+  }, []);
+
+  // Berhenti saat komponen dilepas (mis. pindah halaman).
+  useEffect(() => hideTip, [hideTip]);
+
+  // Tooltip diposisikan di koordinat viewport, jadi harus ikut tutup
+  // kalau halaman digulir atau jendela di-resize — kalau tidak, ia
+  // tetap "nempel" di layar padahal itemnya sudah bergeser.
+  useEffect(() => {
+    if (!tip) return;
+    window.addEventListener("scroll", hideTip, true);
+    window.addEventListener("resize", hideTip);
+    return () => {
+      window.removeEventListener("scroll", hideTip, true);
+      window.removeEventListener("resize", hideTip);
+    };
+  }, [tip, hideTip]);
+
+  const showTip = (node: HTMLElement, label: string) => {
+    if (!collapsed) return;
+    if (tipTimer.current !== null) clearTimeout(tipTimer.current);
+    // Jeda singkat: traverse cepat tidak perlu memunculkan tooltip.
+    tipTimer.current = setTimeout(() => {
+      setTip({ label, rect: node.getBoundingClientRect() });
+    }, 120);
+  };
+
   return (
-    <ul className="space-y-1" role="list">
-      {items.map((item) => {
-        // Exact match untuk halaman utama; prefix match agar halaman nested
-        // recruiter (/recruiter/jobs/[id]/edit, .../applicants) tetap
-        // menyorot induk "Lowongan Saya". Tidak ada false-positive:
-        // tidak ada href "/" dan tidak ada sibling prefix yang tumpang tindih.
-        const active =
-          pathname === item.href ||
-          (pathname !== null &&
-            item.href !== "/" &&
-            pathname.startsWith(`${item.href}/`));
-        return (
-          <li key={`${item.href}-${item.label}`}>
-            <Link
-              href={item.href}
-              onClick={onNavigate}
-              aria-current={active ? "page" : undefined}
-              title={collapsed ? item.label : undefined}
-              aria-label={collapsed ? item.label : undefined}
-              className={`flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
-                collapsed ? "justify-center px-0" : ""
-              } ${
-                active
-                  ? "bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-600/15"
-                  : "text-ink-500 hover:bg-slate-100 hover:text-ink-900"
-              }`}
-            >
-              <NavIcon kind={item.icon} />
-              {!collapsed && <span className="truncate">{item.label}</span>}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <ul className="space-y-1" role="list">
+        {items.map((item) => {
+          // Exact match untuk halaman utama; prefix match agar halaman nested
+          // recruiter (/recruiter/jobs/[id]/edit, .../applicants) tetap
+          // menyorot induk "Lowongan Saya". Tidak ada false-positive:
+          // tidak ada href "/" dan tidak ada sibling prefix yang tumpang tindih.
+          const active =
+            pathname === item.href ||
+            (pathname !== null &&
+              item.href !== "/" &&
+              pathname.startsWith(`${item.href}/`));
+          return (
+            <li key={`${item.href}-${item.label}`}>
+              <Link
+                href={item.href}
+                onClick={onNavigate}
+                onPointerEnter={(event) => showTip(event.currentTarget, item.label)}
+                onPointerLeave={hideTip}
+                onFocus={(event) => showTip(event.currentTarget, item.label)}
+                onBlur={hideTip}
+                aria-current={active ? "page" : undefined}
+                aria-label={collapsed ? item.label : undefined}
+                className={`app-sidebar-shift flex h-11 items-center rounded-xl text-sm font-medium transition-[padding,background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+                  collapsed ? "px-4" : "px-3"
+                } ${
+                  active
+                    ? "bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-600/15 [@media(hover:hover)]:hover:bg-brand-100"
+                    : "text-ink-500 [@media(hover:hover)]:hover:bg-slate-100 [@media(hover:hover)]:hover:text-ink-900"
+                }`}
+              >
+                <NavIcon kind={item.icon} />
+                <span className={labelClasses(collapsed)}>{item.label}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+      <SidebarTooltip label={tip?.label ?? ""} rect={tip?.rect ?? null} />
+    </>
   );
 }
 
@@ -120,10 +198,15 @@ export default function AppSidebar({
 
   return (
     <div className="flex h-full flex-col bg-white">
-      <div className={`flex h-16 items-center gap-2.5 border-b border-slate-100 px-4 ${collapsed ? "justify-center px-0" : ""}`}>
+      {/* px-5 = (76 - 36) / 2 -> logo tetap tepat di tengah rel 76px */}
+      <div
+        className={`app-sidebar-shift flex h-16 shrink-0 items-center border-b border-slate-100 transition-[padding] duration-300 ease-out ${
+          collapsed ? "px-5" : "px-4"
+        }`}
+      >
         <span
           aria-hidden="true"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 to-accent-600 text-white shadow-sm"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm"
         >
           <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
             <rect x="3" y="7.5" width="18" height="12.5" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
@@ -131,35 +214,38 @@ export default function AppSidebar({
             <path d="M3 12.5h18" stroke="currentColor" strokeWidth="1.8" />
           </svg>
         </span>
-        {!collapsed && (
-          <span className="truncate font-display text-base font-semibold tracking-tight text-ink-900">
-            JobTrack
-          </span>
-        )}
+        <span className={labelClasses(collapsed, "font-display text-base font-semibold tracking-tight text-ink-900")}>
+          JobTrack
+        </span>
       </div>
 
+      {/* Padding rel di sini tetap 12px; padding per-item dianimasikan
+          supaya ikon tetap pas di tengah: 12 (nav) + 16 (item) + 20
+          (ikon) + 16 + 12 = 76px. */}
       <nav aria-label="Navigasi utama" className="flex-1 overflow-y-auto px-3 py-4">
         <NavList items={items} pathname={pathname} collapsed={collapsed} onNavigate={onNavigate} />
       </nav>
 
       {showCollapseToggle && onToggleCollapse && (
-        <div className="border-t border-slate-100 p-3">
+        <div className="shrink-0 border-t border-slate-100 p-3">
           <button
             type="button"
             onClick={onToggleCollapse}
             aria-label={collapsed ? "Bentangkan sidebar" : "Ciutkan sidebar"}
             aria-expanded={!collapsed}
-            className={`flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-ink-500 transition-colors duration-150 hover:bg-slate-100 hover:text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${collapsed ? "justify-center px-0" : ""}`}
+            className={`app-sidebar-shift flex h-10 w-full items-center rounded-xl text-sm font-medium text-ink-500 transition-[padding,background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white [@media(hover:hover)]:hover:bg-slate-100 [@media(hover:hover)]:hover:text-ink-900 ${
+              collapsed ? "px-4" : "px-3"
+            }`}
           >
             <svg
               viewBox="0 0 24 24"
               fill="none"
               aria-hidden="true"
-              className={`h-5 w-5 shrink-0 transition-transform duration-200 ${collapsed ? "rotate-180" : ""}`}
+              className={`app-sidebar-shift h-5 w-5 shrink-0 transition-transform duration-300 ease-out ${collapsed ? "rotate-180" : ""}`}
             >
               <path d="m14 7-5 5 5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            {!collapsed && <span>Ciutkan</span>}
+            <span className={labelClasses(collapsed)}>Ciutkan</span>
           </button>
         </div>
       )}
