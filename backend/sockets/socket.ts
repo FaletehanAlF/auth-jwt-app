@@ -49,8 +49,6 @@ export function initSocket(httpServer: HttpServer, allowedOrigins: string[]): Se
   io.on("connection", (socket) => {
     const user = socket.data.user as SocketUser;
 
-    // Room pribadi per pengguna. Controller/pemancar event nanti hanya
-    // mengirim ke room ini, sehingga event tidak terkirim ke semua pengguna.
     socket.join(`user:${user.id}`);
 
     console.log(
@@ -75,10 +73,6 @@ export function getIO(): Server {
   return ioInstance;
 }
 
-/**
- * Kirim event ke pengguna tertentu berdasarkan id dari JWT yang sudah
- * diverifikasi. Jangan mengirim token, password, path CV, atau data sensitif.
- */
 export function emitToUser(userId: number, event: string, payload: unknown): void {
   if (!ioInstance) return;
   ioInstance.to(`user:${userId}`).emit(event, payload);

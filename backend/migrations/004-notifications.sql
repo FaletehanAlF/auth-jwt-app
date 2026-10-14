@@ -1,19 +1,3 @@
--- ============================================================================
--- JobTrack FASE 4 — Migrasi tabel notifikasi
--- File   : backend/migrations/004-notifications.sql
--- Cara menjalankan (MANUAL, setelah ditinjau; jangan otomatis):
---   mysql -h <DB_HOST> -u <DB_USER> -p <DB_NAME> < backend/migrations/004-notifications.sql
--- atau dengan environment variables yang sudah dimuat tanpa menampilkan rahasia:
---   mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < backend/migrations/004-notifications.sql
---
--- Migration ini READ-ONLY audit sebelumnya menunjukkan:
---   users.id   -> int AUTO_INCREMENT
---   jobs.id    -> int AUTO_INCREMENT
---   applications.id -> int AUTO_INCREMENT
--- ============================================================================
-
--- LANGKAH 0 (READ-ONLY, OPSIONAL):
--- SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'notifications';
 
 CREATE TABLE IF NOT EXISTS notifications (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -35,7 +19,3 @@ CREATE TABLE IF NOT EXISTS notifications (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_0900_ai_ci;
-
--- Verifikasi hanya (read-only, opsional):
--- DESCRIBE notifications;
--- SHOW CREATE TABLE notifications;
