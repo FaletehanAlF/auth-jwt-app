@@ -8,8 +8,8 @@ import {
   type ReactNode,
 } from "react";
 import { FaCheck, FaExclamationTriangle, FaSpinner, FaTimes } from "react-icons/fa";
-import { apiFetch } from "../lib/api";
-import type { Job } from "../lib/types";
+import { apiFetch } from "../../lib/api";
+import type { Job } from "../../lib/types";
 
 type JobFormModalProps = {
   open: boolean;

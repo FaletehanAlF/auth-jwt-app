@@ -13,13 +13,6 @@ export type NavItem = {
   icon: NavIconKind;
 };
 
-/**
- * Menu sidebar per role. Href mengikuti route yang sudah ada.
- * Recruiter tidak punya halaman agregat "Pelamar" (pelamar diakses
- * per-lowongan via /recruiter/jobs/[id]/applicants), jadi menu Pelamar
- * sengaja tidak ditampilkan (Fase B2) daripada mengarah duplikat ke
- * /recruiter/jobs. Jangan tambah route agregat baru di fase ini.
- */
 export function getNavItems(role: UserRole | null): NavItem[] {
   if (role === "recruiter") {
     return [

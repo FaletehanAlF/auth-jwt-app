@@ -9,18 +9,10 @@ type SplitTextProps = {
   className?: string;
   delayStart?: number;
   charDelay?: number;
-  /** Arah muncul per-huruf: left = dari kiri, right = dari kanan, up = dari bawah. */
   direction?: SplitDirection;
   duration?: number;
 };
 
-/**
- * SplitText ringan & smooth (pengganti split-text berat).
- * - Per-huruf muncul dari kiri / kanan / bawah saat masuk viewport.
- * - Berbasis IntersectionObserver sekali tampil (once), cleanup observer.
- * - Hanya pakai transform + opacity (GPU), will-change per-huruf.
- * - Aman SSR: render awal hidden, visible setelah observer di client.
- */
 export default function SplitText({
   text,
   className,

@@ -11,8 +11,8 @@ import {
   FaPlus,
   FaUsers,
 } from "react-icons/fa";
-import AppShell from "../../../../../components/AppShell";
-import RequireAuth from "../../../../../components/RequireAuth";
+import AppShell from "../../../../../components/layout/AppShell";
+import RequireAuth from "../../../../../components/auth/RequireAuth";
 import { apiFetch, apiFetchBlob } from "../../../../../lib/api";
 import { APPLICATION_STATUSES, getStatusInfo } from "../../../../../lib/applicationStatus";
 import type { Applicant } from "../../../../../lib/types";

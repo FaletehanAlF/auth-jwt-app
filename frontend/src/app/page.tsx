@@ -1,17 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import LandingNavbar from "../components/LandingNavbar";
-import LandingHero from "../components/LandingHero";
-import JobTrackLoader from "../components/JobTrackLoader";
-import LogoLoop from "../components/LogoLoop";
-import Reveal from "../components/Reveal";
-import SplitText from "../components/SplitText";
+import LandingNavbar from "../components/landing/LandingNavbar";
+import LandingHero from "../components/landing/LandingHero";
+import JobTrackLoader from "../components/landing/JobTrackLoader";
+import LogoLoop from "../components/ui/LogoLoop";
+import Reveal from "../components/ui/Reveal";
+import SplitText from "../components/ui/SplitText";
 import { TRUSTED_LOGOS } from "../data/trustedLogos";
-import LandingAbout from "../components/LandingAbout";
-import LandingHowItWorks from "../components/LandingHowItWorks";
-import LandingTestimonials from "../components/LandingTestimonials";
-import Footer from "../components/Footer";
+import LandingAbout from "../components/landing/LandingAbout";
+import LandingHowItWorks from "../components/landing/LandingHowItWorks";
+import LandingTestimonials from "../components/landing/LandingTestimonials";
+import Footer from "../components/landing/Footer";
 
 // Flag in-memory (bukan sessionStorage): refresh/full-reload mengulang
 // animasi loader sama seperti masuk pertama kali; navigasi client-side

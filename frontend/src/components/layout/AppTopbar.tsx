@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import type { UserRole } from "../lib/auth";
+import type { UserRole } from "../../lib/auth";
 import UserAvatar from "./UserAvatar";
+import NotificationBell from "./NotificationBell";
 
 type AppTopbarProps = {
   title: string;
@@ -86,19 +87,8 @@ export default function AppTopbar({
         )}
       </div>
 
-      <button
-        type="button"
-        disabled
-        aria-disabled="true"
-        title="Notifikasi segera hadir"
-        aria-label="Notifikasi, segera hadir"
-        className="flex h-10 w-10 cursor-not-allowed items-center justify-center rounded-xl text-ink-500 opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-      >
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
-          <path d="M6 9.5a6 6 0 0 1 12 0c0 4 1.5 5.5 1.5 5.5h-15C6 13.5 6 13.5 6 9.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-          <path d="M10 18.5a2 2 0 0 0 4 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-        </svg>
-      </button>
+      <NotificationBell />
+
 
       <div ref={menuRootRef} className="relative">
         <button

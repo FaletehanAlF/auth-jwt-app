@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import type { UserRole } from "../lib/auth";
-import { getEmailFromToken, getRoleFromToken } from "../lib/auth";
-import { readSidebarCollapsed, writeSidebarCollapsed } from "../lib/sidebar";
+import type { UserRole } from "../../lib/auth";
+import { getEmailFromToken, getRoleFromToken } from "../../lib/auth";
+import { readSidebarCollapsed, writeSidebarCollapsed } from "../../lib/sidebar";
 import AppSidebar from "./AppSidebar";
 import AppTopbar from "./AppTopbar";
 
@@ -16,19 +16,6 @@ type AppShellProps = {
 const DRAWER_ID = "app-nav-drawer";
 const MENU_BUTTON_ID = "app-menu-button";
 
-/**
- * Shell dashboard (fondasi visual, belum dipakai halaman mana pun).
- * - Desktop (lg+): sidebar statis, bisa diciutkan. State disimpan di
- *   localStorage (lihat lib/sidebar) sehingga pilihan pengguna
- *   bertahan saat pindah halaman maupun reload.
- * - Mobile: drawer overlay + backdrop, Escape/backdrop/X menutup.
- * - Role & email dibaca sekali dari token lokal (lazy initializer,
- *   tanpa effect) — otorisasi tetap di backend.
- *
- * AppShell dirender hanya setelah RequireAuth meluluskan sesi (selalu
- * di sisi klien), jadi lazy initializer yang menyentuh localStorage
- * tidak memicu hydration mismatch.
- */
 export default function AppShell({ title, subtitle, children }: AppShellProps) {
   const [role] = useState<UserRole | null>(() => getRoleFromToken());
   const [email] = useState<string | null>(() => getEmailFromToken());
@@ -60,20 +47,6 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
     };
   }, [drawerOpen]);
 
-  // `shrink-0` pada wrapper di bawah itu wajib, bukan kosmetik. <body>
-  // di layout.tsx adalah `flex flex-col` dengan `height: 100%`, jadi
-  // shell ini flex item yang default-nya `flex-shrink: 1`. Tanpa
-  // shrink-0, kotak shell dipaksa mentok di `min-h-dvh` (tinggi
-  // viewport) sementara isinya jauh lebih tinggi — konten meluber keluar
-  // kotak dan `bg-mist` hanya melukis 1 viewport pertama. Sisanya
-  // memperlihatkan canvas di belakangnya: area gelap besar tepat di
-  // belakang card paling bawah. Dengan shrink-0, shell setinggi
-  // isinya dan background-nya menutup dokumen penuh, termasuk saat
-  // halaman digulir dan saat kontennya pendek.
-  // Tambahan (audit 2026): token --background dan --color-mist kini
-  // sama-sama #F8FAFC supaya body/shell/RequireAuth satu warna —
-  // sebelumnya body putih vs shell mist (#F5F7FF) menyisakan seam dua
-  // warna terang saat konten pendek atau saat overscroll.
   return (
     <div className="min-h-dvh shrink-0 bg-mist font-sans text-ink-900 antialiased">
       <aside
@@ -135,11 +108,6 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
           menuButtonId={MENU_BUTTON_ID}
           onMenuClick={() => setDrawerOpen(true)}
         />
-        {/* min-y menjaga tinggi area konten tetap stabil saat pindah
-            halaman: tanpa ini, halaman lama -> skeleton -> halaman baru
-            membuat tinggi dokumen ikut turun-naik dan layout "melompat".
-            Pasangkan dengan `scrollbar-gutter: stable` di globals.css
-            yang menahan pergeseran horizontalnya. */}
         <main className="mx-auto min-h-[calc(100dvh-4rem)] w-full max-w-6xl px-4 py-6 sm:px-6">
           {children}
         </main>

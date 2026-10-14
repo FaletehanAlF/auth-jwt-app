@@ -2,8 +2,8 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import AppShell from "../../../components/AppShell";
-import RequireAuth from "../../../components/RequireAuth";
+import AppShell from "../../../components/layout/AppShell";
+import RequireAuth from "../../../components/auth/RequireAuth";
 import { apiFetch } from "../../../lib/api";
 import { isRecruiter } from "../../../lib/auth";
 

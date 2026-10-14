@@ -1,5 +1,5 @@
 import { SiNvidia } from "react-icons/si";
-import type { LogoItem } from "../components/LogoLoop";
+import type { LogoItem } from "../components/ui/LogoLoop";
 
 export const TRUSTED_LOGOS: LogoItem[] = [
   { src: "/logos/linkedin.svg", alt: "LinkedIn", href: "https://linkedin.com", title: "LinkedIn" },

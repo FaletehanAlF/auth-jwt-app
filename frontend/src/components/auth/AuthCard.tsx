@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import ShapeGrid from "./ShapeGrid";
+import ShapeGrid from "../ui/ShapeGrid";
 
 interface AuthCardProps {
   title: string;

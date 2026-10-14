@@ -10,8 +10,8 @@ import {
   FaInbox,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import AppShell from "../../components/AppShell";
-import RequireAuth from "../../components/RequireAuth";
+import AppShell from "../../components/layout/AppShell";
+import RequireAuth from "../../components/auth/RequireAuth";
 import { apiFetch } from "../../lib/api";
 import { getStatusInfo } from "../../lib/applicationStatus";
 import type { Application } from "../../lib/types";

@@ -1,10 +1,3 @@
-/**
- * Tipe respons API JobTrack (frontend saja, tanpa validasi runtime).
- * Bentuk disalin persis dari deklarasi lokal masing-masing halaman
- * dan kontrak SELECT backend; hanya dideduplikasi, tidak diubah.
- */
-
-/** GET /jobs, GET /jobs/:id, GET /recruiter/jobs. */
 export type Job = {
   id: number;
   title: string;
@@ -14,7 +7,6 @@ export type Job = {
   created_at?: string;
 };
 
-/** GET /applications/me (join jobs). `status` ada sejak migrasi FASE 1. */
 export type Application = {
   id: number;
   job_id: number;
@@ -26,7 +18,6 @@ export type Application = {
   created_at?: string;
 };
 
-/** GET /jobs/:id/applications (join users). `status` ada sejak migrasi FASE 1. */
 export type Applicant = {
   id: number;
   job_id: number;

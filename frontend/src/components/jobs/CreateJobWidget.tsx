@@ -1,13 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { apiFetch } from "../lib/api";
-import { isRecruiter } from "../lib/auth";
+import { apiFetch } from "../../lib/api";
+import { isRecruiter } from "../../lib/auth";
 
 export default function CreateJobWidget() {
-  // Lazy initializer, bukan effect: widget ini hanya dirender di dalam
-  // RequireAuth, jadi render pertamanya selalu di sisi klien dan
-  // tidak ada risiko hydration mismatch. Menghindari cascading render.
   const [allowed] = useState(() => isRecruiter());
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");

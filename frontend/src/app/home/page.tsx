@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import AppShell from "../../components/AppShell";
-import RequireAuth from "../../components/RequireAuth";
+import AppShell from "../../components/layout/AppShell";
+import RequireAuth from "../../components/auth/RequireAuth";
 import { apiFetch } from "../../lib/api";
 import {
   getEmailFromToken,

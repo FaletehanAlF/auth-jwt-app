@@ -5,7 +5,6 @@ type UserAvatarProps = {
   size?: "sm" | "md";
 };
 
-/** Avatar inisial dari email (tanpa fetch; lihat getEmailFromToken). */
 export default function UserAvatar({ email, size = "sm" }: UserAvatarProps) {
   const initial = (email?.trim().charAt(0) || "?").toUpperCase();
   const dims =

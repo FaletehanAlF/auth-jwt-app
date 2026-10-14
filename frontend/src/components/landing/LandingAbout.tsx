@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Reveal from "./Reveal";
-import SplitText from "./SplitText";
+import Reveal from "../ui/Reveal";
+import SplitText from "../ui/SplitText";
 
 function BriefcaseIcon({ className }: { className?: string }) {
   return (
@@ -71,15 +71,12 @@ export default function LandingAbout() {
       aria-labelledby="about-heading"
       className="relative w-full max-w-full overflow-x-clip bg-white"
     >
-      {/* Subtle ambient wash — decorative only */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -left-24 top-16 h-64 w-64 rounded-full bg-sky-100/70 blur-3xl" />
         <div className="absolute -right-24 bottom-10 h-64 w-64 rounded-full bg-lime-100/60 blur-3xl" />
       </div>
 
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[1.02fr_1fr] lg:gap-20 lg:py-28">
-        {/* Copy — first in DOM for logical reading order, right on desktop.
-            Muncul dari kanan saat di-scroll (AOS-like). */}
         <div className="order-1 w-full max-w-xl justify-self-start lg:order-2">
           <Reveal direction="right" delay={0}>
             <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
@@ -151,8 +148,6 @@ export default function LandingAbout() {
           </Reveal>
         </div>
 
-        {/* Visual composition — muncul dari kiri saat di-scroll.
-            Pure CSS product illustration, decorative. */}
         <Reveal
           direction="left"
           delay={120}
@@ -162,7 +157,6 @@ export default function LandingAbout() {
             aria-hidden="true"
             className="relative rounded-[2rem] border border-neutral-100 bg-gradient-to-b from-neutral-50 to-white p-5 shadow-[0_32px_70px_-40px_rgba(2,60,120,0.35)] sm:p-7"
           >
-            {/* dot texture */}
             <div
               className="pointer-events-none absolute inset-0 rounded-[2rem] opacity-60"
               style={{
@@ -176,7 +170,6 @@ export default function LandingAbout() {
               }}
             />
 
-            {/* Main card — job posting */}
             <div className="relative rounded-2xl border border-neutral-100 bg-white p-5 shadow-[0_20px_50px_-30px_rgba(2,60,120,0.4)]">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -217,7 +210,6 @@ export default function LandingAbout() {
               </div>
             </div>
 
-            {/* Stacked card — applicant profile */}
             <div className="relative z-10 ml-8 -mt-3 rounded-2xl border border-neutral-100 bg-white p-5 shadow-[0_24px_55px_-28px_rgba(2,60,120,0.45)] sm:ml-14">
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-xs font-semibold text-white">
@@ -245,7 +237,6 @@ export default function LandingAbout() {
               </div>
             </div>
 
-            {/* Floating status pill */}
             <div className="absolute right-3 top-3 flex items-center gap-2 rounded-full border border-neutral-100 bg-white py-2 pl-2.5 pr-4 shadow-[0_16px_40px_-20px_rgba(2,60,120,0.4)] sm:right-5 sm:top-5">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-lime-300 text-neutral-900">
                 <svg

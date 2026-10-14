@@ -3,8 +3,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import AppShell from "../../../../../components/AppShell";
-import RequireAuth from "../../../../../components/RequireAuth";
+import AppShell from "../../../../../components/layout/AppShell";
+import RequireAuth from "../../../../../components/auth/RequireAuth";
 import { apiFetch } from "../../../../../lib/api";
 import type { Job } from "../../../../../lib/types";
 

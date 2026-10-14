@@ -2,19 +2,14 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { apiFetch } from "../lib/api";
+import { apiFetch } from "../../lib/api";
 import {
   getTokenPayload,
   isPayloadExpired,
   type UserRole,
-} from "../lib/auth";
+} from "../../lib/auth";
 
 type RequireAuthProps = {
-  /**
-   * Role yang boleh membuka halaman. Kosong/undefined = semua role
-   * yang sudah login. Role SALAH -> dialihkan ke /home (dashboard
-   * yang memang adaptif per role), bukan ke /login agar tidak loop.
-   */
   roles?: UserRole[];
   children: ReactNode;
 };
@@ -27,24 +22,6 @@ type ProfileResponse = {
   user?: { id: number; email: string; role: string };
 };
 
-/**
- * Gerbang proteksi route privat (client-side).
- *
- * Token disimpan di localStorage sehingga middleware/server tidak bisa
- * membacanya — pemeriksaan dilakukan di sini, SEBELUM children (konten
- * privat) dirender:
- *  1. Token harus ada, ter-decode, dan belum kedaluwarsa (cek lokal cepat).
- *  2. Token divalidasi ke backend GET /profile (sumber kebenaran; role
- *     diambil dari respons server, bukan dari decode lokal yang bisa
- *     dipalsukan). Token rusak/kedaluwarsa dihapus lalu ke /login.
- *  3. Role server di luar `roles` -> ke /home.
- *  4. Backend tak terjangkau -> layar error + tombol ulangi (TANPA
- *     redirect, agar tidak loop dan tidak membocorkan konten privat).
- *
- * Semua navigasi pakai router.replace supaya tombol Back tidak
- * mengembalikan pengguna ke halaman privat yang tak berhak diakses.
- * Keamanan data tetap di backend (verifyToken + authorize).
- */
 export default function RequireAuth({ roles, children }: RequireAuthProps) {
   const router = useRouter();
   const [status, setStatus] = useState<Status>("checking");
@@ -63,7 +40,6 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
         try {
           localStorage.removeItem("token");
         } catch {
-          /* abaikan: storage tak tersedia */
         }
         if (!cancelled) router.replace("/login");
         return;
@@ -82,7 +58,6 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
         try {
           localStorage.removeItem("token");
         } catch {
-          /* abaikan: storage tak tersedia */
         }
         router.replace("/login");
         return;

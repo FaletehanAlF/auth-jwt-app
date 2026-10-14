@@ -5,31 +5,10 @@ import { createPortal } from "react-dom";
 
 type SidebarTooltipProps = {
   label: string;
-  /**
-   * Kotak item di viewport saat pointer masuk, diukur satu kali.
-   * Sidebar tidak bergerak selama hover, jadi cukup diukur sekali;
-   * tooltip sendiri yang menutup diri saat halaman di-scroll atau
-   * jendela di-resize (lihat NavList).
-   */
   rect: DOMRect | null;
 };
 
-/**
- * Tooltip nama menu untuk sidebar yang sedang dicutkan.
- *
- * Dipakai lewat portal ke <body> karena <nav> memakai
- * `overflow-y-auto`; apa pun yang keluar dari rel 76px akan terpotong
- * di sana. Ini juga menggantikan `title` bawaan browser, yang
- * muncul mendadak, tidak bisa di-style, dan nabrak sama state hover
- * item — persis keluhan "hover bertabrakan".
- *
- * Murni dekoratif (`aria-hidden`): nama item sudah ada di
- * `aria-label` link, jadi tidak diumumkan dua kali.
- */
 export default function SidebarTooltip({ label, rect }: SidebarTooltipProps) {
-  // Tidak perlu state "mounted": `rect` hanya terisi setelah timer hover
-  // berjalan di sisi klien, jadi saat SSR/`typeof document` check ini
-  // sudah cukup untuk menjaga portal tetap aman.
   if (typeof document === "undefined" || !rect) return null;
 
   const style: CSSProperties = {

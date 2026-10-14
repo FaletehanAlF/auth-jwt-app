@@ -3,8 +3,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import AuthCard, { AuthField } from "../../components/AuthCard";
-import Toast, { ToastData, ToastKind } from "../../components/Toast";
+import AuthCard, { AuthField } from "../../components/auth/AuthCard";
+import Toast, { ToastData, ToastKind } from "../../components/ui/Toast";
 import { API_BASE_URL } from "../../lib/api";
 import { registerSchema } from "../../lib/validation";
 

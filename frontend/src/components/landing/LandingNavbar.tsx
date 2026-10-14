@@ -29,7 +29,6 @@ export default function LandingNavbar() {
   return (
     <header className="absolute inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
       <div className="mx-auto flex h-14 w-full max-w-3xl items-center justify-between gap-4 rounded-full border border-white/25 bg-sky-700/40 px-3 shadow-[0_10px_30px_-16px_rgba(2,60,120,0.5)] backdrop-blur-md">
-        {/* Kiri: Logo */}
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
@@ -41,7 +40,6 @@ export default function LandingNavbar() {
           </span>
         </Link>
 
-        {/* Tengah: Navigasi desktop */}
         <nav aria-label="Navigasi utama" className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((item) => (
             <Link
@@ -58,7 +56,6 @@ export default function LandingNavbar() {
           ))}
         </nav>
 
-        {/* Kanan: Auth desktop */}
         <div className="hidden items-center gap-2 md:flex">
           <Link
             href="/login"
@@ -74,7 +71,6 @@ export default function LandingNavbar() {
           </Link>
         </div>
 
-        {/* Mobile: hamburger */}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -104,7 +100,6 @@ export default function LandingNavbar() {
         </button>
       </div>
 
-      {/* Mobile: panel menu */}
       {open && (
         <div className="mx-auto mt-2 w-full max-w-3xl rounded-3xl border border-neutral-200/80 bg-white p-4 shadow-lg md:hidden">
           <nav aria-label="Navigasi mobile" className="w-full space-y-1">

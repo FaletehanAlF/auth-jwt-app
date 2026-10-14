@@ -3,15 +3,9 @@
 import Link from "next/link";
 import LandingHeroMagicTransform from "./LandingHeroMagicTransform";
 import LandingHeroSearch from "./LandingHeroSearch";
-import TechText from "./TechText";
+import TechText from "../ui/TechText";
 
 type LandingHeroProps = {
-  /**
-   * Gerbang entrance hero (dikoordinasikan dengan JobTrackLoader).
-   * - false: elemen teks disembunyikan (opacity-0) selama loader menutupi layar.
-   * - true: entrance kiri/kanan berjalan dengan stagger halus.
-   * Default true agar perilaku mandiri tetap sama seperti sebelumnya.
-   */
   start?: boolean;
 };
 
@@ -19,7 +13,6 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
   return (
     <section className="relative">
       <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-sky-600 via-sky-500 to-sky-300 px-4 pb-16 pt-28 text-center sm:px-10">
-        {/* Dekorasi awan halus */}
         <div aria-hidden="true" className="absolute inset-0">
           <div className="absolute left-[-6rem] top-10 h-40 w-72 rounded-full bg-white/20 blur-3xl" />
           <div className="absolute right-[-5rem] top-1/3 h-44 w-80 rounded-full bg-white/15 blur-3xl" />

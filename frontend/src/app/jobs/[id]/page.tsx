@@ -13,8 +13,8 @@ import {
   FaMapMarkerAlt,
   FaPaperPlane,
 } from "react-icons/fa";
-import AppShell from "../../../components/AppShell";
-import RequireAuth from "../../../components/RequireAuth";
+import AppShell from "../../../components/layout/AppShell";
+import RequireAuth from "../../../components/auth/RequireAuth";
 import { apiFetch, apiFetchWithStatus } from "../../../lib/api";
 import { getStatusInfo } from "../../../lib/applicationStatus";
 import { getRoleFromToken, type UserRole } from "../../../lib/auth";

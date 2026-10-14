@@ -20,13 +20,6 @@ type RevealProps = {
   id?: string;
 };
 
-/**
- * Reveal — pengganti AOS yang ringan & aman SSR.
- * - Muncul dari samping (left/right) atau bawah (up) saat masuk viewport.
- * - Berbasis IntersectionObserver, sekali tampil (once), cleanup observer.
- * - Aman SSR: render awal hidden, visible hanya setelah observer di client.
- * - Hormati prefers-reduced-motion via CSS.
- */
 export default function Reveal({
   children,
   direction = "up",
@@ -43,8 +36,6 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
-    // Fallback: tanpa IntersectionObserver langsung tampil (tanpa error).
-    // Dijadwalkan async agar bukan setState sinkron di body effect.
     if (typeof IntersectionObserver === "undefined") {
       const timer = setTimeout(() => setVisible(true), 0);
       return () => clearTimeout(timer);

@@ -1,7 +1,6 @@
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
-/** Header bersama: token localStorage + Content-Type JSON. */
 function buildHeaders(init?: RequestInit): Record<string, string> {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -34,18 +33,6 @@ export async function apiFetch<T>(
   return response.json() as Promise<T>;
 }
 
-/**
- * Versi `apiFetch` yang juga mengembalikan kode HTTP, untuk aksi yang
- * wajib membedakan status, misalnya POST /jobs/:id/apply yang membalas
- * 409 saat lamaran sudah ada. `apiFetch` sendiri sengaja dibiarkan apa
- * adanya (hanya melempar error jaringan, body JSON selalu dikembalikan)
- * supaya pola `data.success` + `data.message` di seluruh halaman lain
- * tidak berubah.
- *
- * Body non-JSON (proxy/timeout/502) dibungkus jadi objek kosong supaya
- * pemanggil tetap bisa bercabang di `status` alih-alih melempar error
- * baru yang tidak ada di kontrak backend.
- */
 export async function apiFetchWithStatus<T>(
   path: string,
   init?: RequestInit,
@@ -65,11 +52,6 @@ export async function apiFetchWithStatus<T>(
   return { status: response.status, data };
 }
 
-/**
- * Helper untuk respons biner/PDF: tetap memakai base URL dan JWT yang sama
- * dengan `apiFetch`, tetapi tidak memaksa JSON. Mengembalikan status + blob
- * agar pemanggil bisa membedakan error JSON dari file yang berhasil.
- */
 export async function apiFetchBlob(
   path: string,
   init?: RequestInit,
@@ -85,7 +67,6 @@ export async function apiFetchBlob(
       const data = (await response.json()) as { message?: string };
       message = data?.message;
     } catch {
-      // Body bukan JSON; biarkan message kosong.
     }
     return { ok: false, status: response.status, blob: null, message };
   }

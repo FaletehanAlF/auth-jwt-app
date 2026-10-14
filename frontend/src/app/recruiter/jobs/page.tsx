@@ -19,9 +19,9 @@ import {
   FaUserFriends,
   FaUsers,
 } from "react-icons/fa";
-import AppShell from "../../../components/AppShell";
-import JobFormModal from "../../../components/JobFormModal";
-import RequireAuth from "../../../components/RequireAuth";
+import AppShell from "../../../components/layout/AppShell";
+import JobFormModal from "../../../components/jobs/JobFormModal";
+import RequireAuth from "../../../components/auth/RequireAuth";
 import { apiFetch } from "../../../lib/api";
 import type { Applicant, Job } from "../../../lib/types";
 

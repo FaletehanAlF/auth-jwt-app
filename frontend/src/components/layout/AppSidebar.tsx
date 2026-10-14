@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import type { NavIconKind, NavItem } from "../lib/nav";
-import type { UserRole } from "../lib/auth";
-import { getNavItems } from "../lib/nav";
+import type { NavIconKind, NavItem } from "../../lib/nav";
+import type { UserRole } from "../../lib/auth";
+import { getNavItems } from "../../lib/nav";
 import SidebarTooltip from "./SidebarTooltip";
 
 function NavIcon({ kind }: { kind: NavIconKind }) {
@@ -61,27 +61,6 @@ type AppSidebarProps = {
   onNavigate?: () => void;
 };
 
-/**
- * Kelas untuk tiap label yang ikut menyusut saat sidebar dicutkan.
- *
- * `max-width` (bukan conditional render) supaya teks melebar/mempipit
- * ikut dianimasikan — kalau labelnya di `{collapsed && ...}`, teksnya
- * "melompat" hilang dadakan di tengah animasi.
- *
- * Dua kecepatan, dan itu disengaja:
- * - menutup: label menyusut lebih cepat (150ms, ease-in) dari rel
- *   (300ms, ease-out) -> label sudah lenyap sebelum rel sempit, jadi
- *   teksnya tidak pernah mengintip keluar dari kotaknya di tengah
- *   animasi;
- * - membuka: label melebar seiring rel (300ms, ease-out) supaya teks
- *   muncul pas Growing, bukan "nempel" dulu lalu melebar.
- *
- * `max-w` 8rem dipilih karena sisa ruang di dalam rel 256px perlu
- * menyisakan ruang untuk `px` + ikon + `ml` yang ikut bergeser.
- *
- * `ml-3` menggantikan `gap-3` pada flex induknya: gap tetap ada
- * walau elemennya 0px, jadi ikon tidak pernah benar-benar di tengah.
- */
 function labelClasses(collapsed: boolean, extra = "") {
   return [
     "app-sidebar-shift truncate",
@@ -117,12 +96,8 @@ function NavList({
     setTip(null);
   }, []);
 
-  // Berhenti saat komponen dilepas (mis. pindah halaman).
   useEffect(() => hideTip, [hideTip]);
 
-  // Tooltip diposisikan di koordinat viewport, jadi harus ikut tutup
-  // kalau halaman digulir atau jendela di-resize — kalau tidak, ia
-  // tetap "nempel" di layar padahal itemnya sudah bergeser.
   useEffect(() => {
     if (!tip) return;
     window.addEventListener("scroll", hideTip, true);
@@ -136,7 +111,6 @@ function NavList({
   const showTip = (node: HTMLElement, label: string) => {
     if (!collapsed) return;
     if (tipTimer.current !== null) clearTimeout(tipTimer.current);
-    // Jeda singkat: traverse cepat tidak perlu memunculkan tooltip.
     tipTimer.current = setTimeout(() => {
       setTip({ label, rect: node.getBoundingClientRect() });
     }, 120);
@@ -146,10 +120,6 @@ function NavList({
     <>
       <ul className="space-y-1" role="list">
         {items.map((item) => {
-          // Exact match untuk halaman utama; prefix match agar halaman nested
-          // recruiter (/recruiter/jobs/[id]/edit, .../applicants) tetap
-          // menyorot induk "Lowongan Saya". Tidak ada false-positive:
-          // tidak ada href "/" dan tidak ada sibling prefix yang tumpang tindih.
           const active =
             pathname === item.href ||
             (pathname !== null &&
@@ -198,7 +168,6 @@ export default function AppSidebar({
 
   return (
     <div className="flex h-full flex-col bg-white">
-      {/* px-5 = (76 - 36) / 2 -> logo tetap tepat di tengah rel 76px */}
       <div
         className={`app-sidebar-shift flex h-16 shrink-0 items-center border-b border-slate-100 transition-[padding] duration-300 ease-out ${
           collapsed ? "px-5" : "px-4"
@@ -219,9 +188,6 @@ export default function AppSidebar({
         </span>
       </div>
 
-      {/* Padding rel di sini tetap 12px; padding per-item dianimasikan
-          supaya ikon tetap pas di tengah: 12 (nav) + 16 (item) + 20
-          (ikon) + 16 + 12 = 76px. */}
       <nav aria-label="Navigasi utama" className="flex-1 overflow-y-auto px-3 py-4">
         <NavList items={items} pathname={pathname} collapsed={collapsed} onNavigate={onNavigate} />
       </nav>

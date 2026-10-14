@@ -26,12 +26,10 @@ type ScrollStackProps = {
   className?: string;
   itemDistance?: number;
   itemScale?: number;
-  /** Jarak lipatan antar kartu bertumpuk (px). Kecil = rilis nyaris serentak. */
   itemStackDistance?: number;
   stackPosition?: string;
   scaleEndPosition?: string;
   baseScale?: number;
-  /** Kompatibilitas API React Bits — tidak dipakai (skala stepped). */
   scaleDuration?: number;
   rotationAmount?: number;
   blurAmount?: number;
@@ -69,14 +67,9 @@ const ScrollStack = ({
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const stackCompletedRef = useRef(false);
   const cardsRef = useRef<HTMLElement[]>([]);
-  // Posisi layout asli (tepi atas). Aman dibaca langsung setiap saat:
-  // tidak ada translate yang menggeser rect, dan scale ber-origin
-  // top-center sehingga tepi atas tidak bergerak.
   const cardTopsRef = useRef<number[]>([]);
   const endTopRef = useRef(0);
   const topIndexRef = useRef(-1);
-  // Pinning hanya di layar ≥640px (kartu muat di bawah header sticky).
-  // Di layar kecil: kartu statis berurutan + glow aktif saja.
   const pinEnabledRef = useRef(true);
 
   const parsePercentage = useCallback(
@@ -129,8 +122,6 @@ const ScrollStack = ({
     }
   }, [useWindowScroll]);
 
-  // Kartu menempel pada posisi viewport yang sama (stay), berlipat tipis.
-  // Ditulis seperlunya (mount/resize), BUKAN per-frame.
   const applyCardTops = useCallback(() => {
     if (!pinEnabledRef.current) {
       cardsRef.current.forEach((card) => {
@@ -152,9 +143,6 @@ const ScrollStack = ({
     });
   }, [getScrollData, parsePercentage, stackPosition, itemStackDistance]);
 
-  // State machine stepped: hanya menulis DOM saat indeks kartu teratas
-  // BERUBAH. Teks kartu yang sudah nempel TIDAK PERNAH bergerak (skala
-  // selalu 1); hanya kartu yang tiba tumbuh 0.94 → 1 saat meluncur masuk.
   const updateStackState = useCallback(() => {
     const cards = cardsRef.current;
     if (!cards.length) return;
@@ -182,7 +170,6 @@ const ScrollStack = ({
       cards.forEach((card, i) => {
         if (!card) return;
         if (pin) {
-          // Depan penuh; yang tiba tumbuh masuk; yang di belakang diam di 1.
           const scale = i <= top ? 1 : 0.94;
           const prev = card.style.getPropertyValue('--ss');
           const next = i <= top ? '' : String(scale);
@@ -240,7 +227,6 @@ const ScrollStack = ({
         : true;
     applyCardTops();
     measureOffsets();
-    // Paksa evaluasi ulang state setelah layout berubah.
     topIndexRef.current = -1;
     updateStackState();
   }, [applyCardTops, measureOffsets, updateStackState]);
@@ -258,12 +244,9 @@ const ScrollStack = ({
     cards.forEach((card, i) => {
       card.style.transformOrigin = 'top center';
       card.style.backfaceVisibility = 'hidden';
-      // Tumpukan eksplisit: kartu awal di belakang, kartu akhir di depan.
       card.style.zIndex = String(i + 1);
     });
 
-    // Fallback ramah reduced-motion: kartu tampil statis bertumpuk
-    // normal tanpa efek dan tanpa listener scroll.
     if (prefersReducedMotion()) {
       cards.forEach((card) => {
         card.style.position = 'relative';
@@ -279,12 +262,10 @@ const ScrollStack = ({
       };
     }
 
-    // Terapkan top + state awal sebelum paint pertama.
     refresh();
 
     const handleLoad = () => refresh();
 
-    // Scroll handler ringan: hanya aritmetika + tulis saat state berubah.
     const handleScroll = () => updateStackState();
 
     if (useWindowScroll) {
@@ -295,7 +276,6 @@ const ScrollStack = ({
       window.addEventListener('resize', handleLoad);
     }
     window.addEventListener('load', handleLoad);
-    // Guard rantai penuh: tidak pernah throw walau API fonts tak lengkap.
     const fontsReady = (
       document as Document & { fonts?: { ready?: Promise<unknown> } }
     ).fonts?.ready;
@@ -307,7 +287,6 @@ const ScrollStack = ({
       resizeObserver.observe(root);
     }
 
-    // Jaminan cache segar tepat sebelum section terlihat.
     let intersectionObserver: IntersectionObserver | null = null;
     if (typeof IntersectionObserver !== 'undefined') {
       intersectionObserver = new IntersectionObserver(
@@ -357,7 +336,6 @@ const ScrollStack = ({
     >
       <div className="scroll-stack-inner">
         {children}
-        {/* Penahan: tumpukan selesai & utuh dulu sebelum lepas ke Footer */}
         <div className="scroll-stack-end" aria-hidden="true" />
       </div>
     </div>

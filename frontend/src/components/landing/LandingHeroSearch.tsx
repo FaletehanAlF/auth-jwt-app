@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import CurvedInput from "./CurvedInput";
+import CurvedInput from "../ui/CurvedInput";
 
 export default function LandingHeroSearch() {
   const router = useRouter();

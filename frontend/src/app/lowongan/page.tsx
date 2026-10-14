@@ -12,8 +12,8 @@ import {
   FaSearch,
   FaTimes,
 } from "react-icons/fa";
-import AppShell from "../../components/AppShell";
-import RequireAuth from "../../components/RequireAuth";
+import AppShell from "../../components/layout/AppShell";
+import RequireAuth from "../../components/auth/RequireAuth";
 import { apiFetch } from "../../lib/api";
 import type { Job } from "../../lib/types";
 

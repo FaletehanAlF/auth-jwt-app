@@ -1,11 +1,3 @@
-/**
- * Metadata status lamaran FASE 2 (frontend saja).
- * Satu sumber label + gaya badge agar tampilan jobseeker (badge baca)
- * dan recruiter (badge + kontrol ubah) tidak pernah berbeda.
- * Nilai mengikuti kontrak backend: pending, reviewed, interview,
- * accepted, rejected (lihat PATCH /api/applications/:id).
- */
-
 export type ApplicationStatusValue = (typeof APPLICATION_STATUSES)[number]["value"];
 
 export const APPLICATION_STATUSES: { value: string; label: string; badge: string }[] = [
@@ -36,11 +28,6 @@ export const APPLICATION_STATUSES: { value: string; label: string; badge: string
   },
 ];
 
-/**
- * Status tak dikenal (mis. backend lama tanpa kolom status, atau nilai
- * baru yang belum didukung frontend) TIDAK boleh tampil sebagai sukses:
- * selalu jatuh ke badge netral "Status tidak diketahui".
- */
 export function getStatusInfo(status?: string | null): { label: string; badge: string } {
   const found = APPLICATION_STATUSES.find((item) => item.value === status);
   if (found) return { label: found.label, badge: found.badge };

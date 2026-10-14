@@ -1,6 +1,6 @@
-import LogoLoop from "./LogoLoop";
-import Reveal from "./Reveal";
-import SplitText from "./SplitText";
+import LogoLoop from "../ui/LogoLoop";
+import Reveal from "../ui/Reveal";
+import SplitText from "../ui/SplitText";
 
 type Testimonial = {
   name: string;
@@ -162,7 +162,6 @@ export default function LandingTestimonials() {
       aria-labelledby="testimonials-heading"
       className="relative w-full max-w-full overflow-x-clip bg-white"
     >
-      {/* Ambient dekoratif */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -left-24 top-10 h-64 w-64 rounded-full bg-sky-100/60 blur-3xl" />
         <div className="absolute -right-24 bottom-10 h-64 w-64 rounded-full bg-lime-100/50 blur-3xl" />
@@ -199,7 +198,6 @@ export default function LandingTestimonials() {
           </p>
         </Reveal>
 
-        {/* Loop 1 — ke kiri, murni animasi jalan terus (tanpa pause/hover) */}
         <Reveal
           direction="left"
           delay={100}
@@ -224,7 +222,6 @@ export default function LandingTestimonials() {
           </div>
         </Reveal>
 
-        {/* Loop 2 — ke kanan, murni animasi jalan terus (tanpa pause/hover) */}
         <Reveal
           direction="right"
           delay={150}

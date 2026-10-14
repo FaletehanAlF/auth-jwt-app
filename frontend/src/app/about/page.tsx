@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import LandingNavbar from "../../components/LandingNavbar";
-import Footer from "../../components/Footer";
-import Reveal from "../../components/Reveal";
-import SplitText from "../../components/SplitText";
+import LandingNavbar from "../../components/landing/LandingNavbar";
+import Footer from "../../components/landing/Footer";
+import Reveal from "../../components/ui/Reveal";
+import SplitText from "../../components/ui/SplitText";
 
 const ABOUT_MAIN_IMAGE_SRC = "";
 const ABOUT_SECOND_IMAGE_SRC = "";
