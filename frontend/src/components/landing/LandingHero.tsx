@@ -13,9 +13,8 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
     <section className="relative">
       <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-sky-600 via-sky-500 to-sky-300 px-4 pb-16 pt-28 text-center sm:px-10">
         <div aria-hidden="true" className="absolute inset-0">
-          <div className="absolute left-[-6rem] top-10 h-40 w-72 rounded-full bg-white/20 blur-3xl" />
-          <div className="absolute right-[-5rem] top-1/3 h-44 w-80 rounded-full bg-white/15 blur-3xl" />
-          <div className="absolute bottom-[-6rem] left-1/3 h-48 w-96 rounded-full bg-white/20 blur-3xl" />
+          <div className="absolute left-[-10rem] top-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute right-[-8rem] bottom-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
         </div>
 
         <div className="relative flex w-full max-w-3xl flex-col items-center">

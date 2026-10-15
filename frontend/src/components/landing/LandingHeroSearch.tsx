@@ -12,10 +12,10 @@ export default function LandingHeroSearch() {
       type="search"
       name="q"
       theme="light"
-      bend={18}
-      height={56}
+      bend={0}
+      height={52}
       width="100%"
-      cornerRadius={20}
+      cornerRadius={14}
       fontSize={14}
       borderWidth={1.5}
       backgroundColor="#ffffff"
