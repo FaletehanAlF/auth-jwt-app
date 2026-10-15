@@ -8,6 +8,7 @@ import {
   loginSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  updateAvatarSchema,
 } from "../validators/validation";
 import {
   generateResetToken,
@@ -243,6 +244,50 @@ export const forgotPassword = async (req: Request, res: Response) => {
     }
 
     return res.json({ success: true, message: GENERIC_FORGOT_MESSAGE });
+  } catch (error) {
+    return serverError(res, error);
+  }
+};
+
+export const updateAvatar = async (req: Request, res: Response) => {
+  try {
+    const result = updateAvatarSchema.safeParse(req.body);
+    if (!result.success) {
+      return invalidInput(
+        res,
+        "URL foto profil tidak valid",
+        result.error.flatten().fieldErrors
+      );
+    }
+    const avatarUrl = result.data.avatarUrl;
+    const userId = req.user!.id;
+
+    await db.execute("UPDATE users SET avatar_url = ? WHERE id = ?", [
+      avatarUrl,
+      userId,
+    ]);
+
+    return res.json({
+      success: true,
+      message: "Foto profil berhasil diperbarui.",
+    });
+  } catch (error) {
+    return serverError(res, error);
+  }
+};
+
+export const deleteAvatar = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user!.id;
+
+    await db.execute("UPDATE users SET avatar_url = NULL WHERE id = ?", [
+      userId,
+    ]);
+
+    return res.json({
+      success: true,
+      message: "Foto profil berhasil dihapus.",
+    });
   } catch (error) {
     return serverError(res, error);
   }

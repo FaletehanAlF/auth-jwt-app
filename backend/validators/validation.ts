@@ -19,3 +19,15 @@ export const resetPasswordSchema = z.object({
   token: z.string().min(32, "Token tidak valid").max(256, "Token tidak valid"),
   password: z.string().min(6, "Password minimal 6 karakter"),
 });
+
+export const updateAvatarSchema = z.object({
+  avatarUrl: z
+    .string()
+    .min(1, "URL foto profil tidak boleh kosong")
+    .max(512, "URL foto profil terlalu panjang")
+    .url("URL foto profil tidak valid")
+    .refine(
+      (url) => url.startsWith("https://res.cloudinary.com/"),
+      "URL harus berasal dari Cloudinary"
+    ),
+});

@@ -1,9 +1,12 @@
 import { Router } from "express";
+import db from "./config/database";
 import {
   register,
   login,
   forgotPassword,
   resetPassword,
+  updateAvatar,
+  deleteAvatar,
 } from "./controllers/authController";
 import { createJob, getJobs, getJobById, updateJob, deleteJob, getMyJobs } from "./controllers/jobController";
 import { applyJob, getMyApplications, getJobApplications, updateApplicationStatus, getApplicationCv } from "./controllers/applicationController";
@@ -47,13 +50,55 @@ router.patch("/applications/:id", verifyToken, authorize("recruiter"), updateApp
 
 router.get("/applications/:id/cv", verifyToken, authorize("recruiter"), getApplicationCv);
 
-router.get("/profile", verifyToken, (req, res) => {
-  res.json({
-    success: true,
-    message: "Berhasil mengakses profile",
-    user: req.user,
-  });
+router.get("/profile", verifyToken, async (req, res) => {
+  try {
+    let user: any;
+    try {
+      const [rows] = await db.execute(
+        "SELECT id, email, role, avatar_url FROM users WHERE id = ?",
+        [req.user!.id]
+      );
+      user = (rows as any[])[0];
+    } catch (profileError: any) {
+      if (profileError?.code === "ER_BAD_FIELD_ERROR") {
+        const [rows] = await db.execute(
+          "SELECT id, email, role FROM users WHERE id = ?",
+          [req.user!.id]
+        );
+        user = (rows as any[])[0];
+      } else {
+        throw profileError;
+      }
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Pengguna tidak ditemukan",
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: "Berhasil mengakses profile",
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        avatar_url: user.avatar_url ?? null,
+      },
+    });
+  } catch (error) {
+    console.error("GET /profile error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan server",
+    });
+  }
 });
+
+router.put("/profile/avatar", verifyToken, updateAvatar);
+router.delete("/profile/avatar", verifyToken, deleteAvatar);
 
 router.get("/notifications", verifyToken, getNotifications);
 

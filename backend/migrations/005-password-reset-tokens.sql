@@ -1,8 +1,3 @@
--- Migration 005: token reset kata sandi (satu kali pakai, kedaluwarsa singkat).
--- Dijalankan manual oleh pemilik database (REVIEW DULU, jangan auto-run).
--- Alasan: endpoint forgot-password menyimpan HASH token (bukan token mentah)
--- beserta waktu kedaluwarsa agar tautan reset hanya berlaku 15 menit
--- dan tidak bisa dipakai ulang. Migration lama tidak diubah.
 
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -20,3 +15,4 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_0900_ai_ci;
+
