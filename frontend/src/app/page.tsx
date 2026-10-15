@@ -72,18 +72,24 @@ export default function LandingPage() {
           </div>
           <Reveal direction="right" delay={100}>
           <div className="mt-8 w-full max-w-full pb-4 pt-6">
-            <div style={{ height: "96px", position: "relative", overflow: "hidden" }}>
+            <div
+              style={{
+                height: "64px",
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                overflow: "hidden",
+              }}
+            >
               <LogoLoop
                 logos={TRUSTED_LOGOS}
                 speed={60}
                 direction="left"
-                logoHeight={64}
-                gap={80}
-                pauseOnHover
+                logoHeight={40}
+                gap={48}
                 fadeOut
                 fadeOutColor="#ffffff"
                 ariaLabel="Perusahaan yang mempercayai kami"
-                className="logoloop--square"
               />
             </div>
           </div>

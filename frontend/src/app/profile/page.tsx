@@ -39,7 +39,7 @@ type CloudinaryResponse = {
 type ProfileResponse = {
   success: boolean;
   message?: string;
-  user?: { id: number; email: string; role: string };
+  user?: { id: number; email: string; role: string; avatar_url?: string | null };
 };
 
 type TabId = "akun" | "keamanan";
@@ -69,18 +69,16 @@ function readableError(message: string | undefined, fallback: string): string {
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabId>("akun");
 
-  /* Foto: pratinjau sesi saja. Backend tidak punya kolom avatar maupun
-     endpoint penyimpanan, jadi URL TIDAK persisten setelah refresh —
-     halaman ini jujur menyatakannya, bukan mengklaim tersimpan. */
+  /* Foto: diambil dari backend (GET /profile) dan disimpan permanen di
+     database MySQL via PUT /profile/avatar. */
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [confirmClear, setConfirmClear] = useState(false);
 
   /* Info akun: sumber kebenaran dari backend GET /profile (id, email,
-     role sesuai isi JWT). Nama tidak ditampilkan karena tidak ada di
-     respons endpoint ini dan tidak ada mekanisme penyimpanan nama. */
-  const [account, setAccount] = useState<{ id: number; email: string; role: string } | null>(null);
+      role, avatar_url sesuai isi JWT). */
+  const [account, setAccount] = useState<{ id: number; email: string; role: string; avatar_url?: string | null } | null>(null);
   const [accountError, setAccountError] = useState<string | null>(null);
   const [accountAttempt, setAccountAttempt] = useState(0);
 
@@ -96,6 +94,7 @@ export default function ProfilePage() {
         if (res.success && res.user) {
           setAccountError(null);
           setAccount(res.user);
+          setProfileImageUrl(res.user.avatar_url ?? "");
         } else {
           setAccountError(readableError(res.message, "Gagal mengambil informasi akun."));
         }
@@ -174,6 +173,11 @@ export default function ProfilePage() {
       }
 
       setProfileImageUrl(result.secure_url);
+
+      await apiFetch("/profile/avatar", {
+        method: "PUT",
+        body: JSON.stringify({ avatarUrl: result.secure_url }),
+      });
     } catch (error) {
       setUploadError(error instanceof Error ? error.message : "Upload gambar gagal.");
     } finally {
@@ -337,8 +341,7 @@ const storedName = typeof window !== "undefined" ? localStorage.getItem("user_na
 
                 {!uploadError && !isUploading && profileImageUrl && (
                   <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5 text-[13px] text-emerald-700">
-                    Upload berhasil. Foto ini hanya pratinjau di halaman ini dan akan hilang setelah
-                    refresh karena belum ada penyimpanan permanen.
+                    Foto profil berhasil disimpan dan akan tetap muncul di semua sesi login.
                   </p>
                 )}
 
@@ -518,8 +521,14 @@ const storedName = typeof window !== "undefined" ? localStorage.getItem("user_na
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setProfileImageUrl("");
+                onClick={async () => {
+                  try {
+                    await apiFetch("/profile/avatar", { method: "DELETE" });
+                    setProfileImageUrl("");
+                    setAccount((prev) => prev ? { ...prev, avatar_url: null } : prev);
+                  } catch {
+                    setUploadError("Gagal menghapus foto profil.");
+                  }
                   setConfirmClear(false);
                 }}
                 className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"

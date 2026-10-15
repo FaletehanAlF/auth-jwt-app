@@ -57,26 +57,50 @@ export default function SplitText({
         ? "translate3d(0.6em, 0, 0)"
         : "translate3d(0, 0.6em, 0)";
 
+  // Setiap karakter tetap dianimasikan sendiri, TAPI tiap kata dibungkus satu
+  // `inline-block` yang utuh. Tanpa pembungkus ini setiap karakter merupakan
+  // inline-block terpisah tanpa spasi di antaranya, sehingga browser bebas
+  // memenggal baris di tengah kata ("Menghubun / gakan"). Dengan grouping kata,
+  // peluang pindah baris hanya ada pada spasi antar kata.
+  // Token dipisah dengan regex yang mempertahankan spasi apa adanya.
+  const tokens = text.split(/(\s+)/).filter((token) => token !== "");
+  let charIndex = -1;
+
   return (
     <span ref={ref} className={`split-text ${className ?? ""}`.trim()} aria-label={text}>
-      {text.split("").map((ch, i) => {
-        const style: CSSProperties = {
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translate3d(0, 0, 0)" : hiddenTransform,
-          transitionProperty: "opacity, transform",
-          transitionDuration: `${duration}ms`,
-          transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
-          transitionDelay: `${delayStart + i * charDelay}ms`,
-          willChange: "opacity, transform",
-        };
+      {tokens.map((token, tokenIndex) => {
+        if (/^\s+$/.test(token)) {
+          // Spasi asli (bukan &nbsp;) supaya baris boleh patah di antara kata.
+          return " ";
+        }
         return (
           <span
-            key={`${ch}-${i}`}
+            key={`word-${tokenIndex}`}
             aria-hidden="true"
-            className="split-char inline-block"
-            style={style}
+            className="split-word inline-block"
           >
-            {ch === " " ? "\u00A0" : ch}
+            {Array.from(token).map((ch) => {
+              charIndex += 1;
+              const style: CSSProperties = {
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translate3d(0, 0, 0)" : hiddenTransform,
+                transitionProperty: "opacity, transform",
+                transitionDuration: `${duration}ms`,
+                transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+                transitionDelay: `${delayStart + charIndex * charDelay}ms`,
+                willChange: "opacity, transform",
+              };
+              return (
+                <span
+                  key={`${ch}-${charIndex}`}
+                  aria-hidden="true"
+                  className="split-char"
+                  style={style}
+                >
+                  {ch}
+                </span>
+              );
+            })}
           </span>
         );
       })}

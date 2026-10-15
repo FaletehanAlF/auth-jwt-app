@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Reveal from "../ui/Reveal";
 import SplitText from "../ui/SplitText";
+import AboutStats from "./AboutStats";
+import { ABOUT_STATS } from "../../data/aboutStats";
 
 function BriefcaseIcon({ className }: { className?: string }) {
   return (
@@ -76,7 +78,7 @@ export default function LandingAbout() {
         <div className="absolute -right-24 bottom-10 h-64 w-64 rounded-full bg-lime-100/60 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[1.02fr_1fr] lg:gap-20 lg:py-28">
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:py-28">
         <div className="order-1 w-full max-w-xl justify-self-start lg:order-2">
           <Reveal direction="right" delay={0}>
             <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
@@ -86,13 +88,24 @@ export default function LandingAbout() {
           </Reveal>
 
           <Reveal direction="right" delay={90}>
+            {/* Ukuran display disesuaikan agar judul patah natural menjadi dua
+                baris utuh (tanpa terpenggal di tengah kata):
+                - mobile  text-3xl (30px) — "Menghubungkan Talenta" (≈343px)
+                  muat di kolom ~358px, sama seperti judul section lain.
+                - sm      text-5xl (48px), kolom satu kolom ±576px.
+                - lg      text-[2.5rem] (40px) — layout jadi dua kolom sehingga
+                  kolom teks menyempit (~490-565px); "Menghubungkan Talenta"
+                  (≈549px @48px) tidak muat, jadi ukuran diturunkan.
+                `break-normal` menjaga word-break/overflow-wrap tetap normal. */}
             <h2
               id="tentang-kami-heading"
-              className="mt-5 font-display text-4xl font-semibold leading-[1.06] tracking-tight text-balance text-neutral-900 sm:text-5xl"
+              className="mt-5 font-display text-3xl font-semibold leading-[1.08] tracking-tight text-balance break-normal text-neutral-900 sm:text-5xl lg:text-[2.5rem]"
             >
               <SplitText text="Menghubungkan Talenta" direction="right" charDelay={14} />
-              <br className="hidden sm:block" />{" "}
-              <SplitText text="dengan " direction="right" charDelay={14} delayStart={200} />
+              <br className="hidden sm:block" />
+              {" "}
+              <SplitText text="dengan" direction="right" charDelay={14} delayStart={200} />
+              {" "}
               <span className="text-blue-600">
                 <SplitText
                   text="Peluang"
@@ -259,6 +272,12 @@ export default function LandingAbout() {
               </span>
             </div>
           </div>
+        </Reveal>
+      </div>
+
+      <div className="relative mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6 sm:pb-24 lg:pb-28">
+        <Reveal direction="up" delay={0}>
+          <AboutStats stats={ABOUT_STATS} />
         </Reveal>
       </div>
     </section>

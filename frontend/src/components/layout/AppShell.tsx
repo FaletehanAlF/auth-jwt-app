@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { UserRole } from "../../lib/auth";
 import { getEmailFromToken, getRoleFromToken } from "../../lib/auth";
 import { readSidebarCollapsed, writeSidebarCollapsed } from "../../lib/sidebar";
+import { apiFetch } from "../../lib/api";
 import AppSidebar from "./AppSidebar";
 import AppTopbar from "./AppTopbar";
 
@@ -19,9 +20,27 @@ const MENU_BUTTON_ID = "app-menu-button";
 export default function AppShell({ title, subtitle, children }: AppShellProps) {
   const [role] = useState<UserRole | null>(() => getRoleFromToken());
   const [email] = useState<string | null>(() => getEmailFromToken());
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState(readSidebarCollapsed);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerCloseRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch<{ success: boolean; user?: { avatar_url?: string | null } }>("/profile");
+        if (!cancelled && res.success && res.user) {
+          setAvatarUrl(res.user.avatar_url ?? null);
+        }
+      } catch {
+        // abaikan — avatar opsional
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const closeDrawer = () => setDrawerOpen(false);
 
@@ -103,6 +122,7 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
           subtitle={subtitle}
           email={email}
           role={role}
+          avatarUrl={avatarUrl}
           menuButtonExpanded={drawerOpen}
           menuButtonControls={DRAWER_ID}
           menuButtonId={MENU_BUTTON_ID}

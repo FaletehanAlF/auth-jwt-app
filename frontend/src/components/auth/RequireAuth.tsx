@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { apiFetch } from "../../lib/api";
+import { apiFetchWithStatus } from "../../lib/api";
 import {
   getTokenPayload,
   isPayloadExpired,
@@ -14,12 +14,12 @@ type RequireAuthProps = {
   children: ReactNode;
 };
 
-type Status = "checking" | "allowed" | "unreachable";
+type Status = "checking" | "allowed" | "unreachable" | "server-error";
 
 type ProfileResponse = {
   success: boolean;
   message?: string;
-  user?: { id: number; email: string; role: string };
+  user?: { id: number; email: string; role: string; avatar_url?: string | null };
 };
 
 export default function RequireAuth({ roles, children }: RequireAuthProps) {
@@ -47,21 +47,34 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
       }
 
       let res: ProfileResponse;
+      let httpStatus: number;
       try {
-        res = await apiFetch<ProfileResponse>("/profile");
+        const result = await apiFetchWithStatus<ProfileResponse>("/profile");
+        res = result.data;
+        httpStatus = result.status;
       } catch {
         if (!cancelled) setStatus("unreachable");
         return;
       }
       if (cancelled) return;
 
-      if (!res.success || !res.user) {
+      if (httpStatus === 401) {
         try {
           localStorage.removeItem("token");
           localStorage.removeItem("user_name");
         } catch {
         }
         router.replace("/login");
+        return;
+      }
+
+      if (httpStatus >= 500) {
+        if (!cancelled) setStatus("server-error");
+        return;
+      }
+
+      if (!res.success || !res.user) {
+        if (!cancelled) setStatus("server-error");
         return;
       }
 
@@ -81,16 +94,19 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
 
   if (status === "allowed") return <>{children}</>;
 
-  if (status === "unreachable") {
+  if (status === "unreachable" || status === "server-error") {
     return (
       <div className="flex min-h-dvh items-center justify-center bg-mist px-4 font-sans">
         <div className="w-full max-w-sm rounded-2xl border border-slate-200/70 bg-white p-8 text-center shadow-sm">
           <p className="font-display text-base font-semibold tracking-tight text-ink-900">
-            Tidak dapat memeriksa sesi
+            {status === "unreachable"
+              ? "Tidak dapat memeriksa sesi"
+              : "Terjadi kesalahan server"}
           </p>
           <p className="mt-1 text-sm leading-relaxed text-ink-500">
-            Server tidak terjangkau. Konten privat disembunyikan sampai
-            pemeriksaan berhasil.
+            {status === "unreachable"
+              ? "Server tidak terjangkau. Konten privat disembunyikan sampai pemeriksaan berhasil."
+              : "Server mengalami kesalahan. Sesi kamu mungkin masih valid — coba lagi beberapa saat."}
           </p>
           <button
             type="button"

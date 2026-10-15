@@ -145,6 +145,15 @@ export default function LoginPage() {
           }
         />
 
+        <div className="flex justify-end">
+          <Link
+            href="/forgot-password"
+            className="rounded text-sm font-medium text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+          >
+            Lupa kata sandi?
+          </Link>
+        </div>
+
         <button
           type="submit"
           className="h-11 w-full rounded-xl bg-neutral-900 text-sm font-medium text-white transition-colors duration-150 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 active:bg-neutral-950"

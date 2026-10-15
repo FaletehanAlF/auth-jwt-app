@@ -11,6 +11,7 @@ type AppTopbarProps = {
   subtitle?: string;
   email: string | null;
   role: UserRole | null;
+  avatarUrl?: string | null;
   menuButtonExpanded: boolean;
   menuButtonControls: string;
   menuButtonId: string;
@@ -27,6 +28,7 @@ export default function AppTopbar({
   subtitle,
   email,
   role,
+  avatarUrl,
   menuButtonExpanded,
   menuButtonControls,
   menuButtonId,
@@ -100,7 +102,7 @@ export default function AppTopbar({
           aria-label={email ? `Menu akun ${email}` : "Menu akun"}
           className="flex items-center gap-2 rounded-full p-1 transition-colors duration-150 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
-          <UserAvatar email={email} />
+          <UserAvatar email={email} avatarUrl={avatarUrl} />
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-4 w-4 shrink-0 text-ink-500">
             <path d="m7 10 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -113,7 +115,7 @@ export default function AppTopbar({
             className="app-menu-pop absolute right-0 top-full z-40 mt-2 w-60 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg shadow-slate-900/5"
           >
             <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3">
-              <UserAvatar email={email} size="md" />
+              <UserAvatar email={email} size="md" avatarUrl={avatarUrl} />
               <div className="min-w-0">
                 <p className="truncate text-sm font-medium text-ink-900">
                   {email ?? "Pengguna"}
