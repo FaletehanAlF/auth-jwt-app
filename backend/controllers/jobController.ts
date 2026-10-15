@@ -28,7 +28,7 @@ export const createJob = async (req: Request, res: Response) => {
     const insertId = (insertResult as any).insertId;
 
     const [rows] = await db.execute(
-      "SELECT id, title, description, location, company, recruiter_id, created_at FROM jobs WHERE id = ?",
+      "SELECT jobs.id, jobs.title, jobs.description, jobs.location, jobs.company, jobs.recruiter_id, jobs.created_at, users.name AS recruiter_name FROM jobs LEFT JOIN users ON users.id = jobs.recruiter_id WHERE jobs.id = ?",
       [insertId]
     );
     const job = (rows as any[])[0];
@@ -50,7 +50,7 @@ export const createJob = async (req: Request, res: Response) => {
 export const getMyJobs = async (req: Request, res: Response) => {
   try {
     const [rows] = await db.execute(
-      "SELECT id, title, description, location, company, recruiter_id, created_at FROM jobs WHERE recruiter_id = ? ORDER BY created_at DESC",
+      "SELECT jobs.id, jobs.title, jobs.description, jobs.location, jobs.company, jobs.recruiter_id, jobs.created_at, users.name AS recruiter_name FROM jobs LEFT JOIN users ON users.id = jobs.recruiter_id WHERE jobs.recruiter_id = ? ORDER BY created_at DESC",
       [req.user!.id]
     );
 
@@ -70,7 +70,7 @@ export const getMyJobs = async (req: Request, res: Response) => {
 export const getJobs = async (req: Request, res: Response) => {
   try {
     const [rows] = await db.execute(
-      "SELECT id, title, description, location, company, recruiter_id, created_at FROM jobs ORDER BY created_at DESC"
+      "SELECT jobs.id, jobs.title, jobs.description, jobs.location, jobs.company, jobs.recruiter_id, jobs.created_at, users.name AS recruiter_name FROM jobs LEFT JOIN users ON users.id = jobs.recruiter_id ORDER BY created_at DESC"
     );
 
     return res.status(200).json({
@@ -91,7 +91,7 @@ export const getJobById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const [rows] = await db.execute(
-      "SELECT id, title, description, location, company, recruiter_id, created_at FROM jobs WHERE id = ?",
+      "SELECT jobs.id, jobs.title, jobs.description, jobs.location, jobs.company, jobs.recruiter_id, jobs.created_at, users.name AS recruiter_name FROM jobs LEFT JOIN users ON users.id = jobs.recruiter_id WHERE jobs.id = ?",
       [id]
     );
     const job = (rows as any[])[0];
@@ -135,7 +135,7 @@ export const updateJob = async (req: Request, res: Response) => {
     }
 
     const [rows] = await db.execute(
-      "SELECT id, title, description, location, company, recruiter_id, created_at FROM jobs WHERE id = ?",
+      "SELECT jobs.id, jobs.title, jobs.description, jobs.location, jobs.company, jobs.recruiter_id, jobs.created_at, users.name AS recruiter_name FROM jobs LEFT JOIN users ON users.id = jobs.recruiter_id WHERE jobs.id = ?",
       [id]
     );
     const job = (rows as any[])[0];
@@ -155,12 +155,12 @@ export const updateJob = async (req: Request, res: Response) => {
     }
 
     await db.execute(
-      "UPDATE jobs SET title = ?, description = ?, location = ?, company = ? WHERE id = ?",
+      "UPDATE jobs SET title = ?, description = ?, location = ?, company = ? WHERE jobs.id = ?",
       [title, description, location, company, id]
     );
 
     const [updatedRows] = await db.execute(
-      "SELECT id, title, description, location, company, recruiter_id, created_at FROM jobs WHERE id = ?",
+      "SELECT jobs.id, jobs.title, jobs.description, jobs.location, jobs.company, jobs.recruiter_id, jobs.created_at, users.name AS recruiter_name FROM jobs LEFT JOIN users ON users.id = jobs.recruiter_id WHERE jobs.id = ?",
       [id]
     );
     const updatedJob = (updatedRows as any[])[0];
@@ -184,7 +184,7 @@ export const deleteJob = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const [rows] = await db.execute(
-      "SELECT id, title, description, location, company, recruiter_id, created_at FROM jobs WHERE id = ?",
+      "SELECT jobs.id, jobs.title, jobs.description, jobs.location, jobs.company, jobs.recruiter_id, jobs.created_at, users.name AS recruiter_name FROM jobs LEFT JOIN users ON users.id = jobs.recruiter_id WHERE jobs.id = ?",
       [id]
     );
     const job = (rows as any[])[0];
@@ -203,7 +203,7 @@ export const deleteJob = async (req: Request, res: Response) => {
       });
     }
 
-    await db.execute("DELETE FROM jobs WHERE id = ?", [id]);
+    await db.execute("DELETE FROM jobs WHERE jobs.id = ?", [id]);
 
     return res.status(200).json({
       success: true,
