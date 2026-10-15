@@ -79,11 +79,11 @@ export default function LandingPage() {
                 direction="left"
                 logoHeight={64}
                 gap={80}
-                pauseOnHover={false}
+                pauseOnHover
                 fadeOut
                 fadeOutColor="#ffffff"
                 ariaLabel="Perusahaan yang mempercayai kami"
-                className="logoloop--grayscale logoloop--square logo-auto-run"
+                className="logoloop--square"
               />
             </div>
           </div>

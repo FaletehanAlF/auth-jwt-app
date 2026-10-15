@@ -3,6 +3,7 @@
 import Link from "next/link";
 import LandingHeroMagicTransform from "./LandingHeroMagicTransform";
 import LandingHeroSearch from "./LandingHeroSearch";
+import TechText from "../ui/TechText";
 
 type LandingHeroProps = {
   start?: boolean;
@@ -21,8 +22,8 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
           <p
             className={
               start
-                ? "animate-hero-from-left inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
-                : "inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white opacity-0"
+                ? "animate-hero-from-left inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white"
+                : "inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white opacity-0"
             }
           >
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-lime-300" />
@@ -32,12 +33,41 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
           <h1
             className={
               start
-                ? "animate-hero-from-left mt-6 max-w-3xl text-balance font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
-                : "mt-6 max-w-3xl text-balance font-display text-4xl font-bold leading-tight text-white opacity-0 sm:text-5xl lg:text-6xl"
+                ? "animate-hero-from-left mt-6 w-full max-w-3xl font-display"
+                : "mt-6 w-full max-w-3xl font-display opacity-0"
             }
             style={start ? { animationDelay: "90ms" } : undefined}
           >
-            Temukan Pekerjaan yang Tepat untuk Langkah Kariermu
+            <span className="block h-12 sm:h-16 lg:h-20">
+              <TechText
+                text="Temukan Pekerjaan yang Tepat"
+                fontWeight={700}
+                fontSize={56}
+                color="#ffffff"
+                accentColor="#7dd3fc"
+                reveal="letter"
+                dashLength={4}
+                dashGap={2}
+                specks={0}
+                labels={false}
+                paused={!start}
+              />
+            </span>
+            <span className="block h-12 text-sky-100 sm:h-16 lg:h-20">
+              <TechText
+                text="untuk Langkah Kariermu"
+                fontWeight={700}
+                fontSize={56}
+                color="#e0f2fe"
+                accentColor="#7dd3fc"
+                reveal="letter"
+                dashLength={4}
+                dashGap={2}
+                specks={0}
+                labels={false}
+                paused={!start}
+              />
+            </span>
           </h1>
 
           <p
@@ -73,13 +103,13 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
           >
             <Link
               href="/home"
-              className="inline-flex h-12 w-full items-center justify-center rounded-full bg-lime-300 px-7 text-sm font-semibold text-neutral-900 transition-colors duration-150 hover:bg-lime-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-sky-500 active:bg-lime-400 sm:w-auto"
+              className="inline-flex h-12 w-full items-center justify-center rounded-full bg-white px-7 text-sm font-semibold text-sky-900 shadow-sm transition-colors duration-150 hover:bg-sky-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-sky-600 active:bg-sky-100 sm:w-auto"
             >
               Jelajahi Lowongan
             </Link>
             <Link
               href="#cara-kerja"
-              className="group inline-flex h-12 w-full items-center justify-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-5 text-sm font-medium text-white backdrop-blur-sm transition-colors duration-150 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto"
+              className="group inline-flex h-12 w-full items-center justify-center gap-1.5 rounded-full border border-white/40 bg-transparent px-5 text-sm font-medium text-white transition-colors duration-150 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto"
             >
               Lihat Cara Kerja
               <svg
