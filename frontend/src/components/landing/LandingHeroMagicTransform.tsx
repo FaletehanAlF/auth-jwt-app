@@ -10,10 +10,10 @@ const DOCS = [
 ];
 
 const RESULTS = [
-  { label: "Match 92%", rows: ["Frontend Developer", "Remote · Jakarta"], tone: "sky" },
-  { label: "Match 87%", rows: ["Backend Engineer", "Hybrid · Bandung"], tone: "lime" },
-  { label: "Match 90%", rows: ["UI Designer", "Onsite · Surabaya"], tone: "violet" },
-  { label: "Match 85%", rows: ["Data Analyst", "Remote · Jakarta"], tone: "amber" },
+  { label: "Kecocokan 92%", rows: ["Frontend Developer", "Remote · Jakarta"], tone: "sky" },
+  { label: "Kecocokan 87%", rows: ["Backend Engineer", "Hybrid · Bandung"], tone: "lime" },
+  { label: "Kecocokan 90%", rows: ["UI Designer", "Onsite · Surabaya"], tone: "violet" },
+  { label: "Kecocokan 85%", rows: ["Data Analyst", "Remote · Jakarta"], tone: "amber" },
 ];
 
 export default function LandingHeroMagicTransform() {

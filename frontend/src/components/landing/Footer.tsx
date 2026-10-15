@@ -107,10 +107,10 @@ export default function Footer() {
         <div className="mt-10 border-t border-white/10 pt-6">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-white/50">
-              &copy; 2026 JobTrack. All rights reserved.
+              &copy; 2026 JobTrack. Seluruh hak cipta dilindungi.
             </p>
             <p className="text-xs text-white/50">
-              Career &amp; Job Application Tracker
+              Pelacak Karier &amp; Lamaran Kerja
             </p>
           </div>
         </div>
