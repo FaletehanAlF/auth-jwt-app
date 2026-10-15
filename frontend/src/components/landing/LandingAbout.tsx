@@ -67,9 +67,9 @@ const AUDIENCES = [
 export default function LandingAbout() {
   return (
     <section
-      id="about"
-      aria-labelledby="about-heading"
-      className="relative w-full max-w-full overflow-x-clip bg-white"
+      id="tentang-kami"
+      aria-labelledby="tentang-kami-heading"
+      className="relative w-full max-w-full scroll-mt-24 overflow-x-clip bg-white"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -left-24 top-16 h-64 w-64 rounded-full bg-sky-100/70 blur-3xl" />
@@ -81,21 +81,21 @@ export default function LandingAbout() {
           <Reveal direction="right" delay={0}>
             <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
               <span aria-hidden="true" className="h-px w-8 bg-sky-600/60" />
-              A Bit About JobTrack
+              Tentang JobTrack
             </p>
           </Reveal>
 
           <Reveal direction="right" delay={90}>
             <h2
-              id="about-heading"
+              id="tentang-kami-heading"
               className="mt-5 font-display text-4xl font-semibold leading-[1.06] tracking-tight text-balance text-neutral-900 sm:text-5xl"
             >
-              <SplitText text="Connecting Talent" direction="right" charDelay={14} />
+              <SplitText text="Menghubungkan Talenta" direction="right" charDelay={14} />
               <br className="hidden sm:block" />{" "}
-              <SplitText text="With " direction="right" charDelay={14} delayStart={200} />
+              <SplitText text="dengan " direction="right" charDelay={14} delayStart={200} />
               <span className="text-blue-600">
                 <SplitText
-                  text="Opportunity"
+                  text="Peluang"
                   direction="left"
                   charDelay={14}
                   delayStart={280}

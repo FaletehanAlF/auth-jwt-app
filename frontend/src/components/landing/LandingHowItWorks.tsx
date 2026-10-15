@@ -101,7 +101,7 @@ export default function LandingHowItWorks() {
     <section
       id="cara-kerja"
       aria-labelledby="how-heading"
-      className="relative w-full max-w-full overflow-x-clip bg-neutral-50"
+      className="relative w-full max-w-full scroll-mt-24 overflow-x-clip bg-neutral-50"
     >
       <div aria-hidden="true" className="how-ambient">
         <div className="how-blob how-blob-a" />

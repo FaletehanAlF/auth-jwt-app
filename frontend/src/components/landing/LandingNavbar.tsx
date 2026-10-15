@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Contact", href: "/#contact" },
+const NAV_ITEMS = [
+  { id: "beranda", label: "Beranda" },
+  { id: "tentang-kami", label: "Tentang Kami" },
+  { id: "cara-kerja", label: "Cara Kerja" },
+  { id: "testimoni", label: "Testimoni" },
+  { id: "hubungi-kami", label: "Hubungi Kami" },
 ];
 
 function LogoMark() {
@@ -25,12 +27,54 @@ function LogoMark() {
 
 export default function LandingNavbar() {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("beranda");
+
+  useEffect(() => {
+    const updateActive = () => {
+      if (window.scrollY < 180) {
+        setActive("beranda");
+        return;
+      }
+      for (const item of NAV_ITEMS.slice(1)) {
+        const element = document.getElementById(item.id);
+        if (!element) continue;
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= 120 && rect.bottom >= 120) {
+          setActive(item.id);
+          return;
+        }
+      }
+    };
+
+    updateActive();
+    window.addEventListener("scroll", updateActive, { passive: true });
+    window.addEventListener("resize", updateActive);
+    return () => {
+      window.removeEventListener("scroll", updateActive);
+      window.removeEventListener("resize", updateActive);
+    };
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    if (id === "beranda") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        const top = element.getBoundingClientRect().top + window.scrollY - 88;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    }
+    setActive(id);
+    setOpen(false);
+  };
 
   return (
     <header className="absolute inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
       <div className="mx-auto flex h-14 w-full max-w-3xl items-center justify-between gap-4 rounded-full border border-white/25 bg-sky-700/40 px-3 shadow-[0_10px_30px_-16px_rgba(2,60,120,0.5)] backdrop-blur-md">
-        <Link
-          href="/"
+        <button
+          type="button"
+          onClick={() => scrollToSection("beranda")}
           className="flex shrink-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label="JobTrack - ke beranda"
         >
@@ -38,21 +82,20 @@ export default function LandingNavbar() {
           <span className="font-display text-lg font-bold tracking-tight text-white">
             JobTrack
           </span>
-        </Link>
+        </button>
 
-        <nav aria-label="Navigasi utama" className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="group relative rounded py-1 text-sm font-medium text-sky-100 transition-colors duration-150 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        <nav aria-label="Navigasi utama" className="hidden items-center gap-1 md:flex">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => scrollToSection(item.id)}
+              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                active === item.id ? "text-white" : "text-sky-100 hover:text-white"
+              }`}
             >
               {item.label}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-white transition-transform duration-150 group-hover:scale-x-100"
-                />
-            </Link>
+            </button>
           ))}
         </nav>
 
@@ -103,15 +146,19 @@ export default function LandingNavbar() {
       {open && (
         <div className="mx-auto mt-2 w-full max-w-3xl rounded-3xl border border-neutral-200/80 bg-white p-4 shadow-lg md:hidden">
           <nav aria-label="Navigasi mobile" className="w-full space-y-1">
-            {NAV_LINKS.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-2.5 text-sm font-medium text-neutral-700 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => scrollToSection(item.id)}
+                className={`block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 ${
+                  active === item.id
+                    ? "bg-neutral-100 text-neutral-900"
+                    : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900"
+                }`}
               >
                 {item.label}
-              </Link>
+              </button>
             ))}
             <div className="flex flex-col gap-2 border-t border-neutral-200/70 pt-4 mt-3">
               <Link
