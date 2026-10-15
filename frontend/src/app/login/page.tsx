@@ -57,6 +57,9 @@ export default function LoginPage() {
 
       if (data.success === true) {
         localStorage.setItem("token", data.token);
+        if (typeof data.user?.name === "string") {
+          localStorage.setItem("user_name", data.user.name);
+        }
         notify("success", "Masuk berhasil! Mengalihkan ke Beranda…");
         setTimeout(() => router.push("/home"), 800);
         return;

@@ -35,6 +35,12 @@ export default function NotificationBell() {
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const socketRef = useRef<Socket | null>(null);
+  const notificationsRef = useRef<NotificationItem[]>([]);
+  const processedIdsRef = useRef<Set<number>>(new Set());
+
+  useEffect(() => {
+    notificationsRef.current = notifications;
+  }, [notifications]);
 
   const loadNotifications = useCallback(async () => {
     setLoading(true);
@@ -50,7 +56,10 @@ export default function NotificationBell() {
       ]);
 
       if (listResponse.success) {
-        setNotifications(listResponse.notifications ?? []);
+        const list = listResponse.notifications ?? [];
+        setNotifications(list);
+        notificationsRef.current = list;
+        processedIdsRef.current = new Set(list.map((item) => item.id));
       } else {
         setError(listResponse.message ?? "Gagal mengambil notifikasi.");
       }
@@ -58,7 +67,7 @@ export default function NotificationBell() {
       if (countResponse.success && typeof countResponse.unreadCount === "number") {
         setUnreadCount(countResponse.unreadCount);
       }
-    } catch (err) {
+    } catch {
       setError("Koneksi ke server gagal. Coba lagi.");
     } finally {
       setLoading(false);
@@ -66,18 +75,27 @@ export default function NotificationBell() {
   }, []);
 
   const markOneRead = useCallback(async (id: number) => {
+    const wasUnread = notificationsRef.current.some(
+      (item) => item.id === id && item.is_read === 0,
+    );
     try {
       const response = await apiFetch<{ success: boolean; message?: string }>(
         `/notifications/${id}/read`,
         { method: "PATCH" },
       );
       if (response.success) {
-        setNotifications((prev) =>
-          prev.map((item) =>
-            item.id === id ? { ...item, is_read: 1, read_at: new Date().toISOString() } : item,
-          ),
-        );
-        setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
+        setNotifications((prev) => {
+          const next = prev.map((item) =>
+            item.id === id
+              ? { ...item, is_read: 1, read_at: new Date().toISOString() }
+              : item,
+          );
+          notificationsRef.current = next;
+          return next;
+        });
+        if (wasUnread) {
+          setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
+        }
       }
     } catch {
       setError("Gagal menandai notifikasi.");
@@ -91,7 +109,11 @@ export default function NotificationBell() {
         { method: "PATCH" },
       );
       if (response.success) {
-        setNotifications((prev) => prev.map((item) => ({ ...item, is_read: 1 })));
+        setNotifications((prev) => {
+          const next = prev.map((item) => ({ ...item, is_read: 1 }));
+          notificationsRef.current = next;
+          return next;
+        });
         setUnreadCount(0);
       }
     } catch {
@@ -99,7 +121,27 @@ export default function NotificationBell() {
     }
   }, []);
 
-  // Koneksi socket hanya dibuat satu kali selama komponen aktif.
+  const handleNewNotification = useCallback((payload: unknown) => {
+    const item = payload as NotificationItem | null;
+    if (!item || typeof item.id !== "number" || !Number.isFinite(item.id)) return;
+
+    if (processedIdsRef.current.has(item.id)) return;
+    processedIdsRef.current.add(item.id);
+
+    setNotifications((prev) => {
+      if (prev.some((existing) => existing.id === item.id)) return prev;
+      const next = [item, ...prev];
+      notificationsRef.current = next;
+      return next;
+    });
+
+    if (item.is_read === 0) {
+      setUnreadCount((prev) => prev + 1);
+    }
+  }, []);
+
+  // Koneksi socket diinisialisasi selama komponen aktif (topbar), bukan hanya
+  // saat panel notifikasi dibuka.
   useEffect(() => {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -112,42 +154,41 @@ export default function NotificationBell() {
     });
     socketRef.current = socket;
 
-    const connect = () => {
+    const handleConnect = () => {
       setConnected(true);
+      setError(null);
       void loadNotifications();
     };
 
-    const disconnect = (reason: string) => {
+    const handleDisconnect = () => {
       setConnected(false);
-      if (reason !== "io client disconnect") {
-        // Pesan koneksi singkat; sinkronisasi dilakukan saat reconnect.
-      }
     };
 
-    socket.on("reconnect", () => {
-      void loadNotifications();
-    });
-    socket.on("disconnect", disconnect);
-    socket.on("connect_error", (err) => {
+    const handleConnectError = (err: Error) => {
       setConnected(false);
       setError(
         err.message === "Token tidak valid atau sudah expired"
           ? "Sesi notifikasi berakhir. Masuk ulang untuk memperbarui."
           : "Koneksi notifikasi gagal.",
       );
-    });
+    };
 
+    socket.on("connect", handleConnect);
+    socket.on("disconnect", handleDisconnect);
+    socket.on("connect_error", handleConnectError);
+    socket.on("notification:new", handleNewNotification);
     socket.connect();
 
     return () => {
-      socket.off("connect", connect);
-      socket.off("notification:new");
-      socket.off("disconnect", disconnect);
+      socket.off("connect", handleConnect);
+      socket.off("disconnect", handleDisconnect);
+      socket.off("connect_error", handleConnectError);
+      socket.off("notification:new", handleNewNotification);
       socket.disconnect();
       socketRef.current = null;
       setConnected(false);
     };
-  }, [loadNotifications]);
+  }, [loadNotifications, handleNewNotification]);
 
   // Klik luar menutup panel.
   useEffect(() => {
@@ -161,12 +202,12 @@ export default function NotificationBell() {
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
-  // Sinkronisasi ulang data saat panel dibuka setelah hilangnya fokus/reconnect.
+  // Sinkronisasi ulang data saat panel dibuka.
   useEffect(() => {
     if (open && !loading) {
       void loadNotifications();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
   }, [open]);
 
   const togglePanel = () => setOpen((value) => !value);

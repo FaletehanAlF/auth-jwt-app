@@ -17,6 +17,7 @@ import {
   FaTimes,
   FaTrashAlt,
   FaUserFriends,
+  FaUserTag,
   FaUsers,
 } from "react-icons/fa";
 import AppShell from "../../../components/layout/AppShell";
@@ -24,6 +25,8 @@ import JobFormModal from "../../../components/jobs/JobFormModal";
 import RequireAuth from "../../../components/auth/RequireAuth";
 import { apiFetch } from "../../../lib/api";
 import type { Applicant, Job } from "../../../lib/types";
+import { formatUsername } from "../../../lib/username";
+import { getTokenPayload } from "../../../lib/auth";
 
 /* ------------------------------------------------------------------ *
  * Batasan data yang dipakai halaman ini.
@@ -147,6 +150,7 @@ function EmptyState({
 function JobCard({
   job,
   applicantCount,
+  canManage,
   onEdit,
   onRequestDelete,
   deleteDisabled,
@@ -154,6 +158,7 @@ function JobCard({
   job: Job;
   /** null = belum termuat / gagal dimuat. Tampilkan "�?"", jangan "0". */
   applicantCount: number | null | undefined;
+  canManage: boolean;
   onEdit: (job: Job) => void;
   onRequestDelete: (job: Job, trigger: HTMLButtonElement) => void;
   deleteDisabled: boolean;
@@ -176,11 +181,17 @@ function JobCard({
               <FaBuilding aria-hidden="true" className="h-4 w-4 shrink-0" />
               {job.company}
             </li>
-            <li className="flex items-center gap-1.5">
-              <FaMapMarkerAlt aria-hidden="true" className="h-4 w-4 shrink-0" />
-              {job.location}
-            </li>
-          </ul>
+<li className="flex items-center gap-1.5">
+               <FaMapMarkerAlt aria-hidden="true" className="h-4 w-4 shrink-0" />
+               {job.location}
+             </li>
+             {job.recruiter_name && (
+               <li className="flex items-center gap-1.5">
+                 <FaUserTag aria-hidden="true" className="h-4 w-4 shrink-0" />
+                 {formatUsername(job.recruiter_name, "recruiter")}
+               </li>
+             )}
+           </ul>
         </div>
 
         <span
@@ -208,39 +219,45 @@ function JobCard({
         </p>
 
         {/* Hierarki aksi: utama filled, sekunder outline, hapus danger. */}
-        <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href={`/recruiter/jobs/${job.id}/applicants`}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-          >
-            <FaUserFriends aria-hidden="true" className="h-4 w-4" />
-            Lihat Pelamar
-          </Link>
-          <button
-            type="button"
-            onClick={() => onEdit(job)}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-          >
-            <FaPencilAlt aria-hidden="true" className="h-4 w-4" />
-            Edit Lowongan
-          </button>
-          <Link
-            href={`/jobs/${job.id}`}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-ink-500 transition-colors hover:bg-slate-50 hover:text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-          >
-            <FaEye aria-hidden="true" className="h-4 w-4" />
-            Detail
-          </Link>
-          <button
-            type="button"
-            onClick={(event) => onRequestDelete(job, event.currentTarget)}
-            disabled={deleteDisabled}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <FaTrashAlt aria-hidden="true" className="h-4 w-4" />
-            Hapus
-          </button>
-        </div>
+<div className="flex flex-wrap items-center gap-2">
+           {canManage && (
+             <>
+               <Link
+                 href={`/recruiter/jobs/${job.id}/applicants`}
+                 className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+               >
+                 <FaUserFriends aria-hidden="true" className="h-4 w-4" />
+                 Lihat Pelamar
+               </Link>
+               <button
+                 type="button"
+                 onClick={() => onEdit(job)}
+                 className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+               >
+                 <FaPencilAlt aria-hidden="true" className="h-4 w-4" />
+                 Edit Lowongan
+               </button>
+             </>
+           )}
+           <Link
+             href={`/jobs/${job.id}`}
+             className="inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-ink-500 transition-colors hover:bg-slate-50 hover:text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+           >
+             <FaEye aria-hidden="true" className="h-4 w-4" />
+             Detail
+           </Link>
+           {canManage && (
+             <button
+               type="button"
+               onClick={(event) => onRequestDelete(job, event.currentTarget)}
+               disabled={deleteDisabled}
+               className="inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+             >
+               <FaTrashAlt aria-hidden="true" className="h-4 w-4" />
+               Hapus
+             </button>
+           )}
+         </div>
       </div>
 
       <p className="sr-only">{countLabel}</p>
@@ -249,11 +266,19 @@ function JobCard({
 }
 
 export default function RecruiterJobsPage() {
+  const [activeTab, setActiveTab] = useState<"all" | "mine">("all");
   const [jobs, setJobs] = useState<Job[] | null>(null);
   const [counts, setCounts] = useState<Record<number, number | null> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
+
+  const [allJobs, setAllJobs] = useState<Job[] | null>(null);
+  const [allCounts, setAllCounts] = useState<Record<number, number | null> | null>(null);
+  const [allError, setAllError] = useState<string | null>(null);
+  const [allAttempt, setAllAttempt] = useState(0);
+
   const [query, setQuery] = useState("");
+  const currentUserId = getTokenPayload()?.id ?? null;
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -334,9 +359,60 @@ export default function RecruiterJobsPage() {
     };
   }, [attempt]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await apiFetch<{ success: boolean; message?: string; jobs?: Job[] }>("/jobs");
+        if (cancelled) return;
+
+        if (!(res.success && Array.isArray(res.jobs))) {
+          setAllError(readableError(res.message, "Gagal mengambil lowongan."));
+          return;
+        }
+
+        const list = res.jobs;
+        setAllError(null);
+        setAllJobs(list);
+
+        if (list.length === 0) {
+          setAllCounts({});
+          return;
+        }
+
+        const results = await Promise.allSettled(
+          list.map((job) => apiFetch<ApplicantsResponse>(`/jobs/${job.id}/applications`)),
+        );
+        if (cancelled) return;
+
+        const map: Record<number, number | null> = {};
+        results.forEach((result, index) => {
+          const id = list[index].id;
+          map[id] =
+            result.status === "fulfilled" &&
+            result.value.success &&
+            Array.isArray(result.value.applications)
+              ? result.value.applications.length
+              : null;
+        });
+        setAllCounts(map);
+      } catch {
+        if (!cancelled) setAllError("Gagal menghubungi server. Periksa koneksi lalu coba lagi.");
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [allAttempt]);
+
   // Di-refresh diam-diam saat lowongan dibuat/diubah di halaman lain.
   useEffect(() => {
-    const onChanged = () => setAttempt((n) => n + 1);
+    const onChanged = () => {
+      setAttempt((n) => n + 1);
+      setAllAttempt((n) => n + 1);
+    };
     window.addEventListener("jobs-changed", onChanged);
     return () => window.removeEventListener("jobs-changed", onChanged);
   }, []);
@@ -377,6 +453,13 @@ export default function RecruiterJobsPage() {
           delete next[job.id];
           return next;
         });
+        setAllJobs((prev) => (prev ? prev.filter((item) => item.id !== job.id) : prev));
+        setAllCounts((prev) => {
+          if (!prev) return prev;
+          const next = { ...prev };
+          delete next[job.id];
+          return next;
+        });
         showNotice("success", `Lowongan "${job.title}" berhasil dihapus.`);
         return;
       }
@@ -388,8 +471,14 @@ export default function RecruiterJobsPage() {
     }
   };
 
-  const loading = jobs === null;
-  const list = useMemo(() => jobs ?? [], [jobs]);
+  const loadingMine = jobs === null;
+  const loadingAll = allJobs === null;
+  const activeLoading = activeTab === "all" ? loadingAll : loadingMine;
+  const activeJobs = activeTab === "all" ? allJobs : jobs;
+  const activeCounts = activeTab === "all" ? allCounts : counts;
+  const activeError = activeTab === "all" ? allError : error;
+
+  const list = useMemo(() => activeJobs ?? [], [activeJobs]);
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -400,14 +489,14 @@ export default function RecruiterJobsPage() {
   }, [list, query]);
 
   const totalApplicants = useMemo(() => {
-    if (!counts) return null;
-    const values = Object.values(counts);
+    if (!activeCounts) return null;
+    const values = Object.values(activeCounts);
     if (values.length === 0) return 0;
     // Semua request gagal -> jangan tampilkan "0" yang menyesatkan.
     return values.every((value) => value === null)
       ? null
       : values.reduce<number>((sum, value) => sum + (value ?? 0), 0);
-  }, [counts]);
+  }, [activeCounts]);
 
   const locationCount = useMemo(
     () => new Set(list.map((job) => job.location.trim()).filter(Boolean)).size,
@@ -427,19 +516,48 @@ export default function RecruiterJobsPage() {
 
   return (
     <RequireAuth roles={["recruiter"]}>
-      <AppShell title="Lowongan Saya" subtitle="Kelola lowongan dan pantau kandidat yang melamar">
+      <AppShell title="Lowongan" subtitle="Kelola dan lihat lowongan yang tersedia">
         <div className="space-y-6">
           <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="font-display text-2xl font-semibold tracking-tight text-ink-900">
-                Lowongan Saya
+                Lowongan
               </h1>
               <p className="mt-1 text-sm text-ink-500">
-                Kelola lowongan, perbarui informasi, dan pantau pelamar dari satu tempat.
+                Lihat semua lowongan atau kelola lowongan milikmu dari satu tempat.
               </p>
             </div>
             {createCta}
           </header>
+
+          <div
+            role="tablist"
+            aria-label="Filter lowongan"
+            className="inline-flex w-full rounded-xl border border-slate-200 bg-white p-1 sm:w-auto"
+          >
+            {[
+              { id: "all", label: "Semua Lowongan" },
+              { id: "mine", label: "Lowongan Saya" },
+            ].map((tab) => {
+              const selected = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  onClick={() => setActiveTab(tab.id as "all" | "mine")}
+                  className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 sm:flex-none ${
+                    selected
+                      ? "bg-brand-600 text-white shadow-sm"
+                      : "text-ink-500 hover:bg-slate-50 hover:text-ink-900"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
 
           {notice && (
             <div
@@ -455,7 +573,7 @@ export default function RecruiterJobsPage() {
             </div>
           )}
 
-          {!error && (
+          {!activeError && (
             <section aria-label="Ringkasan lowongan" className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <StatCard icon={FaBriefcase} label="Total lowongan" value={list.length} />
               <StatCard
@@ -468,7 +586,7 @@ export default function RecruiterJobsPage() {
             </section>
           )}
 
-          {!error && !loading && list.length > 0 && (
+          {!activeError && !activeLoading && list.length > 0 && (
             <div className="relative">
               <label htmlFor="cari-lowongan" className="sr-only">
                 Cari lowongan
@@ -498,9 +616,9 @@ export default function RecruiterJobsPage() {
             </div>
           )}
 
-          {loading && <SkeletonList />}
+          {activeLoading && <SkeletonList />}
 
-          {!loading && error && (
+          {!activeLoading && activeError && (
             <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
               <span
                 aria-hidden="true"
@@ -511,7 +629,7 @@ export default function RecruiterJobsPage() {
               <p className="mt-4 font-display text-base font-semibold tracking-tight text-ink-900">
                 Gagal memuat lowongan
               </p>
-              <p className="mx-auto mt-1 max-w-sm text-sm leading-relaxed text-ink-500">{error}</p>
+              <p className="mx-auto mt-1 max-w-sm text-sm leading-relaxed text-ink-500">{activeError}</p>
               <button
                 type="button"
                 onClick={() => setAttempt((n) => n + 1)}
@@ -522,11 +640,11 @@ export default function RecruiterJobsPage() {
             </div>
           )}
 
-          {!loading && !error && list.length === 0 && (
+          {!activeLoading && !activeError && list.length === 0 && (
             <EmptyState
               icon={FaInbox}
               title="Belum ada lowongan"
-              desc="Buat lowongan pertamamu supaya kandidat bisa menemukan dan melamar posisi yang kamu buka. Gunakan tombol �?oBuat Lowongan�?? di bagian atas halaman ini."
+              desc={"Buat lowongan pertamamu supaya kandidat bisa menemukan dan melamar posisi yang kamu buka. Gunakan tombol 'Buat Lowongan' di bagian atas halaman ini."}
               action={
                 <button
                   type="button"
@@ -540,7 +658,7 @@ export default function RecruiterJobsPage() {
             />
           )}
 
-          {!loading && !error && list.length > 0 && visible.length === 0 && (
+          {!activeLoading && !activeError && list.length > 0 && visible.length === 0 && (
             <EmptyState
               icon={FaSearch}
               title="Tidak ada lowongan yang cocok"
@@ -557,14 +675,15 @@ export default function RecruiterJobsPage() {
             />
           )}
 
-          {!loading && !error && visible.length > 0 && (
+          {!activeLoading && !activeError && visible.length > 0 && (
             <section aria-label="Daftar lowongan" className="space-y-4">
               {visible.map((job) => (
                 <JobCard
-                  key={job.id}
-                  job={job}
-                  applicantCount={counts ? (counts[job.id] ?? null) : null}
-                  deleteDisabled={deletingId === job.id}
+                   key={job.id}
+                   job={job}
+                   applicantCount={activeCounts ? (activeCounts[job.id] ?? null) : null}
+                   canManage={job.recruiter_id === currentUserId}
+                   deleteDisabled={deletingId === job.id}
                   onEdit={(target) => setEditingId(target.id)}
                   onRequestDelete={(target, trigger) => {
                     deleteTriggerRef.current = trigger;
@@ -628,10 +747,11 @@ export default function RecruiterJobsPage() {
           open
           mode="create"
           onClose={() => setCreateOpen(false)}
-          onSuccess={() => {
-            setAttempt((n) => n + 1);
-            showNotice("success", "Lowongan berhasil dibuat!");
-          }}
+           onSuccess={() => {
+             setAttempt((n) => n + 1);
+             setAllAttempt((n) => n + 1);
+             showNotice("success", "Lowongan berhasil dibuat!");
+           }}
         />
       )}
 
@@ -641,10 +761,11 @@ export default function RecruiterJobsPage() {
           mode="edit"
           jobId={editingId}
           onClose={() => setEditingId(null)}
-          onSuccess={() => {
-            setAttempt((n) => n + 1);
-            showNotice("success", "Perubahan berhasil disimpan.");
-          }}
+           onSuccess={() => {
+             setAttempt((n) => n + 1);
+             setAllAttempt((n) => n + 1);
+             showNotice("success", "Perubahan berhasil disimpan.");
+           }}
         />
       )}
     </RequireAuth>

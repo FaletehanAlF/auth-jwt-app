@@ -12,12 +12,14 @@ import {
   FaInfoCircle,
   FaMapMarkerAlt,
   FaPaperPlane,
+  FaUserTag,
 } from "react-icons/fa";
 import AppShell from "../../../components/layout/AppShell";
 import RequireAuth from "../../../components/auth/RequireAuth";
 import { apiFetch, apiFetchWithStatus } from "../../../lib/api";
 import { getStatusInfo } from "../../../lib/applicationStatus";
 import { getRoleFromToken, type UserRole } from "../../../lib/auth";
+import { formatUsername } from "../../../lib/username";
 import type { Application, Job } from "../../../lib/types";
 
 /** Balasan POST /jobs/:id/apply (lihat backend applyJob). */
@@ -323,6 +325,12 @@ export default function JobDetailPage() {
                   <FaMapMarkerAlt aria-hidden="true" className="h-4 w-4 shrink-0" />
                   {job.location}
                 </li>
+                {job.recruiter_name && (
+                  <li className="flex items-center gap-1.5">
+                    <FaUserTag aria-hidden="true" className="h-4 w-4 shrink-0" />
+                    {formatUsername(job.recruiter_name, "recruiter")}
+                  </li>
+                )}
                 <li className="flex items-center gap-1.5">
                   <FaCalendarAlt aria-hidden="true" className="h-4 w-4 shrink-0" />
                   {created ? `Diposting ${created}` : "Tanggal posting tidak tersedia"}

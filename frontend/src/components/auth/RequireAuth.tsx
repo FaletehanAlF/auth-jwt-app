@@ -39,6 +39,7 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
       if (!local || isPayloadExpired(local)) {
         try {
           localStorage.removeItem("token");
+          localStorage.removeItem("user_name");
         } catch {
         }
         if (!cancelled) router.replace("/login");
@@ -57,6 +58,7 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
       if (!res.success || !res.user) {
         try {
           localStorage.removeItem("token");
+          localStorage.removeItem("user_name");
         } catch {
         }
         router.replace("/login");

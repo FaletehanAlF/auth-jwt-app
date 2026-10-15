@@ -17,6 +17,7 @@ import AppShell from "../../components/layout/AppShell";
 import RequireAuth from "../../components/auth/RequireAuth";
 import { apiFetch } from "../../lib/api";
 import type { UserRole } from "../../lib/auth";
+import { formatUsername } from "../../lib/username";
 
 /* ------------------------------------------------------------------ *
  * Konfigurasi Cloudinary — dipertahankan persis seperti sebelumnya.
@@ -180,8 +181,9 @@ export default function ProfilePage() {
     }
   }
 
-  const email = account?.email ?? null;
-  const role: UserRole | null = account?.role === "recruiter" ? "recruiter" : account ? "jobseeker" : null;
+const email = account?.email ?? null;
+const role: UserRole | null = account?.role === "recruiter" ? "recruiter" : account ? "jobseeker" : null;
+const storedName = typeof window !== "undefined" ? localStorage.getItem("user_name") : null;
 
   return (
     <RequireAuth>
@@ -261,9 +263,14 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-ink-900">
-                      {email ?? (account === null && !accountError ? "Memuat…" : "Email tidak tersedia")}
-                    </p>
+{storedName && (
+                       <p className="truncate text-sm font-medium text-ink-900">
+                         {formatUsername(storedName, role)}
+                       </p>
+                     )}
+                     <p className="truncate text-sm font-medium text-ink-900">
+                       {email ?? (account === null && !accountError ? "Memuat…" : "Email tidak tersedia")}
+                     </p>
                     {role && (
                       <p className="mt-1.5">
                         <span className="inline-flex items-center rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-600/15">

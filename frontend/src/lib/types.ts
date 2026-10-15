@@ -4,6 +4,8 @@ export type Job = {
   description: string;
   location: string;
   company: string;
+  recruiter_id?: number;
+  recruiter_name?: string;
   created_at?: string;
 };
 

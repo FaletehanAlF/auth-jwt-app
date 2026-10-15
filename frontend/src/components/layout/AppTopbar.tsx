@@ -138,6 +138,7 @@ export default function AppTopbar({
                 role="menuitem"
                 onClick={() => {
                   localStorage.removeItem("token");
+                  localStorage.removeItem("user_name");
                   setMenuOpen(false);
                 }}
                 className="flex h-10 items-center rounded-xl px-3 text-sm font-medium text-red-600 transition-colors duration-150 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-red-600"
