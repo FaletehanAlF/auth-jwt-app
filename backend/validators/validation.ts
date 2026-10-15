@@ -10,3 +10,12 @@ export const loginSchema = z.object({
   email: z.string().email("Format email tidak valid"),
   password: z.string().min(6, "Password minimal 6 karakter"),
 });
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Format email tidak valid"),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(32, "Token tidak valid").max(256, "Token tidak valid"),
+  password: z.string().min(6, "Password minimal 6 karakter"),
+});

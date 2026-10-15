@@ -1,10 +1,19 @@
 import { Router } from "express";
-import { register, login } from "./controllers/authController";
+import {
+  register,
+  login,
+  forgotPassword,
+  resetPassword,
+} from "./controllers/authController";
 import { createJob, getJobs, getJobById, updateJob, deleteJob, getMyJobs } from "./controllers/jobController";
 import { applyJob, getMyApplications, getJobApplications, updateApplicationStatus, getApplicationCv } from "./controllers/applicationController";
 import { getNotifications, getUnreadNotificationCount, markNotificationRead, markAllNotificationsRead } from "./controllers/notificationController";
 import { verifyToken } from "./middleware/authMiddleware";
 import { authorize } from "./middleware/authorizeMiddleware";
+import {
+  forgotPasswordLimiter,
+  resetPasswordLimiter,
+} from "./middleware/rateLimit";
 import { uploadCvSingle } from "./middleware/uploadCv";
 
 
@@ -12,6 +21,9 @@ const router = Router();
 
 router.post("/register", register);
 router.post("/login", login);
+
+router.post("/auth/forgot-password", forgotPasswordLimiter, forgotPassword);
+router.post("/auth/reset-password", resetPasswordLimiter, resetPassword);
 
 router.post("/jobs", verifyToken, authorize("recruiter"), createJob);
 
