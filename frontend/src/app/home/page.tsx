@@ -513,7 +513,7 @@ function JobseekerDashboard({ email }: { email: string | null }) {
                     {job.company} · {job.location}
                   </p>
                   <Link
-                    href={`/jobs/${job.id}`}
+                    href={`/jobs/${job.id}?back=${encodeURIComponent("/home")}`}
                     className="mt-2 inline-flex text-sm font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
                   >
                     Lihat Detail →
@@ -761,7 +761,7 @@ function RecruiterDashboard({ email }: { email: string | null }) {
                     </div>
                     <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 pl-[52px]">
                       <Link
-                        href={`/jobs/${job.id}`}
+                        href={`/jobs/${job.id}?back=${encodeURIComponent("/home")}`}
                         className="text-xs font-medium text-ink-500 transition-colors hover:text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
                       >
                         Detail

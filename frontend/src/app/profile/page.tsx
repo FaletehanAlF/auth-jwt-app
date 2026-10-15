@@ -172,12 +172,13 @@ export default function ProfilePage() {
         throw new Error("Respons Cloudinary tidak memiliki secure_url.");
       }
 
-      setProfileImageUrl(result.secure_url);
-
       await apiFetch("/profile/avatar", {
         method: "PUT",
         body: JSON.stringify({ avatarUrl: result.secure_url }),
       });
+
+      setProfileImageUrl(result.secure_url);
+      window.dispatchEvent(new CustomEvent("avatar:updated"));
     } catch (error) {
       setUploadError(error instanceof Error ? error.message : "Upload gambar gagal.");
     } finally {
@@ -526,6 +527,7 @@ const storedName = typeof window !== "undefined" ? localStorage.getItem("user_na
                     await apiFetch("/profile/avatar", { method: "DELETE" });
                     setProfileImageUrl("");
                     setAccount((prev) => prev ? { ...prev, avatar_url: null } : prev);
+                    window.dispatchEvent(new CustomEvent("avatar:updated"));
                   } catch {
                     setUploadError("Gagal menghapus foto profil.");
                   }

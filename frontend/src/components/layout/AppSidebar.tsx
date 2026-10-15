@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { NavIconKind, NavItem } from "../../lib/nav";
@@ -175,13 +176,15 @@ export default function AppSidebar({
       >
         <span
           aria-hidden="true"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm overflow-hidden"
         >
-          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
-            <rect x="3" y="7.5" width="18" height="12.5" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M3 12.5h18" stroke="currentColor" strokeWidth="1.8" />
-          </svg>
+          <Image
+            src="/assets/jobtrack.avif"
+            alt=""
+            width={36}
+            height={36}
+            className="h-full w-full object-cover"
+          />
         </span>
         <span className={labelClasses(collapsed, "font-display text-base font-semibold tracking-tight text-ink-900")}>
           JobTrack

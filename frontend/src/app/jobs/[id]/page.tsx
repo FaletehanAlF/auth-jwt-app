@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   FaArrowLeft,
   FaBuilding,
@@ -48,7 +48,23 @@ function formatDate(value?: string): string | null {
   });
 }
 
+function isSafeBackUrl(value: string | null, role: UserRole | null): value is string {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) return false;
+  const queryIndex = value.indexOf("?");
+  const path = queryIndex >= 0 ? value.slice(0, queryIndex) : value;
+  if (path.startsWith("/jobs/")) return false;
+  if (path.startsWith("/recruiter/") && role !== "recruiter") return false;
+  if (path === "/applications" && role !== "jobseeker") return false;
+  return true;
+}
+
+function defaultBackUrl(role: UserRole | null): string {
+  return role === "recruiter" ? "/recruiter/jobs" : "/lowongan";
+}
+
 export default function JobDetailPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const params = useParams();
   const id = params?.id;
   /** `useParams` bisa mengembalikan string[], ambil satu nilai numerik. */
@@ -59,6 +75,21 @@ export default function JobDetailPage() {
   // initializer aman: halaman ini di-render hanya setelah RequireAuth
   // meluluskan sesi, jadi selalu di sisi klien (tidak ada SSR).
   const [role] = useState<UserRole | null>(() => getRoleFromToken());
+
+  const backCandidate =
+    searchParams.get("back") ??
+    searchParams.get("from") ??
+    searchParams.get("returnTo") ??
+    searchParams.get("origin") ??
+    searchParams.get("return") ??
+    null;
+
+  const backUrl = useMemo(() => {
+    if (isSafeBackUrl(backCandidate, role) && backCandidate !== `/jobs/${jobId}`) {
+      return backCandidate;
+    }
+    return defaultBackUrl(role);
+  }, [backCandidate, role, jobId]);
 
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
@@ -255,11 +286,11 @@ export default function JobDetailPage() {
       <AppShell title="Detail Lowongan" subtitle="Informasi lengkap lowongan">
         <div className="mx-auto w-full max-w-3xl space-y-6">
           <Link
-            href="/lowongan"
+            href={backUrl}
             className="inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium text-ink-500 transition-colors hover:bg-slate-100 hover:text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
           >
             <FaArrowLeft aria-hidden="true" className="h-4 w-4" />
-            Kembali ke Lowongan
+            Kembali
           </Link>
 
           {loading && (
@@ -299,7 +330,7 @@ export default function JobDetailPage() {
                   Coba Lagi
                 </button>
                 <Link
-                  href="/lowongan"
+                  href={backUrl}
                   className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
                 >
                   Kembali

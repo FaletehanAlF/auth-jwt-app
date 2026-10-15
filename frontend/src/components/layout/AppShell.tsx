@@ -34,11 +34,28 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
           setAvatarUrl(res.user.avatar_url ?? null);
         }
       } catch {
-        // abaikan — avatar opsional
       }
     })();
     return () => {
       cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const refreshAvatar = async () => {
+      try {
+        const res = await apiFetch<{ success: boolean; user?: { avatar_url?: string | null } }>("/profile");
+        if (!cancelled && res.success && res.user) {
+          setAvatarUrl(res.user.avatar_url ?? null);
+        }
+      } catch {
+      }
+    };
+    window.addEventListener("avatar:updated", refreshAvatar);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("avatar:updated", refreshAvatar);
     };
   }, []);
 

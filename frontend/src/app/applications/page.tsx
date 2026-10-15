@@ -217,7 +217,7 @@ export default function ApplicationsPage() {
                         {applied ? `Dilamar ${applied}` : "Tanggal lamaran tidak tersedia"}
                       </p>
                       <Link
-                        href={`/jobs/${app.job_id}`}
+                        href={`/jobs/${app.job_id}?back=${encodeURIComponent("/applications")}`}>
                         className="inline-flex h-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 px-4 text-sm font-medium text-brand-700 ring-1 ring-inset ring-brand-600/15 transition-colors hover:bg-brand-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
                       >
                         Lihat Lowongan
