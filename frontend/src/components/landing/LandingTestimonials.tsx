@@ -160,7 +160,7 @@ export default function LandingTestimonials() {
     <section
       id="testimoni"
       aria-labelledby="testimonials-heading"
-      className="relative w-full max-w-full overflow-x-clip bg-white"
+      className="relative w-full max-w-full scroll-mt-24 overflow-x-clip bg-white"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -left-24 top-10 h-64 w-64 rounded-full bg-sky-100/60 blur-3xl" />

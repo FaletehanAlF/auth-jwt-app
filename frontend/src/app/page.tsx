@@ -11,6 +11,7 @@ import { TRUSTED_LOGOS } from "../data/trustedLogos";
 import LandingAbout from "../components/landing/LandingAbout";
 import LandingHowItWorks from "../components/landing/LandingHowItWorks";
 import LandingTestimonials from "../components/landing/LandingTestimonials";
+import LandingContact from "../components/landing/LandingContact";
 import Footer from "../components/landing/Footer";
 
 // Flag in-memory (bukan sessionStorage): refresh/full-reload mengulang
@@ -91,6 +92,7 @@ export default function LandingPage() {
         <LandingAbout />
         <LandingHowItWorks />
         <LandingTestimonials />
+        <LandingContact />
       </main>
       <Footer />
     </div>
