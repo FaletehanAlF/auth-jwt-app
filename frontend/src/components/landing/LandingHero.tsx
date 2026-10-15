@@ -3,16 +3,6 @@
 import Link from "next/link";
 import LandingHeroMagicTransform from "./LandingHeroMagicTransform";
 import LandingHeroSearch from "./LandingHeroSearch";
-</rfl:parameter><|end|><|start|>edit to=assistant<|channel|>analysis<|message|>Edit applied successfully.<|end|><|start|>translator<|channel|>analysis<|message|>Now also maybe reduce hero blur decorations? They are okay. But navbar spacing done. Let's also update LandingAbout text translation fully maybe enough.
-
-We need handle " navbar tidak terlalu padat": done.
-
-Now testimonials component English? It has English names? Let's see. Keep.
-
-Need update page CSS? no.
-
-Run build.<|end|><|start|>start to=bash<|channel|>analysis <|constrain|>xml<|message|><rfl:parameter name="command">
-cd C:\auth-jwt-app\frontend; npm run build
 
 type LandingHeroProps = {
   start?: boolean;
