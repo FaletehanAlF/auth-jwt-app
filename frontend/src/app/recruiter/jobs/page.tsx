@@ -26,7 +26,6 @@ import RequireAuth from "../../../components/auth/RequireAuth";
 import { apiFetch } from "../../../lib/api";
 import type { Applicant, Job } from "../../../lib/types";
 import { formatUsername } from "../../../lib/username";
-import { getTokenPayload } from "../../../lib/auth";
 
 /* ------------------------------------------------------------------ *
  * Batasan data yang dipakai halaman ini.
@@ -150,7 +149,7 @@ function EmptyState({
 function JobCard({
   job,
   applicantCount,
-  canManage,
+  showActions,
   onEdit,
   onRequestDelete,
   deleteDisabled,
@@ -158,7 +157,7 @@ function JobCard({
   job: Job;
   /** null = belum termuat / gagal dimuat. Tampilkan "�?"", jangan "0". */
   applicantCount: number | null | undefined;
-  canManage: boolean;
+  showActions: boolean;
   onEdit: (job: Job) => void;
   onRequestDelete: (job: Job, trigger: HTMLButtonElement) => void;
   deleteDisabled: boolean;
@@ -219,26 +218,23 @@ function JobCard({
         </p>
 
         {/* Hierarki aksi: utama filled, sekunder outline, hapus danger. */}
-<div className="flex flex-wrap items-center gap-2">
-           {canManage && (
-             <>
-               <Link
-                 href={`/recruiter/jobs/${job.id}/applicants`}
-                 className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-               >
-                 <FaUserFriends aria-hidden="true" className="h-4 w-4" />
-                 Lihat Pelamar
-               </Link>
-               <button
-                 type="button"
-                 onClick={() => onEdit(job)}
-                 className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-               >
-                 <FaPencilAlt aria-hidden="true" className="h-4 w-4" />
-                 Edit Lowongan
-               </button>
-             </>
-           )}
+{showActions && (
+         <div className="flex flex-wrap items-center gap-2">
+           <Link
+             href={`/recruiter/jobs/${job.id}/applicants`}
+             className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+           >
+             <FaUserFriends aria-hidden="true" className="h-4 w-4" />
+             Lihat Pelamar
+           </Link>
+           <button
+             type="button"
+             onClick={() => onEdit(job)}
+             className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+           >
+             <FaPencilAlt aria-hidden="true" className="h-4 w-4" />
+             Edit Lowongan
+           </button>
            <Link
              href={`/jobs/${job.id}`}
              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-ink-500 transition-colors hover:bg-slate-50 hover:text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
@@ -246,18 +242,17 @@ function JobCard({
              <FaEye aria-hidden="true" className="h-4 w-4" />
              Detail
            </Link>
-           {canManage && (
-             <button
-               type="button"
-               onClick={(event) => onRequestDelete(job, event.currentTarget)}
-               disabled={deleteDisabled}
-               className="inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-             >
-               <FaTrashAlt aria-hidden="true" className="h-4 w-4" />
-               Hapus
-             </button>
-           )}
+           <button
+             type="button"
+             onClick={(event) => onRequestDelete(job, event.currentTarget)}
+             disabled={deleteDisabled}
+             className="inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+           >
+             <FaTrashAlt aria-hidden="true" className="h-4 w-4" />
+             Hapus
+           </button>
          </div>
+       )}
       </div>
 
       <p className="sr-only">{countLabel}</p>
@@ -278,7 +273,6 @@ export default function RecruiterJobsPage() {
   const [allAttempt, setAllAttempt] = useState(0);
 
   const [query, setQuery] = useState("");
-  const currentUserId = getTokenPayload()?.id ?? null;
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -682,7 +676,7 @@ export default function RecruiterJobsPage() {
                    key={job.id}
                    job={job}
                    applicantCount={activeCounts ? (activeCounts[job.id] ?? null) : null}
-                   canManage={job.recruiter_id === currentUserId}
+                   showActions={activeTab === "mine"}
                    deleteDisabled={deletingId === job.id}
                   onEdit={(target) => setEditingId(target.id)}
                   onRequestDelete={(target, trigger) => {
