@@ -5,7 +5,8 @@ export type NavIconKind =
   | "search"
   | "file"
   | "briefcase"
-  | "user";
+  | "user"
+  | "chart";
 
 export type NavItem = {
   label: string;
@@ -23,6 +24,7 @@ export function getNavItems(role: UserRole | null): NavItem[] {
   }
   return [
     { label: "Dashboard", href: "/home", icon: "dashboard" },
+    { label: "Insight Karier", href: "/insight-karier", icon: "chart" },
     { label: "Cari Lowongan", href: "/lowongan", icon: "search" },
     { label: "Lamaran Saya", href: "/applications", icon: "file" },
     { label: "Profil Saya", href: "/profile", icon: "user" },

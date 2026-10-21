@@ -44,6 +44,13 @@ function NavIcon({ kind }: { kind: NavIconKind }) {
           <path d="M3 12.5h18" stroke="currentColor" strokeWidth="1.8" />
         </svg>
       );
+    case "chart":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={cls}>
+          <path d="M4.5 19.5h15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M7 16v-4M12 16V8M17 16v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      );
     case "user":
       return (
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={cls}>

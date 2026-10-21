@@ -32,3 +32,57 @@ export type Applicant = {
   jobseeker_email?: string;
   has_cv?: boolean | number;
 };
+
+export type InsightRangeKey = "7d" | "30d" | "90d" | "all";
+
+export type InsightTrendPoint = {
+  date: string;
+  count: number;
+};
+
+export type InsightTopCompany = {
+  company: string;
+  applicationCount: number;
+  jobCount: number;
+};
+
+export type InsightInDemandJob = {
+  jobId: number;
+  title: string;
+  company: string;
+  location: string;
+  applicationCount: number;
+  recentApplicationCount: number;
+};
+
+export type InsightPopularPosition = {
+  title: string;
+  applicationCount: number;
+  jobCount: number;
+};
+
+export type InsightSummary = {
+  totalApplications: number;
+  availableJobs: number;
+  companiesWithJobs: number;
+  applicationsInRange: number;
+  unknownDateCount: number;
+};
+
+export type InsightRange = {
+  key: InsightRangeKey;
+  start: string | null;
+  end: string;
+};
+
+export type InsightResponse = {
+  success: boolean;
+  message?: string;
+  generatedAt: string;
+  range: InsightRange;
+  summary: InsightSummary;
+  trend: InsightTrendPoint[];
+  topCompanies: InsightTopCompany[];
+  inDemandJobs: InsightInDemandJob[];
+  popularPositions: InsightPopularPosition[];
+};
