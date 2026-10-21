@@ -82,6 +82,18 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
             kesempatan baru untuk mengembangkan karier bersama JobTrack.
           </p>
 
+          <p
+            className={
+              start
+                ? "animate-hero-fade-up mt-4 max-w-xl text-balance text-sm leading-relaxed text-sky-50/90 sm:text-base"
+                : "mt-4 max-w-xl text-balance text-sm leading-relaxed text-sky-50/90 opacity-0 sm:text-base"
+            }
+            style={start ? { animationDelay: "210ms" } : undefined}
+          >
+            <span className="font-medium text-white">Tersedia di web</span>{" "}
+            &mdash; versi mobile sedang dipersiapkan.
+          </p>
+
           <div
             className={
               start

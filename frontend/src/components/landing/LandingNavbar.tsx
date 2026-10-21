@@ -102,15 +102,9 @@ export default function LandingNavbar() {
         <div className="hidden items-center gap-2 md:flex">
           <Link
             href="/login"
-            className="inline-flex h-10 items-center justify-center rounded-full px-4 text-sm font-medium text-sky-100 transition-colors duration-150 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
-          >
-            Masuk
-          </Link>
-          <Link
-            href="/register"
             className="inline-flex h-10 items-center justify-center rounded-full bg-white px-5 text-sm font-medium text-neutral-900 transition-colors duration-150 hover:bg-sky-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 active:bg-neutral-100"
           >
-            Daftar
+            Masuk
           </Link>
         </div>
 
@@ -164,16 +158,9 @@ export default function LandingNavbar() {
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
-                className="inline-flex h-11 w-full items-center justify-center rounded-full border border-neutral-200 px-5 text-sm font-medium text-neutral-800 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
-              >
-                Masuk
-              </Link>
-              <Link
-                href="/register"
-                onClick={() => setOpen(false)}
                 className="inline-flex h-11 w-full items-center justify-center rounded-full bg-neutral-900 px-5 text-sm font-medium text-white transition-colors duration-150 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 active:bg-neutral-950"
               >
-                Daftar
+                Masuk
               </Link>
             </div>
           </nav>

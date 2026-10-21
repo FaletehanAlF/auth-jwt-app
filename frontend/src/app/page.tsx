@@ -11,6 +11,7 @@ import { TRUSTED_LOGOS } from "../data/trustedLogos";
 import LandingAbout from "../components/landing/LandingAbout";
 import LandingHowItWorks from "../components/landing/LandingHowItWorks";
 import LandingTestimonials from "../components/landing/LandingTestimonials";
+import LandingPlatforms from "../components/landing/LandingPlatforms";
 import LandingContact from "../components/landing/LandingContact";
 import Footer from "../components/landing/Footer";
 
@@ -98,6 +99,7 @@ export default function LandingPage() {
         <LandingAbout />
         <LandingHowItWorks />
         <LandingTestimonials />
+        <LandingPlatforms />
         <LandingContact />
       </main>
       <Footer />
