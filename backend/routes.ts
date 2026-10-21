@@ -10,6 +10,7 @@ import {
 } from "./controllers/authController";
 import { createJob, getJobs, getJobById, updateJob, deleteJob, getMyJobs } from "./controllers/jobController";
 import { applyJob, getMyApplications, getJobApplications, updateApplicationStatus, getApplicationCv } from "./controllers/applicationController";
+import { getInsights } from "./controllers/insightController";
 import { getNotifications, getUnreadNotificationCount, markNotificationRead, markAllNotificationsRead } from "./controllers/notificationController";
 import { verifyToken } from "./middleware/authMiddleware";
 import { authorize } from "./middleware/authorizeMiddleware";
@@ -33,6 +34,8 @@ router.post("/jobs", verifyToken, authorize("recruiter"), createJob);
 router.get("/jobs", verifyToken, getJobs);
 
 router.get("/recruiter/jobs", verifyToken, authorize("recruiter"), getMyJobs);
+
+router.get("/insights", verifyToken, authorize("jobseeker"), getInsights);
 
 router.get("/jobs/:id", verifyToken, getJobById);
 

@@ -5,7 +5,7 @@ import path from "path";
 import { CV_DIR } from "../config/config";
 import db from "../config/database";
 import { MAX_CV_BYTES } from "../middleware/uploadCv";
-import { emitToUser } from "../sockets/socket";
+import { emitToUser, emitInsightUpdated } from "../sockets/socket";
 
 /** Nilai status lamaran yang diizinkan (FASE 1). Harus sama dengan
  *  daftar ENUM pada migrasi backend/migrations/001-application-status.sql. */
@@ -264,6 +264,11 @@ export const applyJob = async (req: Request, res: Response) => {
       }
     }
 
+    try {
+      emitInsightUpdated("application_created");
+    } catch (socketError) {
+      console.error(socketError);
+    }
 
     return res.status(201).json({
       success: true,
@@ -406,6 +411,12 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
       } catch (socketError) {
         console.error(socketError);
       }
+    }
+
+    try {
+      emitInsightUpdated("application_status_changed");
+    } catch (socketError) {
+      console.error(socketError);
     }
 
     return res.status(200).json({

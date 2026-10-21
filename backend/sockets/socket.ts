@@ -51,6 +51,12 @@ export function initSocket(httpServer: HttpServer, allowedOrigins: string[]): Se
 
     socket.join(`user:${user.id}`);
 
+    // Room insight hanya untuk jobseeker. Otorisasi dilakukan server-side
+    // berdasarkan JWT yang sudah tervalidasi, bukan berdasarkan permintaan client.
+    if (user.role === "jobseeker") {
+      socket.join("jobseekers");
+    }
+
     console.log(
       `[socket] connected user=${user.id} role=${user.role} socket=${socket.id}`
     );
@@ -76,4 +82,19 @@ export function getIO(): Server {
 export function emitToUser(userId: number, event: string, payload: unknown): void {
   if (!ioInstance) return;
   ioInstance.to(`user:${userId}`).emit(event, payload);
+}
+
+export type InsightUpdateReason =
+  | "application_created"
+  | "application_status_changed"
+  | "job_created"
+  | "job_updated"
+  | "job_deleted";
+
+export function emitInsightUpdated(reason: InsightUpdateReason): void {
+  if (!ioInstance) return;
+  ioInstance.to("jobseekers").emit("insight:updated", {
+    reason,
+    occurredAt: new Date().toISOString(),
+  });
 }

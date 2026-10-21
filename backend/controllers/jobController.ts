@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 
 import db from "../config/database";
+import { emitInsightUpdated } from "../sockets/socket";
 
 export const createJob = async (req: Request, res: Response) => {
   try {
@@ -32,6 +33,12 @@ export const createJob = async (req: Request, res: Response) => {
       [insertId]
     );
     const job = (rows as any[])[0];
+
+    try {
+      emitInsightUpdated("job_created");
+    } catch (socketError) {
+      console.error(socketError);
+    }
 
     return res.status(201).json({
       success: true,
@@ -165,6 +172,12 @@ export const updateJob = async (req: Request, res: Response) => {
     );
     const updatedJob = (updatedRows as any[])[0];
 
+    try {
+      emitInsightUpdated("job_updated");
+    } catch (socketError) {
+      console.error(socketError);
+    }
+
     return res.status(200).json({
       success: true,
       message: "Job berhasil diperbarui",
@@ -204,6 +217,12 @@ export const deleteJob = async (req: Request, res: Response) => {
     }
 
     await db.execute("DELETE FROM jobs WHERE jobs.id = ?", [id]);
+
+    try {
+      emitInsightUpdated("job_deleted");
+    } catch (socketError) {
+      console.error(socketError);
+    }
 
     return res.status(200).json({
       success: true,
