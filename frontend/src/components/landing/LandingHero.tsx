@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { FaDownload } from "react-icons/fa";
 import LandingHeroMagicTransform from "./LandingHeroMagicTransform";
+import LandingHeroClouds from "./LandingHeroClouds";
 import LandingHeroSearch from "./LandingHeroSearch";
 import TechText from "../ui/TechText";
 
@@ -17,6 +19,11 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
           <div className="absolute left-[-10rem] top-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
           <div className="absolute right-[-8rem] bottom-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
         </div>
+
+        {/* Lapisan awan dekoratif: di dalam wrapper `overflow-hidden` hero,
+            sehingga tidak pernah memunculkan scrollbar horizontal, dan
+            `pointer-events-none` sehingga tidak menutupi tombol/tautan. */}
+        <LandingHeroClouds />
 
         <div className="relative flex w-full max-w-3xl flex-col items-center">
           <p
@@ -113,12 +120,17 @@ export default function LandingHero({ start = true }: LandingHeroProps) {
             }
             style={start ? { animationDelay: "300ms" } : undefined}
           >
-            <Link
-              href="/home"
-              className="inline-flex h-12 w-full items-center justify-center rounded-full bg-white px-7 text-sm font-semibold text-sky-900 shadow-sm transition-colors duration-150 hover:bg-sky-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-sky-600 active:bg-sky-100 sm:w-auto"
+            {/* Belum ada proses unduhan: aplikasi mobile belum siap
+                dirilis, jadi tombol ini sengaja tidak menunjuk ke file
+                APK maupun URL unduhan apa pun (tidak ada tautan palsu). */}
+            <button
+              type="button"
+              title="Versi mobile sedang dipersiapkan"
+              className="inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-sky-900 shadow-sm transition-colors duration-150 hover:bg-sky-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-sky-600 active:bg-sky-100 sm:w-auto"
             >
-              Jelajahi Lowongan
-            </Link>
+              <FaDownload className="h-4 w-4 shrink-0" aria-hidden="true" />
+              Download App
+            </button>
             <Link
               href="#cara-kerja"
               className="group inline-flex h-12 w-full items-center justify-center gap-1.5 rounded-full border border-white/40 bg-transparent px-5 text-sm font-medium text-white transition-colors duration-150 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto"

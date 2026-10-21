@@ -1,0 +1,73 @@
+/* ---- Awan dekoratif yang melayang pelan di hero ----
+   Motion: transform saja (GPU), linear, durasi panjang supaya gerakannya
+  _lambda_ halus dan tidak menarik perhatian. Loop dibuat mulus: track berisi
+   4 sel dengan pola tinggi bergantian (A-B-A-B), lalu digeser tepat -50%
+   (= 2 sel) sehingga pola di akhir siklus identik dengan awal -> tidak ada
+   "lompatan" saat loop.
+
+   Reduced motion: animasi dimatikan lewat media query di bawah, awan tetap
+   tampil diam (tidak hilang) supaya tata letak hero tidak berubah. */
+
+.hc {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: clamp(120px, 18vh, 200px);
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.42;
+  /* Fade tepi atas/bawah supaya awan menyatu dengan langit, bukan potongan
+     yang terlihat tajam di tepi. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 34%,
+    transparent 94%
+  );
+  mask-image: linear-gradient(to bottom, #000 0%, #000 34%, transparent 94%);
+}
+
+.hc__track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: hc-drift 96s linear infinite;
+  will-change: transform;
+}
+
+.hc__item {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: clamp(300px, 38vw, 560px);
+  height: 100%;
+}
+
+/* Tinggi sel kedua sedikit berbeda supaya dua awan tidak terlihat kembar
+   berdampingan. Perioda pola tetap 2 sel (A-B-A-B) -> loop tetap mulus. */
+.hc__item--b {
+  transform: translateY(16%);
+}
+
+.hc__img {
+  width: 78%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes hc-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hc__track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
