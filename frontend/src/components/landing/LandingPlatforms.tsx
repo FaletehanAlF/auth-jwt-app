@@ -209,10 +209,7 @@ export default function LandingPlatforms() {
         </div>
 
         <Reveal direction="up" delay={120}>
-          <div
-            id="platform-cta"
-            className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4"
-          >
+          <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             <Link
               href="/login"
               className="group inline-flex min-h-[3rem] w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-8 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_12px_30px_-12px_rgba(37,99,235,0.6)] transition-colors duration-150 hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 active:bg-blue-700 sm:w-auto"
