@@ -1,67 +1,150 @@
 /* ---- Awan dekoratif yang melayang pelan di hero ----
    Motion: transform saja (GPU), linear, durasi panjang supaya gerakannya
-  _lambda_ halus dan tidak menarik perhatian. Loop dibuat mulus: track berisi
-   4 sel dengan pola tinggi bergantian (A-B-A-B), lalu digeser tepat -50%
-   (= 2 sel) sehingga pola di akhir siklus identik dengan awal -> tidak ada
-   "lompatan" saat loop.
+   _lambda_ halus dan tidak menarik perhatian.
+
+   Loop mulus: tiap jalur (.hc__lane) berisi 2 salinan identik dari kumpulan
+   awan (.hc__set). Track digeser tepat -50% dari lebar track, dan track
+   selebar 200% hero, jadi -50% = tepat 1 set = 1 lebar hero. Pola di akhir
+   siklus identik dengan awal -> tidak ada "lompat"/teleportasi saat berulang.
+
+   Anti-tabrakan:
+   - Awan dalam satu jalur bergerak dengan kecepatan sama, sehingga jarak
+     antar-awannya konstan selamanya (tidak mungkin saling mengejar).
+   - Jalur memakai pita vertikal yang terpisah, jadi dua jalur berlawanan
+     arah tidak pernah berada di ruang yang sama.
 
    Reduced motion: animasi dimatikan lewat media query di bawah, awan tetap
    tampil diam (tidak hilang) supaya tata letak hero tidak berubah. */
 
 .hc {
   position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: clamp(120px, 18vh, 200px);
+  inset: 0;
   overflow: hidden;
   pointer-events: none;
-  opacity: 0.42;
-  /* Fade tepi atas/bawah supaya awan menyatu dengan langit, bukan potongan
-     yang terlihat tajam di tepi. */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 34%,
-    transparent 94%
-  );
-  mask-image: linear-gradient(to bottom, #000 0%, #000 34%, transparent 94%);
+  z-index: 0;
+}
+
+.hc__lane {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .hc__track {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
-  width: max-content;
+  width: 200%;
   height: 100%;
-  animation: hc-drift 96s linear infinite;
+  animation-name: hc-drift-left;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   will-change: transform;
 }
 
-.hc__item {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  width: clamp(300px, 38vw, 560px);
+.hc__lane--right .hc__track {
+  animation-name: hc-drift-right;
+}
+
+.hc__set {
+  position: relative;
+  flex: 0 0 50%;
   height: 100%;
 }
 
-/* Tinggi sel kedua sedikit berbeda supaya dua awan tidak terlihat kembar
-   berdampingan. Perioda pola tetap 2 sel (A-B-A-B) -> loop tetap mulus. */
-.hc__item--b {
-  transform: translateY(16%);
+.hc__cloud {
+  position: absolute;
+  display: block;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
-.hc__img {
-  width: 78%;
-  height: 100%;
-  object-fit: contain;
+.hc__cloud--flip {
+  transform: scaleX(-1);
 }
 
-@keyframes hc-drift {
+/* Ukuran pakai vw: posisi awan juga relatif (%), jadi jarak antar-awan
+   ikut ikut menyesuaikan di setiap lebar layar - tidak ada awan yang tiba-tiba
+   menimpa awan tetangganya hanya karena layar menyempit atau melebar. */
+.hc__cloud--lg {
+  width: clamp(240px, 30vw, 460px);
+}
+
+.hc__cloud--md {
+  width: clamp(180px, 24vw, 350px);
+}
+
+.hc__cloud--sm {
+  width: clamp(120px, 16vw, 280px);
+}
+
+.hc__cloud--xs {
+  width: clamp(90px, 11vw, 190px);
+}
+
+@keyframes hc-drift-left {
   from {
     transform: translate3d(0, 0, 0);
   }
   to {
     transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes hc-drift-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ---- Tablet: perkecil awan, pertahankan jarak dari konten ---- */
+@media (max-width: 1024px) {
+  .hc__cloud--lg {
+    width: clamp(200px, 28vw, 420px);
+  }
+
+  .hc__cloud--md {
+    width: clamp(150px, 22vw, 330px);
+  }
+
+  .hc__cloud--sm {
+    width: clamp(100px, 15vw, 220px);
+  }
+
+  .hc__cloud--xs {
+    width: clamp(70px, 10vw, 150px);
+  }
+}
+
+/* ---- Mobile: komposisi lebih sederhana, awan besar disembunyikan ----
+   Di layar sempit kolom konten hampir penuh lebar, jadi awan sebesar ini
+   (masih ~200px) ikut menutupi headline. Sembunyikan saja: komposisi
+   mobile jadi lebih sederhana, sesuai kebutuhan. */
+@media (max-width: 640px) {
+  .hc__cloud--hide-sm {
+    display: none;
+  }
+
+  .hc__cloud--lg {
+    display: none;
+  }
+
+  .hc__cloud--md {
+    width: clamp(90px, 26vw, 240px);
+  }
+
+  .hc__cloud--sm {
+    width: clamp(70px, 20vw, 190px);
+  }
+
+  .hc__cloud--xs {
+    width: clamp(50px, 14vw, 140px);
   }
 }
 

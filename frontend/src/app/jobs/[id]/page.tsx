@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   FaArrowLeft,
   FaBuilding,
@@ -63,7 +63,6 @@ function defaultBackUrl(role: UserRole | null): string {
 }
 
 export default function JobDetailPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const params = useParams();
   const id = params?.id;

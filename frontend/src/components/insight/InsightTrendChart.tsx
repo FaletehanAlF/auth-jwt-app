@@ -8,6 +8,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  type TooltipContentProps,
 } from "recharts";
 
 export type TrendChartPoint = {
@@ -22,7 +23,9 @@ type InsightTrendChartProps = {
   reducedMotion: boolean;
 };
 
-function ChartTooltip({ active, payload }: { active?: boolean; payload?: any[] }) {
+type ChartTooltipProps = Partial<TooltipContentProps<number, string>>;
+
+function ChartTooltip({ active, payload }: ChartTooltipProps) {
   if (!active || !payload || payload.length === 0) return null;
   const item = payload[0]?.payload as TrendChartPoint | undefined;
   if (!item) return null;
