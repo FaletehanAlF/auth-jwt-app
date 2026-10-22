@@ -10,7 +10,7 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["*.ts", "config/**/*.ts", "controllers/**/*.ts", "lib/**/*.ts", "middleware/**/*.ts", "sockets/**/*.ts", "types/**/*.ts", "validators/**/*.ts"],
+  "include": ["*.ts", "config/**/*.ts", "controllers/**/*.ts", "lib/**/*.ts", "middleware/**/*.ts", "sockets/**/*.ts", "tests/**/*.ts", "types/**/*.ts", "validators/**/*.ts"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "files": true

@@ -1,0 +1,23 @@
+{
+  "_comment": [
+    "Konfigurasi KHUSUS build produksi.",
+    "tsconfig.json dipakai untuk type-check seluruh project termasuk tests/,",
+    "file ini dipakai untuk build supaya file test TIDAK ikut terkompilasi ke",
+    "dist/ (artefak produksi tidak perlu memuat test, dan file test hasil",
+    "build tidak bisa dijalankan karena tests/baseline/routes.json tidak",
+    "ikut di-emit). Script `npm test` tetap menjalankan sources TypeScript",
+    "lewat ts-node/register, bukan file hasil build ini."
+  ],
+  "extends": "./tsconfig.json",
+  "include": [
+    "*.ts",
+    "config/**/*.ts",
+    "controllers/**/*.ts",
+    "lib/**/*.ts",
+    "middleware/**/*.ts",
+    "sockets/**/*.ts",
+    "types/**/*.ts",
+    "validators/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist", "tests"]
+}

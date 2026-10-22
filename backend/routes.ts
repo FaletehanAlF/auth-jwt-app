@@ -12,6 +12,7 @@ import { createJob, getJobs, getJobById, updateJob, deleteJob, getMyJobs } from 
 import { applyJob, getMyApplications, getJobApplications, updateApplicationStatus, getApplicationCv } from "./controllers/applicationController";
 import { getInsights } from "./controllers/insightController";
 import { getNotifications, getUnreadNotificationCount, markNotificationRead, markAllNotificationsRead } from "./controllers/notificationController";
+import { getRecruiterDashboard } from "./controllers/recruiterDashboardController";
 import { verifyToken } from "./middleware/authMiddleware";
 import { authorize } from "./middleware/authorizeMiddleware";
 import {
@@ -110,5 +111,10 @@ router.get("/notifications/unread-count", verifyToken, getUnreadNotificationCoun
 router.patch("/notifications/read-all", verifyToken, markAllNotificationsRead);
 
 router.patch("/notifications/:id/read", verifyToken, markNotificationRead);
+
+// Dashboard recruiter. Ditambahkan di akhir daftar supaya urutan route yang
+// sudah ada (dan baseline kontrak tests/baseline/routes.json) tidak berubah
+// - hanya satu baris kontrak baru yang muncul.
+router.get("/recruiter/dashboard", verifyToken, authorize("recruiter"), getRecruiterDashboard);
 
 export default router;

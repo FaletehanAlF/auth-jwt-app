@@ -15,3 +15,15 @@ function getCvDir(): string {
 }
 
 export const CV_DIR = getCvDir();
+
+/**
+ * Origin yang diizinkan untuk CORS (Express) dan Socket.IO.
+ * Nilai & kebijakannya tidak berubah - hanya dipindah ke satu sumber
+ * supaya app.ts (CORS) dan index.ts (Socket.IO) memakai konfigurasi yang sama.
+ */
+export const ALLOWED_ORIGINS = (
+  process.env.FRONTEND_URL || "http://localhost:5000,http://10.2.12.75:5000"
+)
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);

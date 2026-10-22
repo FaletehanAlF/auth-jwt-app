@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --require ts-node/register --test tests/routeInventory.test.ts tests/authContract.test.ts tests/validationContract.test.ts tests/errorContract.test.ts tests/rateLimitContract.test.ts tests/integrationBootstrap.test.ts",
+    "test:integration": "node --require ts-node/register --test tests/integration/dashboard.test.ts",
     "dev": "nodemon --exec ts-node index.ts",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "start": "node dist/index.js"
   },
   "author": "Faletehan",

@@ -1,43 +1,18 @@
 import "dotenv/config";
-import express from "express";
-import cors from "cors";
-import routes from "./routes";
 import { createServer } from "http";
+import app from "./app";
 import { initSocket } from "./sockets/socket";
+import { ALLOWED_ORIGINS } from "./config/config";
 
-const app = express();
+/**
+ * Entry point server JobTrack.
+ *
+ * Konfigurasi HTTP (CORS, body parser, error handler, routing, 404) berada
+ * di `app.ts` supaya bisa diuji tanpa membuka port. File ini hanya
+ * menjalankan server + Socket.IO.
+ */
 
 const PORT = Number(process.env.PORT) || 5001;
-
-const ALLOWED_ORIGINS = (
-  process.env.FRONTEND_URL || "http://localhost:5000,http://10.2.12.75:5000"
-)
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
-
-app.use(cors({ origin: ALLOWED_ORIGINS }));
-app.use(express.json());
-
-app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if (err?.type === "entity.parse.failed" || err instanceof SyntaxError) {
-    return res.status(400).json({ success: false, message: "Body JSON tidak valid" });
-  }
-  next(err);
-});
-
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "Backend Express + MySQL berjalan!",
-  });
-});
-
-app.use("/api", routes);
-
-app.use((_req, res) => {
-  res.status(404).json({ success: false, message: "Endpoint tidak ditemukan" });
-});
 
 const httpServer = createServer(app);
 initSocket(httpServer, ALLOWED_ORIGINS);

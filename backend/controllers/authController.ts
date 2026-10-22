@@ -60,11 +60,27 @@ export const register = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const [insertResult] = await db.execute(
-      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-      [name, email, hashedPassword]
-    );
-    const insertId = (insertResult as any).insertId;
+    let insertId: number;
+    try {
+      const [insertResult] = await db.execute(
+        "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+        [name, email, hashedPassword]
+      );
+      insertId = (insertResult as any).insertId;
+    } catch (insertError: any) {
+      // Pengecekan SELECT di atas race-prone: dua request register bersamaan
+      // untuk email yang sama bisa sama-sama lolos cek itu, lalu salah
+      // satunya bentrok dengan UNIQUE KEY users.email. Unique index adalah
+      // penjaga terakhir yang sesungguhnya, jadi ER_DUP_ENTRY di sini
+      // harus berdampak sama seperti jalur SELECT — bukan error server.
+      if (insertError?.code === "ER_DUP_ENTRY") {
+        return res.status(400).json({
+          success: false,
+          message: "Email sudah terdaftar",
+        });
+      }
+      throw insertError;
+    }
 
     const [newUserRows] = await db.execute(
       "SELECT id, name, email, role FROM users WHERE id = ?",
@@ -236,7 +252,15 @@ export const forgotPassword = async (req: Request, res: Response) => {
       } catch {
         // abaikan; respons tetap 500 agar tidak ada sukses palsu
       }
-      console.error("Gagal mengirim email reset kata sandi");
+      // Log penyebab ASLI, bukan hanya pesan generik. Kegagalan paling
+      // umum di sini adalah konfigurasi Resend: domain pengirim belum
+      // diverifikasi (akun Resend hanya bisa mengirim ke email pemiliknya
+      // memakai domain testing). Tanpa log detail, admin tidak akan pernah
+      // tahu itu penyebabnya. Nilai rahasia tidak ikut dicetak di sini.
+      console.error(
+        "Gagal mengirim email reset kata sandi:",
+        error instanceof Error ? error.message : error
+      );
       return res.status(500).json({
         success: false,
         message: "Gagal mengirim email reset. Silakan coba lagi.",

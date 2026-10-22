@@ -8,8 +8,9 @@ import { MAX_CV_BYTES } from "../middleware/uploadCv";
 import { emitToUser, emitInsightUpdated } from "../sockets/socket";
 
 /** Nilai status lamaran yang diizinkan (FASE 1). Harus sama dengan
- *  daftar ENUM pada migrasi backend/migrations/001-application-status.sql. */
-const APPLICATION_STATUSES = ["pending", "reviewed", "interview", "accepted", "rejected"] as const;
+ *  daftar ENUM pada migrasi backend/migrations/001-application-status.sql.
+ *  Diekspor supaya controller lain memakai satu definisi yang sama. */
+export const APPLICATION_STATUSES = ["pending", "reviewed", "interview", "accepted", "rejected"] as const;
 
 // Hapus file upload jika request gagal setelah file tersimpan (anti file yatim).
 async function removeUploadedFile(filePath?: string): Promise<void> {

@@ -1,0 +1,45 @@
+{
+  "_comment": [
+    "BASELINE KONTRAK ROUTING JobTrack - jangan diedit otomatis.",
+    "File ini adalah acuan yang dibandingkan dengan state router saat test.",
+    "Selisih = kontrak berubah dan WAJIB ditinjau manual (perubahan URL, method,",
+    "urutan route, atau rantai middleware). Baseline diperbarui hanya dengan",
+    "sengaja dalam commit terpisah, bukan oleh script pembaruan otomatis.",
+    "",
+    "Studi kasus: name = nama handler ('<anonymous>' untuk closure middleware),",
+    "arity = jumlah parameter handler. arity 3 = middleware (req,res,next),",
+    "arity 2 = handler endpoint (req,res). Perbedaan ini yang membedakan",
+    "authorize() dari handler inline GET /profile (keduanya '<anonymous>')."
+  ],
+  "mountPrefix": "/api",
+  "routeCount": 24,
+  "routes": [
+    { "order": 1, "method": "POST", "path": "/register", "handlers": [{ "name": "register", "arity": 2 }] },
+    { "order": 2, "method": "POST", "path": "/login", "handlers": [{ "name": "login", "arity": 2 }] },
+    { "order": 3, "method": "POST", "path": "/auth/forgot-password", "handlers": [{ "name": "<anonymous>", "arity": 3 }, { "name": "forgotPassword", "arity": 2 }] },
+    { "order": 4, "method": "POST", "path": "/auth/reset-password", "handlers": [{ "name": "<anonymous>", "arity": 3 }, { "name": "resetPassword", "arity": 2 }] },
+    { "order": 5, "method": "POST", "path": "/jobs", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "createJob", "arity": 2 }] },
+    { "order": 6, "method": "GET", "path": "/jobs", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "getJobs", "arity": 2 }] },
+    { "order": 7, "method": "GET", "path": "/recruiter/jobs", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "getMyJobs", "arity": 2 }] },
+    { "order": 8, "method": "GET", "path": "/insights", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "getInsights", "arity": 2 }] },
+    { "order": 9, "method": "GET", "path": "/jobs/:id", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "getJobById", "arity": 2 }] },
+    { "order": 10, "method": "PUT", "path": "/jobs/:id", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "updateJob", "arity": 2 }] },
+    { "order": 11, "method": "DELETE", "path": "/jobs/:id", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "deleteJob", "arity": 2 }] },
+    { "order": 12, "method": "POST", "path": "/jobs/:id/apply", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "uploadCvSingle", "arity": 3 }, { "name": "applyJob", "arity": 2 }] },
+    { "order": 13, "method": "GET", "path": "/jobs/:id/applications", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "getJobApplications", "arity": 2 }] },
+    { "order": 14, "method": "GET", "path": "/applications/me", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "getMyApplications", "arity": 2 }] },
+    { "order": 15, "method": "PATCH", "path": "/applications/:id", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "updateApplicationStatus", "arity": 2 }] },
+    { "order": 16, "method": "GET", "path": "/applications/:id/cv", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "getApplicationCv", "arity": 2 }] },
+    { "order": 17, "method": "GET", "path": "/profile", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 2 }] },
+    { "order": 18, "method": "PUT", "path": "/profile/avatar", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "updateAvatar", "arity": 2 }] },
+    { "order": 19, "method": "DELETE", "path": "/profile/avatar", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "deleteAvatar", "arity": 2 }] },
+    { "order": 20, "method": "GET", "path": "/notifications", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "getNotifications", "arity": 2 }] },
+    { "order": 21, "method": "GET", "path": "/notifications/unread-count", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "getUnreadNotificationCount", "arity": 2 }] },
+    { "order": 22, "method": "PATCH", "path": "/notifications/read-all", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "markAllNotificationsRead", "arity": 2 }] },
+    { "order": 23, "method": "PATCH", "path": "/notifications/:id/read", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "markNotificationRead", "arity": 2 }] },
+    { "order": 24, "method": "GET", "path": "/recruiter/dashboard", "handlers": [{ "name": "verifyToken", "arity": 3 }, { "name": "<anonymous>", "arity": 3 }, { "name": "getRecruiterDashboard", "arity": 2 }] }
+  ],
+  "appRoutes": [
+    { "order": 1, "method": "GET", "path": "/", "handlers": [{ "name": "<anonymous>", "arity": 2 }] }
+  ]
+}
