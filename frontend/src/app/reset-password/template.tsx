@@ -1,13 +1,10 @@
 import type { ReactNode } from "react";
+import AuthTemplate from "../../components/auth/AuthTemplate";
 
 export default function ResetPasswordTemplate({
   children,
 }: {
   children: ReactNode;
 }) {
-  return (
-    <div className="animate-jobtrack-page h-dvh overflow-hidden overscroll-none">
-      {children}
-    </div>
-  );
+  return <AuthTemplate>{children}</AuthTemplate>;
 }

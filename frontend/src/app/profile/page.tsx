@@ -16,7 +16,7 @@ import {
 import AppShell from "../../components/layout/AppShell";
 import RequireAuth from "../../components/auth/RequireAuth";
 import { apiFetch } from "../../lib/api";
-import type { UserRole } from "../../lib/auth";
+import { getStoredItem, removeStoredAuth, type UserRole } from "../../lib/auth";
 import { formatUsername } from "../../lib/username";
 
 /* ------------------------------------------------------------------ *
@@ -188,7 +188,7 @@ export default function ProfilePage() {
 
 const email = account?.email ?? null;
 const role: UserRole | null = account?.role === "recruiter" ? "recruiter" : account ? "jobseeker" : null;
-const storedName = typeof window !== "undefined" ? localStorage.getItem("user_name") : null;
+const storedName = getStoredItem("user_name");
 
   return (
     <RequireAuth>
@@ -471,11 +471,7 @@ const storedName = typeof window !== "undefined" ? localStorage.getItem("user_na
                 <Link
                   href="/login"
                   onClick={() => {
-                    try {
-                      localStorage.removeItem("token");
-                    } catch {
-                      /* abaikan: storage tak tersedia */
-                    }
+                    removeStoredAuth();
                   }}
                   className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 sm:w-auto"
                 >

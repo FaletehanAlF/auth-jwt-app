@@ -110,6 +110,26 @@ html {
   animation: toast-in 0.25s ease-out;
 }
 
+/* ---- Halaman auth (login, register, lupa & reset kata sandi) ----
+   Muncul sekali saat halaman dibuka. Hanya opacity + transform: tidak ada
+   properti layout yang dianimasikan, jadi tidak memicu reflow dan tidak
+   menggeser apa pun setelah selesai. `both` menahan frame akhir sehingga
+   kartu tidak berkedip kembali transparan saat animasi usai. */
+@keyframes auth-card-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animate-auth-card {
+  animation: auth-card-in 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @keyframes hero-fade-up {
   from {
     opacity: 0;
@@ -227,6 +247,7 @@ html {
   }
   .animate-jobtrack-page,
   .animate-toast-in,
+  .animate-auth-card,
   .animate-hero-fade-up,
   .animate-hero-from-left,
   .animate-hero-from-right,
@@ -350,13 +371,6 @@ html {
 
 .testimonial-card {
   height: 100%;
-}
-
-.shapegrid-canvas {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
 }
 
 /* ---- App shell (dashboard) motion: enter-only, GPU transform/opacity ----

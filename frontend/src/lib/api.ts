@@ -1,9 +1,12 @@
+import { getStoredToken } from "./auth";
+
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
 function buildHeaders(init?: RequestInit): Record<string, string> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  // Lewat getStoredToken(): token bisa berada di localStorage ATAU
+  // sessionStorage tergantung pilihan "Ingat saya" saat login.
+  const token = getStoredToken();
 
   const isFormData =
     typeof FormData !== "undefined" && init?.body instanceof FormData;

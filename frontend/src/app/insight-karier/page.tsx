@@ -6,6 +6,7 @@ import { io, type Socket } from "socket.io-client";
 import AppShell from "../../components/layout/AppShell";
 import RequireAuth from "../../components/auth/RequireAuth";
 import { apiFetch } from "../../lib/api";
+import { getStoredToken } from "../../lib/auth";
 import type { InsightResponse, InsightRangeKey, InsightTrendPoint } from "../../lib/types";
 import InsightTrendChart, { type TrendChartPoint } from "../../components/insight/InsightTrendChart";
 
@@ -295,8 +296,7 @@ export default function InsightKarierPage() {
   }, [range, attempt, fetchInsights]);
 
   useEffect(() => {
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const token = getStoredToken();
     if (!token) {
       setSocketStatus("disconnected");
       return;

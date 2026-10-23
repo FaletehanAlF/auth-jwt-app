@@ -2,13 +2,14 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import AuthCard, { AuthField } from "../../components/auth/AuthCard";
+import AuthShell, { AuthField, AuthSubmit } from "../../components/auth/AuthShell";
 import Toast, { ToastData, ToastKind } from "../../components/ui/Toast";
 import { API_BASE_URL } from "../../lib/api";
 import { forgotPasswordSchema } from "../../lib/validation";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [toast, setToast] = useState<ToastData | null>(null);
@@ -27,18 +28,12 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     if (loading) return;
 
-    if (!email.trim()) {
-      notify("error", "Email wajib diisi");
-      return;
-    }
-
     const parsed = forgotPasswordSchema.safeParse({ email: email.trim() });
     if (!parsed.success) {
-      const firstMessage =
-        parsed.error.issues[0]?.message ?? "Format email tidak valid.";
-      notify("error", firstMessage);
+      setEmailError(parsed.error.issues[0]?.message ?? "Format email tidak valid.");
       return;
     }
+    setEmailError(undefined);
 
     setLoading(true);
     try {
@@ -55,7 +50,7 @@ export default function ForgotPasswordPage() {
         notify(
           "success",
           data.message ??
-            "Jika email terdaftar, tautan reset telah dikirim. Periksa inbox atau spam."
+            "Jika email terdaftar, tautan reset telah dikirim. Periksa inbox atau spam.",
         );
         return;
       }
@@ -63,13 +58,13 @@ export default function ForgotPasswordPage() {
       if (response.status === 429) {
         notify(
           "error",
-          data.message ?? "Terlalu banyak permintaan. Coba lagi nanti."
+          data.message ?? "Terlalu banyak permintaan. Coba lagi nanti.",
         );
         return;
       }
 
       const firstFieldError = Object.values(
-        (data as { errors?: Record<string, unknown> }).errors ?? {}
+        (data as { errors?: Record<string, unknown> }).errors ?? {},
       )
         .flat()
         .find((msg) => typeof msg === "string");
@@ -78,7 +73,7 @@ export default function ForgotPasswordPage() {
         "error",
         (firstFieldError as string | undefined) ??
           (data as { message?: string }).message ??
-          "Gagal mengirim tautan reset. Coba lagi."
+          "Gagal mengirim tautan reset. Coba lagi.",
       );
     } catch {
       notify("error", "Gagal menghubungi server. Coba lagi.");
@@ -88,15 +83,18 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <AuthCard
-      title="Lupa kata sandi"
+    <AuthShell
+      eyebrow="Pemulihan akun"
+      title="Lupa kata sandi?"
       subtitle="Masukkan email akunmu. Kami akan mengirim tautan untuk membuat kata sandi baru."
+      heroTitle="Tidak perlu panik — akunmu tetap aman."
+      heroDescription="Tautan reset berlaku 15 menit dan hanya bisa dipakai satu kali."
       footer={
         <>
           Ingat kata sandimu?{" "}
           <Link
             href="/login"
-            className="rounded font-medium text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+            className="rounded font-semibold text-neutral-900 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
           >
             Masuk
           </Link>
@@ -104,50 +102,48 @@ export default function ForgotPasswordPage() {
       }
     >
       {sent ? (
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div
             role="status"
-            className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-600"
+            className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm leading-relaxed text-neutral-600"
           >
-            Jika email <span className="font-medium text-slate-900">{email.trim()}</span>{" "}
+            Jika email{" "}
+            <span className="font-medium text-neutral-900">{email.trim()}</span>{" "}
             terdaftar, tautan reset telah dikirim. Tautan berlaku 15 menit dan hanya
             dapat dipakai satu kali. Periksa folder inbox atau spam.
           </div>
           <button
             type="button"
             onClick={() => setSent(false)}
-            className="h-11 w-full rounded-xl border border-slate-200 bg-white text-sm font-medium text-slate-700 transition-colors duration-150 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+            className="h-11 w-full rounded-lg border border-neutral-300 bg-white text-sm font-medium text-neutral-800 transition-colors duration-150 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
           >
             Kirim ke email lain
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} noValidate autoComplete="off" className="space-y-3">
+        <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <AuthField
             id="email"
+            label="Email"
             type="email"
             value={email}
-            onChange={setEmail}
-            placeholder="Email"
-            autoComplete="off"
-            icon={
-              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-4 w-4">
-                <rect x="2" y="3.5" width="12" height="9" rx="2" stroke="currentColor" strokeWidth="1.4" />
-                <path d="m3 5 5 3.5L13 5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            }
+            onChange={(v) => {
+              setEmail(v);
+              if (emailError) setEmailError(undefined);
+            }}
+            placeholder="Masukkan email"
+            autoComplete="email"
+            error={emailError}
           />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="h-11 w-full rounded-xl bg-neutral-900 text-sm font-medium text-white transition-colors duration-150 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 active:bg-neutral-950 disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {loading ? "Mengirim…" : "Kirim tautan reset"}
-          </button>
+          <div className="pt-2">
+            <AuthSubmit loading={loading} loadingLabel="Mengirim…">
+              Kirim tautan reset
+            </AuthSubmit>
+          </div>
         </form>
       )}
       <Toast toast={toast} />
-    </AuthCard>
+    </AuthShell>
   );
 }

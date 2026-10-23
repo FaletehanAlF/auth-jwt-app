@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 import { apiFetch } from "../../lib/api";
 import { API_BASE_URL } from "../../lib/api";
+import { getStoredToken } from "../../lib/auth";
 
 type NotificationItem = {
   id: number;
@@ -143,8 +144,7 @@ export default function NotificationBell() {
   // Koneksi socket diinisialisasi selama komponen aktif (topbar), bukan hanya
   // saat panel notifikasi dibuka.
   useEffect(() => {
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const token = getStoredToken();
     if (!token) return;
 
     const socket = io(getSocketUrl(), {

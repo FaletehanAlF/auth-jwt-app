@@ -6,6 +6,7 @@ import { apiFetchWithStatus } from "../../lib/api";
 import {
   getTokenPayload,
   isPayloadExpired,
+  removeStoredAuth,
   type UserRole,
 } from "../../lib/auth";
 
@@ -37,11 +38,7 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
 
       const local = getTokenPayload();
       if (!local || isPayloadExpired(local)) {
-        try {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user_name");
-        } catch {
-        }
+        removeStoredAuth();
         if (!cancelled) router.replace("/login");
         return;
       }
@@ -59,11 +56,7 @@ export default function RequireAuth({ roles, children }: RequireAuthProps) {
       if (cancelled) return;
 
       if (httpStatus === 401) {
-        try {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user_name");
-        } catch {
-        }
+        removeStoredAuth();
         router.replace("/login");
         return;
       }

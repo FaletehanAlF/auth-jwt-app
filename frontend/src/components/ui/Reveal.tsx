@@ -18,6 +18,13 @@ type RevealProps = {
   distance?: number;
   className?: string;
   id?: string;
+  /**
+   * Putar ulang animasi setiap elemen keluar lalu masuk viewport lagi —
+   * padanan `data-aos-once="false"`. Default false (perilaku lama: sekali
+   * lalu observer dilepas) supaya 30+ pemakaian yang sudah ada tidak
+   * berubah diam-diam.
+   */
+  repeat?: boolean;
 };
 
 export default function Reveal({
@@ -28,6 +35,7 @@ export default function Reveal({
   distance = 48,
   className = "",
   id,
+  repeat = false,
 }: RevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -46,8 +54,15 @@ export default function Reveal({
         for (const entry of entries) {
           if (entry.isIntersecting) {
             setVisible(true);
-            observer.disconnect();
-            break;
+            // Tanpa repeat, observer dilepas di sini: satu kali tampil dan
+            // selesai. Dengan repeat, observer dibiarkan hidup supaya
+            // cabang else di bawah bisa menyembunyikan elemen lagi.
+            if (!repeat) {
+              observer.disconnect();
+              break;
+            }
+          } else if (repeat) {
+            setVisible(false);
           }
         }
       },
@@ -59,7 +74,7 @@ export default function Reveal({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [repeat]);
 
   const hiddenTransform =
     direction === "left"
